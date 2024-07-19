@@ -10,7 +10,7 @@ const Board = (props) => {
   const [currentPage, setCurrentPage] = useState(0);
   const [pageCount, setPageCount] = useState(0);
   const itemsPerPage = 8;
-  console.log("Login? : ", props.isLogin, "isAdmin? : ", props.isAdmin);
+  // console.log("Login? : ", props.isLogin, "isAdmin? : ", props.isAdmin);
 
   const handleWrite = () => {
     navigate("/boardwrite", { replace: true });
@@ -58,7 +58,7 @@ const Board = (props) => {
   useEffect(() => {
     const fetchData = async () => {
       const result = await getBoardList();
-      console.log("Board List: ", result);
+      // console.log("Board List: ", result);
       setBoardlist(result.reverse());
       setPageCount(Math.ceil(result.length / itemsPerPage));
     };
