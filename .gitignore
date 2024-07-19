@@ -28,3 +28,4 @@ fastapi-f/Dockerfile
 fastapi-f/__pycache__
 fastapi-f/*.dat
 fastapi-f/*.clf
+fastapi-f/.venv
