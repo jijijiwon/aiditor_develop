@@ -6,7 +6,8 @@ const axios = require("axios");
 const FormData = require("form-data");
 const path = require("path");
 const { v4: uuidv4 } = require("uuid");
-const secretPath = path.resolve("/app/secrets.json");
+// const secretPath = path.resolve("/app/secrets.json");
+const secretPath = path.resolve("../config/secrets.json");
 
 const app = express();
 
@@ -72,6 +73,23 @@ app.post("/login", async (req, res) => {
   }
 });
 
+app.get("/selectalluser", async (req, res) => {
+  try {
+    const response = await axios.get(`${FAST_API_USER}/selectalluser`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    res.json(response.data);
+  } catch (error) {
+    console.error("Error fetching user data:", error);
+    res.status(500).json({
+      error: "Internal server error",
+      message: error.response.data.message,
+    });
+  }
+});
+
 app.get("/selectuser", async (req, res) => {
   const { email } = req.query;
   try {
@@ -118,6 +136,25 @@ app.put("/updateuser", async (req, res) => {
     const response = await axios.put(
       `${FAST_API_USER}/updateuser`,
       { email, name, opt },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    res.json(response.data);
+  } catch (error) {
+    console.error("Error updating user:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+app.put("/updateadmin", async (req, res) => {
+  const { email, isadmin } = req.body;
+  try {
+    const response = await axios.put(
+      `${FAST_API_USER}/updateadmin`,
+      { email, isadmin },
       {
         headers: {
           "Content-Type": "application/json",

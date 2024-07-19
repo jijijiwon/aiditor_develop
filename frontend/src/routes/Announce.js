@@ -54,8 +54,12 @@ const Announce = (props) => {
   useEffect(() => {
     const fetchData = async () => {
       const result = await getAnncList();
-      console.log("Announce List: ", result);
-      setAnnclist(result.reverse());
+      // console.log("Announce List: ", result);
+      if (result.length === 0) {
+        console.log("no data");
+      } else {
+        setAnnclist(result.reverse());
+      }
       setPageCount(Math.ceil(result.length / itemsPerPage));
     };
     fetchData();
