@@ -1,7 +1,8 @@
 config/*
 docker-compose.yml
 Makefile
-.env
+**/**/.env
+
 
 // frontend
 frontend/node_modules
