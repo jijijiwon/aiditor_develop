@@ -1,0 +1,176 @@
+/* ModerationRequest.css */
+.moderation {
+  max-width: 100%;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  font-family: "Pretendard", sans-serif;
+}
+
+.moderation h2 {
+  text-align: left;
+  color: #003366;
+  margin-bottom: 20px;
+  font-size: 24px;
+}
+
+.moderation form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+
+.input-info {
+  display: flex;
+  width: 100%;
+  justify-content: space-around;
+  padding-top: 20px;
+}
+
+.input-box {
+  width: 45%;
+  margin-top: 20px;
+  margin-top: 0;
+}
+
+.input-box h3 {
+  text-align: left;
+  color: #100db1;
+  margin-top: 0;
+  margin-bottom: 30px;
+  font-size: 18px;
+}
+
+.moderation label {
+  font-weight: bold;
+  color: #343434;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  justify-content: space-between;
+  font-size: 15px;
+}
+
+.moderation input[type="file"] {
+  display: none;
+}
+
+.moderation .videoFile {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: auto;
+  min-height: 200px;
+  background-color: #d9d9d9;
+  border-radius: 5px;
+  text-align: center;
+  color: #aaa;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 10px;
+  padding-bottom: 20px;
+}
+
+.moderation .videoFile span {
+  margin-top: 10px;
+  color: #333;
+  font-size: 14px;
+}
+
+.moderation .videoFile img {
+  max-width: 100%;
+  max-height: 150px;
+  margin-top: 10px;
+  border-radius: 10px;
+}
+
+.moderation input[type="text"] {
+  margin-top: 10px;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 40px;
+  font-size: 16px;
+  width: 80%;
+  box-sizing: content-box;
+}
+
+.submit-btn {
+  width: 60%;
+  padding: 20px;
+  background-color: #100db1;
+  color: #fff;
+  border: none;
+  border-radius: 40px;
+  cursor: pointer;
+  font-size: 18px;
+  transition: background-color 0.3s ease;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 20px;
+}
+
+.submit-btn:hover {
+  background-color: #005bb5;
+}
+
+.moderation p {
+  font-size: 14px;
+  color: #333;
+}
+
+/* ModerationDone.css */
+.moderation-done {
+  max-width: 100%;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.moderation-done button {
+  width: 60%;
+  padding: 15px;
+  background-color: #100db1;
+  color: #fff;
+  border: none;
+  border-radius: 40px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 30px;
+}
+
+.moderation-done button:hover {
+  background-color: #005bb5;
+}
+
+.face-index {
+  border-radius: 40px;
+  font-size: 16px;
+  width: 80%;
+  padding: 20px;
+  background-color: #100db1;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 10px;
+  box-sizing: content-box;
+  border: 1px solid #100db1;
+}
+
+.face-index:hover {
+  background-color: #005bb5;
+}

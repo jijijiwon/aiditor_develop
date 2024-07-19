@@ -1,0 +1,22 @@
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.user-info img {
+  border-radius: 50%;
+}
+
+.user-info span {
+  font-weight: bold;
+}
+
+.user-card h2 {
+  font-size: 30px;
+}
+
+.menu-icon {
+  height: 20px;
+}

@@ -1,0 +1,11 @@
+opencv-python-headless
+face-recognition
+scikit-learn
+numpy==1.26.4
+dlib
+boto3
+pydantic
+requests
+pymongo
+fastapi
+uvicorn
