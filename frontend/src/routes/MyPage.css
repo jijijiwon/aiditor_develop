@@ -11,7 +11,7 @@
   align-items: center;
   padding: 20px;
   border-radius: 10px;
-  width: 94%;
+  width: calc(100%-20px);
   border: 1.5px solid #100db1;
   margin: 10px 10px 20px 10px;
   vertical-align: middle;
@@ -155,4 +155,52 @@
   margin: auto 1.5%;
   font-weight: bold;
   padding-top: 10px;
+}
+
+.user-table {
+  font-size: 0.9em;
+  width: calc(100% -30px);
+  border-collapse: collapse;
+  overflow: hidden;
+  margin: 1em 15px 20px 15px;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(16, 13, 177, 0.1);
+  th {
+    text-align: left;
+    padding: 1.5em 0.5em;
+  }
+  th:nth-child(1) {
+    width: 20%;
+  }
+  th:nth-child(2) {
+    width: 45%;
+  }
+  th:nth-child(3) {
+    width: 17.5%;
+  }
+  th:nth-child(4) {
+    width: 12.5%;
+  }
+  th:nth-child(5) {
+    width: 5%;
+  }
+  thead {
+    color: #fff;
+    background: rgba(16, 13, 177, 0.8);
+  }
+  td,
+  th {
+    vertical-align: middle;
+    text-align: center;
+  }
+  td {
+    padding: 1em 0.5em;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    background: #fff;
+  }
+  tbody tr:hover,
+  tbody tr:hover td {
+    cursor: pointer;
+    background: rgba(16, 13, 177, 0.1) !important;
+  }
 }
