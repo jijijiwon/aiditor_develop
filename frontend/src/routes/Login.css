@@ -1,0 +1,42 @@
+.login-section {
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-style: solid;
+  border-width: 1px;
+  border-color: #100db1;
+  padding: 100px;
+  border-radius: 10px;
+  width: 100%;
+  height: 80%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.login-icon {
+  margin-bottom: 20px;
+}
+
+.login-icon img {
+  width: 100px;
+  height: 100px;
+}
+
+.google-login-btn {
+  background-color: #100db1;
+  color: white;
+  padding: 15px 40px;
+  font-size: 20px;
+  border: none;
+  border-radius: 40px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.google-word {
+  height: 30px;
+  margin-left: 10px;
+}

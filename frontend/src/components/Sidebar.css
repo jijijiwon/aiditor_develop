@@ -1,0 +1,146 @@
+.main-logo {
+  width: 90%;
+}
+
+body {
+  font-family: Pretendard, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f8f9fa;
+}
+
+.sidebar {
+  position: absolute;
+  width: 16%;
+  background-color: #fff;
+  padding: 20px;
+  margin: 2%;
+  margin-right: 3%;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  border-radius: 10px;
+}
+
+.logo {
+  background-color: #fff;
+  padding: 30px 0 20px 0;
+  border-radius: 10px;
+  text-align: center;
+  align-items: center;
+  border-bottom: 1px solid #ccc;
+}
+
+.logo h1 {
+  font-size: 35px;
+  font-weight: 800;
+  margin: 0;
+}
+
+.sidebar ul {
+  list-style-type: none;
+  padding: 0;
+}
+.sidebar ul li a {
+  text-decoration: none;
+  color: #000;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border-radius: 5px;
+  width: 90%;
+}
+
+.sidebar ul li a img {
+  margin-right: 10px;
+}
+
+.sidebar ul li a:hover,
+.sidebar ul li a.active {
+  background-color: #dcdcdc;
+  color: #000;
+}
+
+.sidebar ul .submenu {
+  list-style-type: none;
+  padding-left: 20px;
+}
+
+.sidebar ul .submenu li {
+  margin: 5px 0;
+}
+
+.sidebar ul .submenu li a {
+  text-decoration: none;
+  color: #000;
+  font-weight: normal;
+  display: block;
+  padding: 8px;
+  border-radius: 5px;
+  width: 90%;
+}
+
+.sidebar ul .submenu li a:hover,
+.sidebar ul .submenu li a.active {
+  background-color: #dcdcdc;
+  color: #000;
+}
+
+.account h3 {
+  margin-top: 20px;
+  font-size: 18px;
+}
+
+.account ul {
+  list-style-type: none;
+  padding: 0;
+  li {
+    margin: 10px 0;
+    a {
+      text-decoration: none;
+      color: #000;
+      display: flex;
+      align-items: center;
+      padding: 10px;
+      border-radius: 5px;
+      width: 90%;
+      font-weight: 200;
+      img {
+        margin-right: 10px;
+      }
+      &:hover {
+        background-color: #dcdcdc;
+        color: #000;
+      }
+    }
+  }
+}
+
+.account ul li .mypage {
+  text-decoration: none;
+  color: #000;
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border-radius: 5px;
+  width: 90%;
+  font-weight: 200;
+  cursor: pointer;
+  img {
+    margin-right: 10px;
+  }
+  &:hover {
+    background-color: #dcdcdc;
+    color: #000;
+  }
+}
+
+.developer {
+  font-size: 12px;
+  text-align: left;
+  margin-top: 30px;
+  border-top: 1px solid #ccc;
+  padding-top: 10px;
+  margin-bottom: 20px;
+}

@@ -1,0 +1,30 @@
+config/*
+docker-compose.yml
+Makefile
+.env
+
+// frontend
+frontend/node_modules
+frontend/package-lock.json
+frontend/README.md
+frontend/Dockerfile
+
+// backend
+backend/node_modules
+backend/package-lock.json
+backend/Dockerfile
+
+//fastapi
+fastapi-user/Dockerfile
+fastapi-user/__pycache__
+
+fastapi-mp/Dockerfile
+fastapi-mp/Dockerfile.mongo
+fastapi-mp/mongod.conf
+fastapi-mp/__pycache__
+fastapi-mp/app/*.pt
+
+fastapi-f/Dockerfile
+fastapi-f/__pycache__
+fastapi-f/*.dat
+fastapi-f/*.clf

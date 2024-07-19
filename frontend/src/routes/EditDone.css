@@ -1,0 +1,114 @@
+.edit-done {
+  max-width: 100%;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.edit-done button {
+  width: 40%;
+  background-color: #100db1;
+  color: #fff;
+  border: none;
+  border-radius: 40px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+  margin-top: 30px;
+  padding: 15px;
+}
+
+.edit-done button:hover {
+  background-color: #005bb5;
+}
+
+.wordcloud {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 2px solid #ccc;
+  border-radius: 20px;
+  width: 40%;
+}
+
+.line {
+  display: flex;
+  width: 60%;
+  flex-basis: 100%;
+  align-items: center;
+  color: #343434;
+  margin: 30px 0;
+}
+
+.line::before {
+  content: "";
+  flex-grow: 1;
+  margin: 0 10px;
+  background: #d3d3d3;
+  height: 1px;
+  width: 30%;
+}
+
+.line::after {
+  content: "";
+  flex-grow: 1;
+  margin: 0 16px;
+  background: #d3d3d3;
+  height: 1px;
+  width: 30%;
+}
+
+.result-label {
+  width: 40%;
+}
+
+.result-label table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.result-label tr {
+  display: flex;
+  justify-content: space-between;
+  padding: 5px;
+}
+
+.result-label td {
+  display: flex;
+  align-items: center;
+  padding: 5px;
+}
+
+.color-chip {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+}
+
+.result-label hr {
+  border-style: dashed;
+  color: #d3d3d3;
+  width: 70px;
+  margin: 0 10px;
+}
+
+.list-index-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.index-face {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  margin-bottom: 10px;
+  padding: 20px;
+  border: #d3d3d3 1px solid;
+  border-radius: 20px;
+}
