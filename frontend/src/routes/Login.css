@@ -23,20 +23,98 @@
   height: 100px;
 }
 
-.google-login-btn {
-  background-color: #100db1;
-  color: white;
-  padding: 15px 40px;
-  font-size: 20px;
-  border: none;
-  border-radius: 40px;
-  display: flex;
-  align-items: center;
-  cursor: pointer;
+.social-button {
   font-weight: bold;
+  box-sizing: border-box;
+  color: rgb(255, 255, 255);
+  font-size: 1em;
+  cursor: pointer;
+  display: inline-block;
+  height: 50px;
+  line-height: 50px;
+  text-align: left;
+  text-decoration: none;
+  text-transform: uppercase;
+  vertical-align: middle;
+  width: 30%;
+  border-radius: 5px;
+  margin: 10px auto;
+  outline: rgb(255, 255, 255) none 0px;
+  text-align: center;
+  transition: all 0.2s cubic-bezier(0.72, 0.01, 0.56, 1) 0s;
+  -webkit-transition: all 0.3s ease;
+  -moz-transition: all 0.3s ease;
+  -ms-transition: all 0.3s ease;
+  -o-transition: all 0.3s ease;
+  transition: all 0.3s ease;
 }
 
-.google-word {
-  height: 30px;
-  margin-left: 10px;
+#custom-google-button {
+  display: flex;
+  background: rgb(255, 255, 255) no-repeat scroll 5px 0px / 50px 50px
+    padding-box border-box;
+  border: 1px solid #4285f4;
+  align-items: center;
+  padding-left: 1px;
+  img {
+    border: none;
+    border-radius: 3px;
+    width: 46px;
+    height: 46px;
+  }
+  span {
+    margin-left: auto;
+    margin-right: auto;
+    color: #4285f4;
+    transition: color 0.3s ease;
+  }
+}
+
+#custom-google-button:hover {
+  border-color: #4285f4;
+  span {
+    color: #fff;
+  }
+  background: #4285f4 no-repeat scroll 5px 0px / 50px 50px padding-box
+    border-box;
+  -webkit-transition: all 0.8s ease-out;
+  -moz-transition: all 0.3s ease;
+  -ms-transition: all 0.3s ease;
+  -o-transition: all 0.3s ease;
+  transition: all 0.3s ease-out;
+}
+
+#custom-naver-button {
+  display: flex;
+  background: rgb(255, 255, 255) no-repeat scroll 5px 0px / 50px 50px
+    padding-box border-box;
+  border: 1px solid #03c75a;
+  align-items: center;
+  padding-left: 1px;
+  img {
+    border: none;
+    border-radius: 3px;
+    width: 46px;
+    height: 46px;
+  }
+  span {
+    margin-left: auto;
+    margin-right: auto;
+    color: #03c75a;
+    transition: color 0.3s ease;
+  }
+}
+
+#custom-naver-button:hover {
+  border-color: #03c75a;
+  span {
+    color: #fff;
+  }
+  background: #03c75a no-repeat scroll 5px 0px / 50px 50px padding-box
+    border-box;
+  -webkit-transition: all 0.8s ease-out;
+  -moz-transition: all 0.3s ease;
+  -ms-transition: all 0.3s ease;
+  -o-transition: all 0.3s ease;
+  transition: all 0.3s ease-out;
 }

@@ -21,6 +21,7 @@ import { Routes, Route } from "react-router-dom";
 import Editing from "./routes/Editing";
 
 const baseurl = process.env.REACT_APP_BACK_URL;
+
 function App() {
   const sessionEmail = window.sessionStorage.getItem("email");
   const sessionName = window.sessionStorage.getItem("name");
@@ -161,11 +162,13 @@ function App() {
                 opt={opt}
                 picture={picture}
                 isLogin={isLogin}
+                isadmin={isAdmin}
                 setIsLogin={setIsLogin}
                 setEmail={setEmail}
                 setName={setName}
                 setOpt={setOpt}
                 setPicture={setPicture}
+                setIsAdmin={setIsAdmin}
               />
             }
           />
