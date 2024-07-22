@@ -101,28 +101,18 @@ async def get_download_link(worknum: str):
         # 작업 번호로 문서 조회
         document = find_video_document(worknum)
         
-        if not document:
-            raise HTTPException(status_code=404, detail="Document not found")
-
         response = s3_client.list_objects_v2(Bucket=bucket_name, Prefix=f"{worknum}/")
         
-        if 'Contents' not in response:
-            raise HTTPException(status_code=404, detail="Job number folder not found")
-        
-        mp4_files = [content['Key'] for content in response['Contents'] if content['Key'].endswith('.mp4')]
-        
-        if not mp4_files:
-            raise HTTPException(status_code=404, detail="No mp4 files found in the job number folder")
-
-        mp4_file_key = mp4_files[0]
-        download_url = s3_client.generate_presigned_url(
-            ClientMethod='get_object',
-            Params={'Bucket': bucket_name, 'Key': mp4_file_key},
-            ExpiresIn=3600  # URL 유효 기간: 1시간 (3600초)
-        )
-
-        
-
+        if 'Contents' not in response or not response['Contents']:
+            download_url = "None"
+        else:
+            mp4_files = [content['Key'] for content in response['Contents'] if content['Key'].endswith('.mp4')]      
+            mp4_file_key = mp4_files[0]
+            download_url = s3_client.generate_presigned_url(
+                ClientMethod='get_object',
+                Params={'Bucket': bucket_name, 'Key': mp4_file_key},
+                ExpiresIn=3600  # URL 유효 기간: 1시간 (3600초)
+            )
         return {
             "download_url": download_url,
             "labels": {
