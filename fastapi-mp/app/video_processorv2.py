@@ -3,23 +3,23 @@ import subprocess
 import os
 import json
 import requests
-from app.config import s3_client, bucket_name
-from app.database import update_video_document
-from app.models import User
+from config import s3_client, bucket_name
+from database import update_video_document
+from models import User
 from ultralytics import YOLO
 import logging
+from dotenv import load_dotenv
 import os
 
-# 시크릿 제이슨 파일에서 환경 변수를 로드
-with open('../config/secrets.json') as f:
-    secrets = json.load(f)
+# .env 파일에서 환경 변수를 로드
+load_dotenv()
 
-FAST_API_USER_IP= secrets['FAST_API_USER_IP']
+MYSQL_IP=os.getenv('MYSQL_IP')
 
 
 # YOLO 모델 로드
-model_M = YOLO("app/addf2.pt")
-model_P = YOLO("app/card2.pt")
+model_M = YOLO("addf2.pt")
+model_P = YOLO("bestmP.pt")
 #model_P = YOLO("card2.pt")
 
 # 클래스 이름 정의
@@ -31,9 +31,6 @@ def init_logger(worknum):
     logger.setLevel(logging.INFO)
     
     # 파일 핸들러 설정
-    if not os.path.exists("logs"):
-        os.makedirs("logs")
-
     log_file = os.path.join("logs", f"{worknum}.log")
     fh = logging.FileHandler(log_file, encoding='utf-8')
     fh.setLevel(logging.INFO)
@@ -51,10 +48,6 @@ def init_logger(worknum):
     return logger
 
 def encode_video(video_path):
-
-    if not os.path.exists("processed_videos"):
-        os.makedirs("processed_videos")
-
     new_video_path = os.path.join("processed_videos", f'encoded_{os.path.basename(video_path)}')
     command = [
         "ffmpeg",
@@ -125,22 +118,19 @@ def process_video(worknum, video_path, filename, power, mosaic_strength,labels):
 
 
     logger.info(f"작업 라벨 {labels}에 대한 비디오 처리 시작")
-    
+
     frame_rate = 30
 
-    logger = init_logger(worknum)
 
     print(f"작업 번호 {worknum}에 대한 비디오 처리 시작")
     logger.info(f"작업 번호 {worknum}에 대한 비디오 처리 시작")
 
-    '''
-    responsestart = requests.get(f'{FAST_API_USER_IP}/updateprocess?worknum={worknum}')
-    print(f"responsestart.text: {responsestart.text}")
-    '''
+    #responsestart = requests.get(f'http://{MYSQL_IP}:3100/updateprocess?worknum={worknum}')
+    #print(f"responsestart.text: {responsestart.text}")
 
-    a = '1'
+    teest='1'
     #if responsestart.text == '1':
-    if a == '1':
+    if teest == '1':
         if worknum.startswith('M'):
             model = model_M
             class_names = class_names_M
@@ -154,15 +144,13 @@ def process_video(worknum, video_path, filename, power, mosaic_strength,labels):
             return
 
         cap = cv2.VideoCapture(video_path)
-
-        if not os.path.exists("processed_videos"):
-            os.makedirs("processed_videos")
-        
         output_path = os.path.join("processed_videos", f"processed_{os.path.basename(video_path)}")
         fourcc = cv2.VideoWriter_fourcc(*"mp4v")
         out = cv2.VideoWriter(output_path, fourcc, frame_rate, (int(cap.get(3)), int(cap.get(4))))
 
         detection_results = []
+
+        logger.info(f"디테팅 시작")
 
         while cap.isOpened():
             ret, frame = cap.read()
@@ -173,6 +161,7 @@ def process_video(worknum, video_path, filename, power, mosaic_strength,labels):
             timestamp = cap.get(cv2.CAP_PROP_POS_MSEC) / 1000
 
             results = model(frame, verbose=False)  # 로그 출력 억제
+
 
             frame_results = []
             for result in results[0].boxes:
@@ -188,7 +177,6 @@ def process_video(worknum, video_path, filename, power, mosaic_strength,labels):
                         "coordinates": [x1, y1, x2, y2]
                     })
             
-            
             if frame_results:
                 detection_results.append({
                     "timestamp": timestamp,
@@ -201,7 +189,6 @@ def process_video(worknum, video_path, filename, power, mosaic_strength,labels):
         cap.release()
         out.release()
 
-
         json_path = os.path.join("processed_videos", f"detection_results_{worknum}.json")
         with open(json_path, 'w') as json_file:
             json.dump(detection_results, json_file, indent=4)
@@ -209,10 +196,6 @@ def process_video(worknum, video_path, filename, power, mosaic_strength,labels):
         logger.info("start encoding")
         encoded_video_path = encode_video(output_path)
         
-        
-        if not os.path.exists("complete"):
-            os.makedirs("complete")
-
         if filename.endswith('.mp4'):
             final_output_path = os.path.join("complete", filename)
             logger.info(final_output_path)
@@ -288,12 +271,8 @@ def process_video(worknum, video_path, filename, power, mosaic_strength,labels):
 
         if os.path.exists(final_output_path):
             os.remove(final_output_path)
-
-        if os.path.exists(video_path):
-            os.remove(video_path)
-        
-        '''
-        responsfinish = requests.put(f'{FAST_API_USER_IP}/finishprocess?worknum={worknum}')
+        ''' 
+        responsfinish = requests.put(f'http://{MYSQL_IP}:3100/finishprocess?worknum={worknum}')
         responsfinish = responsfinish.json()
 
         if responsfinish == 0:
@@ -304,7 +283,7 @@ def process_video(worknum, video_path, filename, power, mosaic_strength,labels):
             name = responsfinish['name']
             data = User(email=email, name=name)
 
-            url = f"{FAST_API_USER_IP}/sendemail"
+            url = f"http://{MYSQL_IP}:3100/sendemail"
             headers = {
                 "accept": "application/json",
                 "Content-Type": "application/json"
@@ -314,7 +293,9 @@ def process_video(worknum, video_path, filename, power, mosaic_strength,labels):
             logger.info('작업 완료 이메일 전송')
             print('작업 완료 이메일 전송')
             logger.info(responsemail.json())
-    '''
+
+        '''
+        logger.info('끝!')
     else:
         logger.info('삭제된 작업')
         print(f'{worknum} 삭제된 작업')

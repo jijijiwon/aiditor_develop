@@ -110,37 +110,21 @@ def apply_mosaic(image, x1, y1, x2, y2, strength, logger):
 
     return image
 
-def process_video(worknum, video_path, filename, power, mosaic_strength,labels):
-
-    labels = labels[0].replace('credit_card', 'CreditCards')
-    labels = labels.replace('gun', 'handgun')
-    labels = labels.replace('middle_finger', 'fuckyou')
-    labels = labels.replace('receipt', 'Receipt')
-    labels = labels.replace('license_plate', 'car_LP')
-
-    labels = labels.split(',')
+def process_video(worknum, video_path, filename, power, mosaic_strength):
 
 
-    logger = init_logger(worknum)
-
-
-    logger.info(f"작업 라벨 {labels}에 대한 비디오 처리 시작")
     
     frame_rate = 30
 
     logger = init_logger(worknum)
-
     print(f"작업 번호 {worknum}에 대한 비디오 처리 시작")
     logger.info(f"작업 번호 {worknum}에 대한 비디오 처리 시작")
 
-    '''
     responsestart = requests.get(f'{FAST_API_USER_IP}/updateprocess?worknum={worknum}')
     print(f"responsestart.text: {responsestart.text}")
-    '''
 
-    a = '1'
-    #if responsestart.text == '1':
-    if a == '1':
+
+    if responsestart.text == '1':
         if worknum.startswith('M'):
             model = model_M
             class_names = class_names_M
@@ -176,9 +160,7 @@ def process_video(worknum, video_path, filename, power, mosaic_strength,labels):
 
             frame_results = []
             for result in results[0].boxes:
-                logger.info(class_names[int(result.cls)])
-                logger.info(result.conf)
-                if (result.conf >= float(power))and(class_names[int(result.cls)] in labels):
+                if result.conf >= float(power):
                     x1, y1, x2, y2 = map(int, result.xyxy[0])
                     logger.info(f"탐지됨: {class_names[int(result.cls)]}, 신뢰도: {result.conf}, 좌표: ({x1}, {y1}), ({x2}, {y2})")
                     frame = apply_mosaic(frame, x1, y1, x2, y2, mosaic_strength, logger)
@@ -187,7 +169,6 @@ def process_video(worknum, video_path, filename, power, mosaic_strength,labels):
                         "confidence": float(result.conf),
                         "coordinates": [x1, y1, x2, y2]
                     })
-            
             
             if frame_results:
                 detection_results.append({
@@ -257,7 +238,7 @@ def process_video(worknum, video_path, filename, power, mosaic_strength,labels):
 
         knifecount = object_durations.get('knife', 0)
         guncount = object_durations.get('handgun', 0)
-        cigarettecount = object_durations.get('cigarette', 0)
+        cigarretecount = object_durations.get('cigarette', 0)
         middle_fingercount = object_durations.get('fuckyou', 0)
         credit_cardcount = object_durations.get('CreditCards', 0)
         receiptcount = object_durations.get('Receipt', 0)
@@ -268,7 +249,7 @@ def process_video(worknum, video_path, filename, power, mosaic_strength,labels):
             "s3_url": s3_url,
             "knife": round(knifecount, 2),
             "gun": round(guncount, 2),
-            "cigarette": round(cigarettecount, 2),
+            "cigarrete": round(cigarretecount, 2),
             "middle_finger": round(middle_fingercount, 2),
             "credit_card": round(credit_cardcount, 2),
             "receipt": round(receiptcount, 2),
@@ -291,8 +272,7 @@ def process_video(worknum, video_path, filename, power, mosaic_strength,labels):
 
         if os.path.exists(video_path):
             os.remove(video_path)
-        
-        '''
+            
         responsfinish = requests.put(f'{FAST_API_USER_IP}/finishprocess?worknum={worknum}')
         responsfinish = responsfinish.json()
 
@@ -314,7 +294,6 @@ def process_video(worknum, video_path, filename, power, mosaic_strength,labels):
             logger.info('작업 완료 이메일 전송')
             print('작업 완료 이메일 전송')
             logger.info(responsemail.json())
-    '''
     else:
         logger.info('삭제된 작업')
         print(f'{worknum} 삭제된 작업')

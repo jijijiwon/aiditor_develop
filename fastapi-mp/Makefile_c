@@ -1,0 +1,30 @@
+## mix
+start:
+	uvicorn app.main:app --reload --host 0.0.0.0 --port 3500
+
+all: build up
+
+allstop: stop rm rmi
+
+build:
+	docker compose build
+up:
+	docker compose up
+down:
+	docker compose down
+frontlog:
+	docker compose logs -f frontend
+backlog:
+	docker compose logs -f backend
+ps:
+	docker ps -a
+img:
+	docker images
+rm:
+	docker rm -f $$(docker ps -aq)
+rmi:
+	docker rmi -f $$(docker images -q)
+prune:
+	docker system prune -a -f --volumes
+cache:
+	docker builder prune
