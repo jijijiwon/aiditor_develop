@@ -1,28 +1,21 @@
 from fastapi import FastAPI, File, UploadFile, Form, HTTPException
-from fastapi.responses import JSONResponse
 from typing import List
+from fastapi.responses import JSONResponse
 import os
 import asyncio
 import logging
 from concurrent.futures import ThreadPoolExecutor
-from app.config import s3_client, bucket_name  # S3 클라이언트와 버킷 이름 설정
-from app.database import insert_video_document, find_video_document, update_video_document, find_pending_documents # 데이터베이스 관련 함수
-from app.video_processor import process_video  # 비디오 처리 함수
+from config import s3_client, bucket_name  # S3 클라이언트와 버킷 이름 설정
+from database import insert_video_document, find_video_document, update_video_document, find_pending_documents # 데이터베이스 관련 함수
+from video_processor import process_video  # 비디오 처리 함수
 import shutil
 import time
-import os
-import json
+from dotenv import load_dotenv
 
+# .env 파일에서 환경 변수를 로드
+load_dotenv()
 
 app = FastAPI()
-
-
-
-# 시크릿 제이슨 파일에서 환경 변수를 로드
-with open('../config/secrets.json') as f:
-    secrets = json.load(f)
-
-FAST_API_MP_PORT= secrets['FAST_API_MP_PORT']
 
 
 # 작업 큐 생성
@@ -41,9 +34,10 @@ os.makedirs(DOWNLOAD_PATH, exist_ok=True)
 
 @app.get("/")
 async def root():
-    return {"message": "FastAPI-MP"}
+    return {"message": "Hello World"}
 
-@app.post("/mp-editvideo")
+
+@app.post("/upload/")
 async def upload_file(
     videofile: UploadFile = File(...),  # 비디오 파일 업로드
     filename: str = Form(...),  # 파일 이름
@@ -81,6 +75,7 @@ async def upload_file(
             "mosaic_strength": mosaic_strength,
             "labels": labels  # 라벨 리스트 추가
         }
+
         insert_video_document(document)  # 문서 삽입
         logger.info("Document inserted into MongoDB")  # MongoDB 삽입 로그
 
@@ -94,7 +89,7 @@ async def upload_file(
         logger.error(f"Error in upload_file: {e}")  # 오류 로그
         raise HTTPException(status_code=500, detail="Upload failed")
 
-@app.get("/mp-downloadvideo")
+@app.get("/download/")
 async def get_download_link(worknum: str):
     try:
         # 작업 번호로 문서 조회
@@ -165,6 +160,7 @@ async def video_processing_worker():
                 # ThreadPoolExecutor를 사용하여 비디오 처리 작업을 비동기적으로 실행
                 loop = asyncio.get_event_loop()
                 await loop.run_in_executor(executor, process_video, worknum, video_file_path, filename, power, mosaic_strength,labels)
+                
                 endtime = time.time()
 
                 logger.info(f"Processing time for {worknum}: {endtime - starttime:.2f} seconds")  # 처리 시간 로그
@@ -179,7 +175,7 @@ async def video_processing_worker():
             work_queue.task_done()
             logger.info(f"Worker finished processing worknum: {worknum}")  # 작업 완료 로그
 
-@app.get("/mp-findlist")
+@app.get("/pending_jobs/")
 async def get_pending_jobs():
     try:
         pending_jobs = find_pending_documents()
@@ -197,4 +193,4 @@ async def startup_event():
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=FAST_API_MP_PORT, reload=True)
+    uvicorn.run(app, host="0.0.0.0", port=3500, reload=True)
