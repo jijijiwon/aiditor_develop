@@ -13,13 +13,13 @@ from pydantic import BaseModel, EmailStr
 import requests
 from pymongo import MongoClient
 import json
+import logging
 
 # secret.json 파일에서 환경 변수를 로드
 with open('../config/secrets.json') as f:
     secrets = json.load(f)
 
 FAST_API_USER= secrets["FAST_API_USER_IP"]
-
 
 # 사용자 정보를 저장하기 위한 Pydantic 모델
 class User(BaseModel):
@@ -30,6 +30,7 @@ class User(BaseModel):
 MONGODB_ID_F = secrets["MONGODB_ID_F"]
 MONGODB_PASSWORD_F = secrets["MONGODB_PASSWORD_F"]
 MONGODB_PORT_F = secrets["MONGODB_PORT_F"]
+#MONGODB_TEST_F = secrets["MONGODB_TEST_F"]
 
 # AWS S3 설정
 S3_ACCESS_KEY_ID_F = secrets["S3_ACCESS_KEY_ID_F"]
@@ -48,6 +49,7 @@ bucket_name = S3_BUCKET_NAME_F
 
 # MongoDB 설정
 mongo_client = MongoClient(f"mongodb://{MONGODB_ID_F}:{MONGODB_PASSWORD_F}@mongo_f:{MONGODB_PORT_F}")
+#mongo_client = MongoClient(f"mongodb://{MONGODB_ID_F}:{MONGODB_PASSWORD_F}@{MONGODB_TEST_F}:{MONGODB_PORT_F}")
 db = mongo_client["videos"]
 collection = db["video"]
 
@@ -58,6 +60,11 @@ facerec = dlib.face_recognition_model_v1("dlib_face_recognition_resnet_model_v1.
 
 # 허용되는 파일 확장자 설정
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'mp4'}
+
+# 로거 설정
+log_filename = 'process_video.log'
+logging.basicConfig(level=logging.INFO, filename=log_filename, filemode='a', format='%(asctime)s - %(levelname)s - %(message)s')
+logger = logging.getLogger()
 
 # 파일을 S3에 업로드
 def upload_to_s3(file_path, worknum):
@@ -92,10 +99,6 @@ def train(train_dir, model_save_path=None, n_neighbors=None, knn_algo='ball_tree
         print(f"Chose n_neighbors automatically: {n_neighbors}")
 
     knn_clf = neighbors.KNeighborsClassifier(n_neighbors=n_neighbors, algorithm=knn_algo, weights='distance')
-    print("-----------------------------")
-    print(X)
-    print(y)
-    print("-----------------------------")
     knn_clf.fit(X, y)
 
     if model_save_path:
@@ -184,7 +187,7 @@ def process_video(input_video_path, output_video_name, knn_clf, worknum, window_
             frame_with_predictions = show_prediction_labels_on_image(frame, corrected_predictions)
             frame_filename = f"output_frames/frame_{saved_frame_count:04d}.jpg"
             cv2.imwrite(frame_filename, frame_with_predictions)
-            print(f"Saved frame {frame_count} as JPG")
+            logger.info(f"Saved frame {frame_count} as JPG")
 
             saved_frame_count += 1
 
@@ -215,7 +218,7 @@ def process_video(input_video_path, output_video_name, knn_clf, worknum, window_
     collection.update_one({"worknum": worknum}, {"$set": {"s3_url": s3_url}})
 
     print(s3_url)
-    
+
     responsfinish = requests.put(f'{FAST_API_USER}/finishprocess?worknum={worknum}')
     responsfinish = responsfinish.json()
     print(responsfinish)
@@ -249,9 +252,17 @@ if __name__ == "__main__":
     output_video_name = output_video_name.replace('.mp4', '')
     
     print("Training KNN classifier...")
+    logger.info("Training KNN classifier...")
+
     classifier = train("knn_examples/train", model_save_path="trained_knn_model.clf", n_neighbors=3)
+
     print("Training complete!")
+    logger.info("Training complete!")
 
     print(f"Processing video {input_video_path}")
+    logger.info(f"Processing video {input_video_path}")
+
     process_video(input_video_path, output_video_name, classifier, worknum)
+
     print("Processing complete!")
+    logger.info("Processing complete!")
