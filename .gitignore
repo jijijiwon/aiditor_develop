@@ -3,6 +3,7 @@ docker-compose.yml
 Makefile
 .env
 
+
 // frontend
 frontend/node_modules
 frontend/package-lock.json
@@ -23,8 +24,16 @@ fastapi-mp/Dockerfile.mongo
 fastapi-mp/mongod.conf
 fastapi-mp/__pycache__
 fastapi-mp/app/*.pt
+fastapi-mp/.venv
+fastapi-mp/downloads/*
+fastapi-mp/logs/*
+fastapi-mp/processed_videos/*
+fastapi-mp/app/__pycache__
+fastapi-mp/mongo_docker.txt
+
 
 fastapi-f/Dockerfile
 fastapi-f/__pycache__
 fastapi-f/*.dat
 fastapi-f/*.clf
+
