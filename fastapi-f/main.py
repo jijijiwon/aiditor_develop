@@ -12,7 +12,7 @@ from pymongo import MongoClient
 import json
 
 # secret.json 파일에서 환경 변수를 로드
-with open('secrets.json') as f:
+with open('../config/secrets.json') as f:
     secrets = json.load(f)
 
 # MongoDB 설정
