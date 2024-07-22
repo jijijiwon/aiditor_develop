@@ -17,6 +17,7 @@ S3_SECRET_ACCESS_KEY_MP= secrets['S3_SECRET_ACCESS_KEY_MP']
 S3_REGION_MP= secrets['S3_REGION_MP']
 S3_BUCKET_NAME_MP= secrets['S3_BUCKET_NAME_MP']
 MONGODB_PORT_MP= secrets['MONGODB_PORT_MP']
+FAST_API_MP_IP_TEST= secrets['FAST_API_MP_IP_TEST']
 
 # S3 설정
 
@@ -30,6 +31,7 @@ bucket_name = S3_BUCKET_NAME_MP
 
 # MongoDB 설정
 #mongo_client = MongoClient(f'mongodb://{MONGODB_ID_MP}:{MONGODB_PASSWORD_MP}@mongo_mp:{MONGODB_PORT_MP}')
-mongo_client = MongoClient(f'mongodb://admin:1234@43.202.100.249:27020/')
+mongo_client = MongoClient(f'mongodb://{MONGODB_ID_MP}:{MONGODB_PASSWORD_MP}@{FAST_API_MP_IP_TEST}:{MONGODB_PORT_MP}')
+#비번도 바꿨음
 db = mongo_client['videos']
 collection = db['video']
