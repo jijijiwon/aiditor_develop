@@ -59,7 +59,11 @@ const Board = (props) => {
     const fetchData = async () => {
       const result = await getBoardList();
       // console.log("Board List: ", result);
-      setBoardlist(result.reverse());
+      if (result.length === 0) {
+        console.log("no data");
+      } else {
+        setBoardlist(result.reverse());
+      }
       setPageCount(Math.ceil(result.length / itemsPerPage));
     };
     fetchData();
