@@ -6,7 +6,7 @@ import asyncio
 import logging
 from concurrent.futures import ThreadPoolExecutor
 from app.config import s3_client, bucket_name  # S3 클라이언트와 버킷 이름 설정
-from app.database import insert_video_document, find_video_document, update_video_document, find_pending_documents # 데이터베이스 관련 함수
+from app.database import insert_video_document, find_video_document, update_video_document, find_pending_documents, find_error_documents # 데이터베이스 관련 함수
 from app.video_processor import process_video  # 비디오 처리 함수
 import shutil
 import time
@@ -79,6 +79,7 @@ async def upload_file(
             "s3_url": "",
             "power": power,
             "mosaic_strength": mosaic_strength,
+            "error_message" : "",
             "labels": labels  # 라벨 리스트 추가
         }
         insert_video_document(document)  # 문서 삽입
@@ -188,6 +189,13 @@ async def get_pending_jobs():
         logger.error(f"Error in get_pending_jobs: {e}")
         raise HTTPException(status_code=500, detail="Failed to retrieve pending jobs")
 
+@app.get("/mp-errorwork")
+async def get_download_link(worknum: str):
+    document=find_error_documents(worknum)
+
+    return {
+        "worknum": worknum,
+        "content": document}
     
 
 @app.on_event("startup")
