@@ -7,7 +7,6 @@ function Header(props) {
 
   const handleUserinfoClick = () => {
     if (!props.isLogin) {
-      alert("로그인이 필요한 서비스입니다🐱");
       navigate("/login");
     } else {
       navigate("/mypage");
