@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Routes, Route } from "react-router-dom";
 import "./App.css";
 import Sidebar from "./components/Sidebar";
 import Header from "./components/Header";
@@ -17,11 +18,9 @@ import BoardSelected from "./routes/BoardSelected";
 import Announce from "./routes/Announce";
 import AnnounceSelected from "./routes/AnnounceSelected";
 import Developing from "./routes/Developing";
-import { Routes, Route } from "react-router-dom";
 import Editing from "./routes/Editing";
 
 const baseurl = process.env.REACT_APP_BACK_URL;
-
 function App() {
   const sessionEmail = window.sessionStorage.getItem("email");
   const sessionName = window.sessionStorage.getItem("name");
@@ -162,13 +161,11 @@ function App() {
                 opt={opt}
                 picture={picture}
                 isLogin={isLogin}
-                isadmin={isAdmin}
                 setIsLogin={setIsLogin}
                 setEmail={setEmail}
                 setName={setName}
                 setOpt={setOpt}
                 setPicture={setPicture}
-                setIsAdmin={setIsAdmin}
               />
             }
           />

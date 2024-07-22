@@ -82,12 +82,13 @@
   -ms-transition: all 0.3s ease;
   -o-transition: all 0.3s ease;
   transition: all 0.3s ease-out;
+  transform: scale(1.05);
 }
 
 #custom-naver-button {
   display: flex;
-  background: rgb(255, 255, 255) no-repeat scroll 5px 0px / 50px 50px
-    padding-box border-box;
+  background: #03c75a no-repeat scroll 5px 0px / 50px 50px padding-box
+    border-box;
   border: 1px solid #03c75a;
   align-items: center;
   padding-left: 1px;
@@ -100,7 +101,7 @@
   span {
     margin-left: auto;
     margin-right: auto;
-    color: #03c75a;
+    color: #fff;
     transition: color 0.3s ease;
   }
 }
@@ -117,4 +118,41 @@
   -ms-transition: all 0.3s ease;
   -o-transition: all 0.3s ease;
   transition: all 0.3s ease-out;
+  transform: scale(1.05);
+}
+
+#custom-kakao-button {
+  display: flex;
+  background: #fee500 no-repeat scroll 5px 0px / 50px 50px padding-box
+    border-box;
+  border: 1px solid #fee500;
+  align-items: center;
+  padding-left: 1px;
+  img {
+    border: none;
+    border-radius: 3px;
+    width: 46px;
+    height: 46px;
+  }
+  span {
+    margin-left: auto;
+    margin-right: auto;
+    color: #000;
+    transition: color 0.3s ease;
+  }
+}
+
+#custom-kakao-button:hover {
+  border-color: #fee500;
+  span {
+    color: #000;
+  }
+  background: #fee500 no-repeat scroll 5px 0px / 50px 50px padding-box
+    border-box;
+  -webkit-transition: all 0.8s ease-out;
+  -moz-transition: all 0.3s ease;
+  -ms-transition: all 0.3s ease;
+  -o-transition: all 0.3s ease;
+  transition: all 0.3s ease-out;
+  transform: scale(1.05);
 }
