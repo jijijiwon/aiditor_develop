@@ -1,6 +1,5 @@
 from fastapi import FastAPI, File, UploadFile, Form, HTTPException
 from fastapi.responses import JSONResponse
-from typing import List
 import os
 import asyncio
 import logging
@@ -50,7 +49,6 @@ async def upload_file(
     worknum: str = Form(...),  # 작업 번호
     power: str = Form(...),  # 파워
     mosaic_strength: str = Form(...),  # 모자이크 강도
-    labels: List[str] = Form(...)  # 라벨 리스트 추가
 ):
     logger.info("Upload request received")  # 업로드 요청 수신 로그
     try:
@@ -70,7 +68,7 @@ async def upload_file(
             "filename": filename,
             "knife": 0,
             "gun": 0,
-            "cigarette": 0,
+            "cigarrete": 0,
             "middle_finger": 0,
             "credit_card": 0,
             "receipt": 0,
@@ -79,8 +77,8 @@ async def upload_file(
             "s3_url": "",
             "power": power,
             "mosaic_strength": mosaic_strength,
-            "labels": labels  # 라벨 리스트 추가
         }
+        
         insert_video_document(document)  # 문서 삽입
         logger.info("Document inserted into MongoDB")  # MongoDB 삽입 로그
 
@@ -127,7 +125,7 @@ async def get_download_link(worknum: str):
             "labels": {
                 "knife": str(document.get("knife", 0)),
                 "gun": str(document.get("gun", 0)),
-                "cigarette": str(document.get("cigarette", 0)),
+                "cigarrete": str(document.get("cigarrete", 0)),
                 "middle_finger": str(document.get("middle_finger", 0)),
                 "credit_card": str(document.get("credit_card", 0)),
                 "receipt": str(document.get("receipt", 0)),
@@ -153,7 +151,6 @@ async def video_processing_worker():
                 filename = document['filename']
                 power = document['power']
                 mosaic_strength = document.get('mosaic_strength', 15)
-                labels = document['labels']
                 logger.info(f"Processing worknum: {worknum}, video path: {video_file_path}")  # 비디오 처리 시작 로그
 
                 # 작업 상태 업데이트: 시작
@@ -164,7 +161,8 @@ async def video_processing_worker():
                 
                 # ThreadPoolExecutor를 사용하여 비디오 처리 작업을 비동기적으로 실행
                 loop = asyncio.get_event_loop()
-                await loop.run_in_executor(executor, process_video, worknum, video_file_path, filename, power, mosaic_strength,labels)
+                await loop.run_in_executor(executor, process_video, worknum, video_file_path, filename, power, mosaic_strength)
+                
                 endtime = time.time()
 
                 logger.info(f"Processing time for {worknum}: {endtime - starttime:.2f} seconds")  # 처리 시간 로그

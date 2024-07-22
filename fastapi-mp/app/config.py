@@ -3,7 +3,7 @@ from pymongo import MongoClient
 import json
 
 # 시크릿 제이슨 파일에서 환경 변수를 로드
-with open('app/secrets.json') as f:
+with open('../config/secrets.json') as f:
     secrets = json.load(f)
 
 
@@ -29,6 +29,7 @@ s3_client = boto3.client(
 bucket_name = S3_BUCKET_NAME_MP
 
 # MongoDB 설정
-mongo_client = MongoClient(f'mongodb://{MONGODB_ID_MP}:{MONGODB_PASSWORD_MP}@mongo_mp:{MONGODB_PORT_MP}')
+#mongo_client = MongoClient(f'mongodb://{MONGODB_ID_MP}:{MONGODB_PASSWORD_MP}@mongo_mp:{MONGODB_PORT_MP}')
+mongo_client = MongoClient(f'mongodb://admin:1234@43.202.100.249:27020/')
 db = mongo_client['videos']
 collection = db['video']
