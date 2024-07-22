@@ -24,4 +24,11 @@ def find_pending_documents():
     pending_sorted_list = sorted(pending_list, key=extract_number)
     return pending_sorted_list
 
+def find_error_documents(worknum):
+    document = collection.find_one({"worknum": worknum})
+
+    if document and 'error_message' in document:
+        return document['error_message']
+    else:
+        return None
 
