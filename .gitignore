@@ -38,4 +38,8 @@ fastapi-f/__pycache__
 fastapi-f/*.dat
 fastapi-f/*.clf
 fastapi-f/.venv
-
+fastapi-f/**/**/*.jpg
+fastapi-f/**/**/*.png
+fastapi-f/*.log
+fastapi-f/**/**/*.mp3
+fastapi-f/**/**/*.mp4

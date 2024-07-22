@@ -1,5 +1,3 @@
-##0716 main.py
-
 from fastapi import FastAPI, UploadFile, HTTPException, File, Form
 from fastapi.responses import JSONResponse
 from typing import List
@@ -10,6 +8,8 @@ import boto3
 from pathlib import Path
 from pymongo import MongoClient
 import json
+import queue
+import threading
 
 # secret.json 파일에서 환경 변수를 로드
 with open('../config/secrets.json') as f:
@@ -19,6 +19,7 @@ with open('../config/secrets.json') as f:
 MONGODB_ID_F = secrets["MONGODB_ID_F"]
 MONGODB_PASSWORD_F = secrets["MONGODB_PASSWORD_F"]
 MONGODB_PORT_F = secrets["MONGODB_PORT_F"]
+#MONGODB_TEST_F = secrets["MONGODB_TEST_F"]
 
 # AWS S3 설정
 S3_ACCESS_KEY_ID_F = secrets["S3_ACCESS_KEY_ID_F"]
@@ -39,6 +40,7 @@ bucket_name = S3_BUCKET_NAME_F
 
 # MongoDB 설정
 mongo_client = MongoClient(f"mongodb://{MONGODB_ID_F}:{MONGODB_PASSWORD_F}@mongo_f:{MONGODB_PORT_F}")
+#mongo_client = MongoClient(f"mongodb://{MONGODB_ID_F}:{MONGODB_PASSWORD_F}@{MONGODB_TEST_F}:{MONGODB_PORT_F}")
 db = mongo_client["videos"]
 collection = db["video"]
 
@@ -68,33 +70,19 @@ async def input_train_image(
     print({"info": f"Files saved in directory '{UPLOAD_DIR}'"})
     return JSONResponse(content={"info": "Files are being processed"})
 
-@app.post("/f-editvideo")
-async def input_video(
-    file: UploadFile = File(...), 
-    filename: str = Form(...),
-    worknum: str = Form(...)):
-    UPLOAD_DIR = Path("knn_examples/test")
-    UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
+# 비디오 처리 큐 생성
+video_queue = queue.Queue()
 
-    # 비디오 파일 저장
-    file_location = UPLOAD_DIR / file.filename
-    with file_location.open("wb") as buffer:
-        shutil.copyfileobj(file.file, buffer)
-    
-    # name 정의
-    subdir_name = [d.name for d in Path("knn_examples/train").iterdir() if d.is_dir() and d.name.startswith(worknum)]
-    name = subdir_name[0][6:] if subdir_name else ""
+def process_video_from_queue():
+    while True:
+        item = video_queue.get()
+        if item is None:
+            break
+        process_video(item)
+        video_queue.task_done()
 
-    # mongodb 저장
-    document = {
-        "worknum": worknum,
-        "filename": filename,
-        "video_file_path": str(file_location),
-        "s3_url": "",
-        "labels": name
-    }
-    collection.insert_one(document)
-
+def process_video(item):
+    file_location, filename, worknum = item
     # test_blur_app.py 실행
     try:
         process = subprocess.Popen(
@@ -117,10 +105,46 @@ async def input_video(
             print(f"Error occurred while running test_blur_app.py: {stderr.strip()}")
 
     except subprocess.CalledProcessError as e:
-        print(f"Error occurred while running test_blur_app.py: {e.stderr}")
+        print(f"Error occured whild running test_blur_app.py: {e.stderr}")
+        
+@app.post("/f-editvideo")
+async def input_video(
+    file: UploadFile = File(...), 
+    filename: str = Form(...),
+    worknum: str = Form(...)
+):
+    UPLOAD_DIR = Path("knn_examples/test")
+    UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
+
+    # 비디오 파일 저장
+    file_location = UPLOAD_DIR / file.filename
+    with file_location.open("wb") as buffer:
+        shutil.copyfileobj(file.file, buffer)
+    
+    # name 정의
+    subdir_name = [d.name for d in Path("knn_examples/train").iterdir() if d.is_dir() and d.name.startswith(worknum)]
+    name = subdir_name[0][6:] if subdir_name else ""
+
+    # mongodb 저장
+    document = {
+        "worknum": worknum,
+        "filename": filename,
+        "video_file_path": str(file_location),
+        "s3_url": "",
+        "labels": name
+    }
+    collection.insert_one(document)
+
+    # 큐에 비디오 처리 작업 추가
+    video_queue.put((file_location, filename, worknum))
 
     print({"info": f"file '{file.filename}' saved at '{file_location}'"})
     return JSONResponse(content={"info": "Video is being processed"})
+
+# 백그라운드에서 비디오 처리 쓰레드 시작
+thread = threading.Thread(target=process_video_from_queue)
+thread.daemon = True
+thread.start()
 
 @app.get("/f-downloadvideo")
 async def get_download_link(worknum: str):
