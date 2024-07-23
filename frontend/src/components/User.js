@@ -9,7 +9,7 @@ const User = ({ baseurl, email }) => {
   const [selectedWork, setSelectedWork] = useState(null);
   const [isOpenw, setIsOpenw] = useState(false); // wait
   const [isOpenp, setIsOpenp] = useState(false); // process
-  const [isOpend, setIsOpend] = useState(false); // done
+  const [isOpend, setIsOpend] = useState(false); // done & error
 
   const openModalw = () => {
     setIsOpenw(true);
@@ -108,15 +108,10 @@ const User = ({ baseurl, email }) => {
       const result = await getWorkList();
       console.log("Work List: ", result);
 
-      const sortedresult = result
-        .sort((a, b) => {
-          if (a.isprocess === "Y" && b.isprocess !== "Y") return 1;
-          if (a.isprocess !== "Y" && b.isprocess === "Y") return -1;
-          if (a.isprocess === "W" && b.isprocess !== "W") return 1;
-          if (a.isprocess !== "W" && b.isprocess === "W") return -1;
-          return 0;
-        })
-        .reverse();
+      const sortedresult = result.sort((a, b) => {
+        const order = { Y: 3, E: 2, W: 1 };
+        return order[b.isprocess] - order[a.isprocess];
+      });
 
       setWorklist(sortedresult);
       console.log("Sorted Work List: ", sortedresult);
@@ -178,12 +173,14 @@ const User = ({ baseurl, email }) => {
                 >
                   {work.videolength}
                 </p>
-                {work.isprocess === "Y" ? (
-                  <p className="processing">진행중</p>
-                ) : work.isprocess === "W" ? (
-                  <p className="waiting">대기중</p>
-                ) : (
+                {work.isprocess === "N" ? (
                   <p className="done">완료</p>
+                ) : work.isprocess === "Y" ? (
+                  <p className="processing">진행중</p>
+                ) : work.isprocess === "E" ? (
+                  <p className="error">중단</p>
+                ) : (
+                  <p className="waiting">대기중</p>
                 )}
                 <p>
                   <img
@@ -197,12 +194,14 @@ const User = ({ baseurl, email }) => {
                     src="/images/close.png"
                     onClick={() => {
                       setSelectedWork(work);
-                      if (work.isprocess === "W") {
-                        openModalw();
+                      if (work.isprocess === "N") {
+                        openModald();
                       } else if (work.isprocess === "Y") {
                         openModalp();
-                      } else {
+                      } else if (work.isprocess === "E") {
                         openModald();
+                      } else {
+                        openModalw();
                       }
                     }}
                   />
