@@ -1,3 +1,5 @@
+##0722 main.py-5
+
 from fastapi import FastAPI, UploadFile, HTTPException, File, Form
 from fastapi.responses import JSONResponse
 from typing import List
@@ -19,7 +21,7 @@ with open('../config/secrets.json') as f:
 MONGODB_ID_F = secrets["MONGODB_ID_F"]
 MONGODB_PASSWORD_F = secrets["MONGODB_PASSWORD_F"]
 MONGODB_PORT_F = secrets["MONGODB_PORT_F"]
-#MONGODB_TEST_F = secrets["MONGODB_TEST_F"]
+MONGODB_TEST_F = secrets["MONGODB_TEST_F"]
 
 # AWS S3 설정
 S3_ACCESS_KEY_ID_F = secrets["S3_ACCESS_KEY_ID_F"]
@@ -39,8 +41,8 @@ s3_client = boto3.client(
 bucket_name = S3_BUCKET_NAME_F
 
 # MongoDB 설정
-mongo_client = MongoClient(f"mongodb://{MONGODB_ID_F}:{MONGODB_PASSWORD_F}@mongo_f:{MONGODB_PORT_F}")
-#mongo_client = MongoClient(f"mongodb://{MONGODB_ID_F}:{MONGODB_PASSWORD_F}@{MONGODB_TEST_F}:{MONGODB_PORT_F}")
+#mongo_client = MongoClient(f"mongodb://{MONGODB_ID_F}:{MONGODB_PASSWORD_F}@mongo_f:{MONGODB_PORT_F}")
+mongo_client = MongoClient(f"mongodb://{MONGODB_ID_F}:{MONGODB_PASSWORD_F}@{MONGODB_TEST_F}:{MONGODB_PORT_F}")
 db = mongo_client["videos"]
 collection = db["video"]
 
@@ -85,6 +87,9 @@ def process_video(item):
     file_location, filename, worknum = item
     # test_blur_app.py 실행
     try:
+        # 작업 상태를 '처리 중'으로 업데이트
+        collection.update_one({"worknum": worknum}, {"$set": {"job_ok": 1}})
+        
         process = subprocess.Popen(
             ["python3", "test_blur_app.py", str(file_location), filename, worknum],
             stdout=subprocess.PIPE,
@@ -103,10 +108,16 @@ def process_video(item):
         stderr = process.stderr.read()
         if process.returncode != 0:
             print(f"Error occurred while running test_blur_app.py: {stderr.strip()}")
-
+            # 작업 상태를 '에러'로 업데이트
+            collection.update_one({"worknum": worknum}, {"$set": {"job_ok": -1}})
+        else:
+            # 작업 상태를 '완료'로 업데이트
+            collection.update_one({"worknum": worknum}, {"$set": {"job_ok": 2}})
     except subprocess.CalledProcessError as e:
         print(f"Error occured whild running test_blur_app.py: {e.stderr}")
-        
+        # 작업 상태를 '에러'로 업데이트
+        collection.update_one({"worknum": worknum}, {"$set": {"job_ok": -1}})
+
 @app.post("/f-editvideo")
 async def input_video(
     file: UploadFile = File(...), 
@@ -131,7 +142,8 @@ async def input_video(
         "filename": filename,
         "video_file_path": str(file_location),
         "s3_url": "",
-        "labels": name
+        "labels": name,
+        "job_ok": 0  # 초기 상태
     }
     collection.insert_one(document)
 
@@ -145,6 +157,7 @@ async def input_video(
 thread = threading.Thread(target=process_video_from_queue)
 thread.daemon = True
 thread.start()
+
 
 @app.get("/f-downloadvideo")
 async def get_download_link(worknum: str):
