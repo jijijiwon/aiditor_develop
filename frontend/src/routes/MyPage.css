@@ -157,6 +157,19 @@
   padding-top: 10px;
 }
 
+.list-index-content .error {
+  background-color: #ffffff;
+  border: 1px solid #b10d0d;
+  color: #b10d0d;
+  width: 120px;
+  border-radius: 30px;
+  font-size: 12px;
+  height: 26px;
+  margin: auto 1.5%;
+  font-weight: bold;
+  padding-top: 10px;
+}
+
 .user-table {
   font-size: 0.9em;
   width: calc(100% -30px);
