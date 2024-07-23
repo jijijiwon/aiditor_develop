@@ -371,7 +371,7 @@ def handle_error(worknum, video_path, output_path, json_path, encoded_video_path
             "Content-Type": "application/json",
         }
 
-        senderroremail = requests.post(errorurl, headers=headers, jsoINFOn=data.dict())
+        senderroremail = requests.post(errorurl, headers=headers, json=data.dict())
         logger.info('오류 발생 이메일 전송 완료')
         print('오류 발생 이메일 전송 완료')
         logger.info(senderroremail.json())
