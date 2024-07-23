@@ -30,7 +30,7 @@ function EditDone(props) {
     knife: "칼🔪",
     gun: "총🔫",
     middle_finger: "손가락욕🖕",
-    cigarrete: "담배🚬",
+    cigarette: "담배🚬",
     credit_card: "신용카드💳",
     receipt: "영수증🧾",
     license_plate: "자동차번호판🚙",

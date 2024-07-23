@@ -1,0 +1,47 @@
+/* CheckboxList.css */
+.checkbox-list {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  margin-bottom: 0;
+}
+
+.checkbox-item {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.checkbox-input {
+  display: none;
+}
+
+.checkbox-label {
+  padding: 5px 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-bottom: 0;
+}
+
+.checkbox-input:checked + .checkbox-label {
+  background-color: #100db1;
+  color: #fff;
+  margin-bottom: 0;
+}
+
+.checkbox-label.checked {
+  background-color: #100db1;
+  color: #fff;
+  margin-bottom: 0;
+}
+
+.labels-check {
+  width: 90%;
+}
+
+.selected-items p {
+  color: #6b6b6b;
+  margin-top: 5px;
+  font-weight: 100;
+}

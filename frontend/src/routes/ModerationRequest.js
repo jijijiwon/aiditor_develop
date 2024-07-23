@@ -3,6 +3,7 @@ import axios from "axios";
 import "./ModerationRequest.css";
 import { useNavigate } from "react-router-dom";
 import DropdownInput from "../components/DropdownInput";
+import CheckboxList from "../components/CheckboxList";
 
 const power_options = ["약하게", "중간", "강하게"];
 const power_opt = ["0.3", "0.5", "0.7"];
@@ -19,6 +20,9 @@ const ModerationRequest = (props) => {
   const [thumbnail, setThumbnail] = useState(null);
   const type = "M";
   const navigate = useNavigate();
+
+  const items = ["knife", "gun", "middle_finger", "cigarette"];
+  const [selectedLabels, setSelectedLabels] = useState(items);
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
@@ -107,9 +111,11 @@ const ModerationRequest = (props) => {
       const worknum = response.data;
       const powerOpt = power_opt[power_options.indexOf(power)];
       const mosaicOpt = mosaic_opt[mosaic_options.indexOf(mosaicStrength)];
+      const labels = selectedLabels;
 
       console.log(powerOpt);
       console.log(mosaicOpt);
+      console.log(labels);
 
       const newFormData = new FormData();
       newFormData.append("videofile", videofile);
@@ -117,6 +123,7 @@ const ModerationRequest = (props) => {
       newFormData.append("worknum", worknum);
       newFormData.append("power", powerOpt);
       newFormData.append("mosaic", mosaicOpt);
+      newFormData.append("labels", labels);
 
       const response2 = await axios.post(
         `${props.baseurl}/mp-video-edit`,
@@ -184,6 +191,15 @@ const ModerationRequest = (props) => {
                   onBlur={handleNameBlur}
                   required
                 />
+              </label>
+              <label>
+                편집할 컨텐츠:
+                <div className="labels-check">
+                  <CheckboxList
+                    items={items}
+                    onSelectionChange={setSelectedLabels}
+                  />
+                </div>
               </label>
               <label>
                 감지 민감도 :
