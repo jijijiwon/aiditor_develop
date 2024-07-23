@@ -1,3 +1,5 @@
+##0722 test_blur_app.py-5
+
 import cv2
 import face_recognition
 import math
@@ -30,7 +32,7 @@ class User(BaseModel):
 MONGODB_ID_F = secrets["MONGODB_ID_F"]
 MONGODB_PASSWORD_F = secrets["MONGODB_PASSWORD_F"]
 MONGODB_PORT_F = secrets["MONGODB_PORT_F"]
-#MONGODB_TEST_F = secrets["MONGODB_TEST_F"]
+MONGODB_TEST_F = secrets["MONGODB_TEST_F"]
 
 # AWS S3 설정
 S3_ACCESS_KEY_ID_F = secrets["S3_ACCESS_KEY_ID_F"]
@@ -48,8 +50,8 @@ s3_client = boto3.client(
 bucket_name = S3_BUCKET_NAME_F
 
 # MongoDB 설정
-mongo_client = MongoClient(f"mongodb://{MONGODB_ID_F}:{MONGODB_PASSWORD_F}@mongo_f:{MONGODB_PORT_F}")
-#mongo_client = MongoClient(f"mongodb://{MONGODB_ID_F}:{MONGODB_PASSWORD_F}@{MONGODB_TEST_F}:{MONGODB_PORT_F}")
+#mongo_client = MongoClient(f"mongodb://{MONGODB_ID_F}:{MONGODB_PASSWORD_F}@mongo_f:{MONGODB_PORT_F}")
+mongo_client = MongoClient(f"mongodb://{MONGODB_ID_F}:{MONGODB_PASSWORD_F}@{MONGODB_TEST_F}:{MONGODB_PORT_F}")
 db = mongo_client["videos"]
 collection = db["video"]
 
@@ -80,6 +82,9 @@ def train(train_dir, model_save_path=None, n_neighbors=None, knn_algo='ball_tree
     for class_dir in os.listdir(train_dir):
         print(f"Processing {class_dir} ...")
         if not os.path.isdir(os.path.join(train_dir, class_dir)):
+            continue
+
+        if not class_dir.startswith(worknum):
             continue
 
         for img_path in os.listdir(os.path.join(train_dir, class_dir)):
@@ -195,7 +200,6 @@ def process_video(input_video_path, output_video_name, knn_clf, worknum, window_
 
     cap.release()
 
-    # 영상 파일명 및 오디오 파일명 처리
     base_filename = os.path.splitext(output_video_name)[0]
     video_path = f"knn_examples/output/{base_filename}_video.mp4"
     audio_path = f"knn_examples/output/{base_filename}_audio.mp3"
@@ -219,6 +223,8 @@ def process_video(input_video_path, output_video_name, knn_clf, worknum, window_
 
     print(s3_url)
 
+    '''
+##작업 이메일 보내기
     responsfinish = requests.put(f'{FAST_API_USER}/finishprocess?worknum={worknum}')
     responsfinish = responsfinish.json()
     print(responsfinish)
@@ -240,7 +246,7 @@ def process_video(input_video_path, output_video_name, knn_clf, worknum, window_
 
         print('작업 완료 이메일 전송')
         print(responsemail.json())
-
+'''
 
 # 메인 함수 : 비디오 처리 파이프라인 실행
 if __name__ == "__main__":
@@ -265,4 +271,4 @@ if __name__ == "__main__":
     process_video(input_video_path, output_video_name, classifier, worknum)
 
     print("Processing complete!")
-    logger.info("Processing complete!")
+    logger.info("Processing complete!")                                                                                                                                                                                                                                                                                                                 
