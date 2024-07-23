@@ -104,7 +104,7 @@ async def get_download_link(worknum: str):
         response = s3_client.list_objects_v2(Bucket=bucket_name, Prefix=f"{worknum}/")
         
         if 'Contents' not in response or not response['Contents']:
-            download_url = "None"
+            download_url = 0
         else:
             mp4_files = [content['Key'] for content in response['Contents'] if content['Key'].endswith('.mp4')]      
             mp4_file_key = mp4_files[0]
