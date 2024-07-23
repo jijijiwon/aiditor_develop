@@ -98,11 +98,20 @@ function EditDone(props) {
           >
             Complete!
           </h2>
-          <p onClick={() => window.open(url)} style={{ fontStyle: "italic" }}>
-            {filename}
-          </p>
+          {url != 0 ? (
+            <p onClick={() => window.open(url)} style={{ fontStyle: "italic" }}>
+              {filename}
+            </p>
+          ) : (
+            <p>{filename}</p>
+          )}
         </div>
-        <button onClick={() => window.open(url)}>파일 다운로드</button>
+        {url != 0 ? (
+          <button onClick={() => window.open(url)}>파일 다운로드</button>
+        ) : (
+          <div className="expired">만료된 파일입니다.</div>
+        )}
+
         <div className="line">결과 요약</div>
         <div className="result-label">
           {isFirstLetterF ? (
