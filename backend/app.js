@@ -442,7 +442,7 @@ app.post("/mp-video-edit", upload.single("videofile"), async (req, res) => {
   console.log(req.body); // filename과 worknum을 포함한 데이터
   console.log(req.file); // 비디오 파일 데이터
 
-  const { filename, worknum, power, mosaic } = req.body;
+  const { filename, worknum, power, mosaic, labels } = req.body;
   const videofile = req.file;
 
   // FormData 객체 생성
@@ -456,6 +456,7 @@ app.post("/mp-video-edit", upload.single("videofile"), async (req, res) => {
   formData.append("worknum", worknum);
   formData.append("power", power);
   formData.append("mosaic_strength", mosaic);
+  formData.append("labels", labels);
 
   try {
     const response2 = await axios.post(
