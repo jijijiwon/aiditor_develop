@@ -3,6 +3,7 @@ import axios from "axios";
 import "./ModerationRequest.css";
 import { useNavigate } from "react-router-dom";
 import DropdownInput from "../components/DropdownInput";
+import CheckboxList from "../components/CheckboxList";
 
 const power_options = ["약하게", "중간", "강하게"];
 const power_opt = ["0.3", "0.5", "0.7"];
@@ -17,8 +18,12 @@ const PrivacyProtectionRequest = (props) => {
   const [power, setPower] = useState(power_options[1]);
   const [mosaicStrength, setMosaicStrength] = useState(mosaic_options[1]);
   const [thumbnail, setThumbnail] = useState(null);
+  const [isLoading, setIsLoading] = useState(false); // 로딩 상태
   const type = "P";
   const navigate = useNavigate();
+
+  const items = ["credit_card", "receipt", "license_plate"];
+  const [selectedLabels, setSelectedLabels] = useState(items);
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
@@ -72,6 +77,7 @@ const PrivacyProtectionRequest = (props) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setIsLoading(true); // 로딩 상태 시작
 
     const email = props.email;
     const name = props.name;
@@ -107,9 +113,11 @@ const PrivacyProtectionRequest = (props) => {
       const worknum = response.data;
       const powerOpt = power_opt[power_options.indexOf(power)];
       const mosaicOpt = mosaic_opt[mosaic_options.indexOf(mosaicStrength)];
+      const labels = selectedLabels;
 
       console.log(powerOpt);
       console.log(mosaicOpt);
+      console.log(labels);
 
       const newFormData = new FormData();
       newFormData.append("videofile", videofile);
@@ -117,6 +125,7 @@ const PrivacyProtectionRequest = (props) => {
       newFormData.append("worknum", worknum);
       newFormData.append("power", powerOpt);
       newFormData.append("mosaic", mosaicOpt);
+      newFormData.append("labels", labels);
 
       const response2 = await axios.post(
         `${props.baseurl}/mp-video-edit`,
@@ -131,6 +140,8 @@ const PrivacyProtectionRequest = (props) => {
     } catch (error) {
       console.error(error);
       // 일반 오류 처리 (예: 오류 메시지 표시)
+    } finally {
+      setIsLoading(false); // 로딩 상태 종료
     }
   };
 
@@ -186,6 +197,15 @@ const PrivacyProtectionRequest = (props) => {
                 />
               </label>
               <label>
+                편집할 컨텐츠:
+                <div className="labels-check">
+                  <CheckboxList
+                    items={items}
+                    onSelectionChange={setSelectedLabels}
+                  />
+                </div>
+              </label>
+              <label>
                 감지 민감도 :
                 <DropdownInput
                   options={power_options}
@@ -204,7 +224,15 @@ const PrivacyProtectionRequest = (props) => {
             </div>
           </div>
           <button type="submit" className="submit-btn">
-            AIditor, 편집을 시작해줘!
+            {isLoading ? (
+              <img
+                src="images/load.gif"
+                alt="loading"
+                style={{ height: "15px", margin: "0", padding: "0" }}
+              />
+            ) : (
+              "AIditor, 편집을 시작해줘!"
+            )}
           </button>
         </form>
       </div>
