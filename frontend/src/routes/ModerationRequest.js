@@ -18,7 +18,7 @@ const ModerationRequest = (props) => {
   const [power, setPower] = useState(power_options[1]);
   const [mosaicStrength, setMosaicStrength] = useState(mosaic_options[1]);
   const [thumbnail, setThumbnail] = useState(null);
-  const [isLoading, setIsLoading] = useState(false); // 로딩 상태 추가
+  const [isLoading, setIsLoading] = useState(false); // 로딩 상태
   const type = "M";
   const navigate = useNavigate();
 

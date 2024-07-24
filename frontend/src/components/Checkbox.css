@@ -7,11 +7,6 @@
   margin-bottom: 0;
 }
 
-.checkbox-item {
-  margin-top: 10px;
-  margin-bottom: 10px;
-}
-
 .checkbox-input {
   display: none;
 }
@@ -21,19 +16,16 @@
   border: 1px solid #ccc;
   border-radius: 4px;
   cursor: pointer;
-  margin-bottom: 0;
 }
 
 .checkbox-input:checked + .checkbox-label {
   background-color: #100db1;
   color: #fff;
-  margin-bottom: 0;
 }
 
 .checkbox-label.checked {
   background-color: #100db1;
   color: #fff;
-  margin-bottom: 0;
 }
 
 .labels-check {
