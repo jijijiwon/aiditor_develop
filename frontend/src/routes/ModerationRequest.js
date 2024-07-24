@@ -18,6 +18,7 @@ const ModerationRequest = (props) => {
   const [power, setPower] = useState(power_options[1]);
   const [mosaicStrength, setMosaicStrength] = useState(mosaic_options[1]);
   const [thumbnail, setThumbnail] = useState(null);
+  const [isLoading, setIsLoading] = useState(false); // 로딩 상태 추가
   const type = "M";
   const navigate = useNavigate();
 
@@ -76,6 +77,7 @@ const ModerationRequest = (props) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setIsLoading(true); // 로딩 상태 시작
 
     const email = props.email;
     const name = props.name;
@@ -138,6 +140,8 @@ const ModerationRequest = (props) => {
     } catch (error) {
       console.error(error);
       // 일반 오류 처리 (예: 오류 메시지 표시)
+    } finally {
+      setIsLoading(false); // 로딩 상태 종료
     }
   };
 
@@ -220,7 +224,15 @@ const ModerationRequest = (props) => {
             </div>
           </div>
           <button type="submit" className="submit-btn">
-            AIditor, 편집을 시작해줘!
+            {isLoading ? (
+              <img
+                src="images/load.gif"
+                alt="loading"
+                style={{ height: "15px", margin: "0", padding: "0" }}
+              />
+            ) : (
+              "AIditor, 편집을 시작해줘!"
+            )}
           </button>
         </form>
       </div>
