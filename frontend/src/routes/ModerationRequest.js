@@ -18,7 +18,7 @@ const ModerationRequest = (props) => {
   const [power, setPower] = useState(power_options[1]);
   const [mosaicStrength, setMosaicStrength] = useState(mosaic_options[1]);
   const [thumbnail, setThumbnail] = useState(null);
-  const [isLoading, setIsLoading] = useState(false); // 로딩 상태 추가
+  const [isLoading, setIsLoading] = useState(false); // 로딩 상태
   const type = "M";
   const navigate = useNavigate();
 
@@ -77,6 +77,10 @@ const ModerationRequest = (props) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    if (selectedLabels.length === 0) {
+      alert("적어도 하나의 편집 컨텐츠를 선택해주세요.");
+      return;
+    }
     setIsLoading(true); // 로딩 상태 시작
 
     const email = props.email;
@@ -95,7 +99,7 @@ const ModerationRequest = (props) => {
       videolength,
     };
 
-    console.log(formData);
+    // console.log(formData);
 
     try {
       // 첫 번째 POST 요청 (JSON 형식)
@@ -109,15 +113,11 @@ const ModerationRequest = (props) => {
         }
       );
 
-      console.log(response.data);
+      // console.log(response.data);
       const worknum = response.data;
       const powerOpt = power_opt[power_options.indexOf(power)];
       const mosaicOpt = mosaic_opt[mosaic_options.indexOf(mosaicStrength)];
       const labels = selectedLabels;
-
-      console.log(powerOpt);
-      console.log(mosaicOpt);
-      console.log(labels);
 
       const newFormData = new FormData();
       newFormData.append("videofile", videofile);
