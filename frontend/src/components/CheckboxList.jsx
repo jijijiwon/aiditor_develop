@@ -38,6 +38,7 @@ const CheckboxList = ({ items, onSelectionChange }) => {
               className={`checkbox-label ${
                 selectedItems.includes(item) ? "checked" : ""
               }`}
+              style={{ marginBottom: "5px", marginTop: "10px" }}
             >
               {item}
             </label>
