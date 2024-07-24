@@ -36,9 +36,61 @@ const PrivacyProtectionRequest = (props) => {
     setNewVideoName(event.target.value);
   };
 
+  const sanitizeFileName = (name) => {
+    // 허용되지 않는 문자들을 '_'로 대체
+    const sanitized = name
+      .replace(/[<>:"\/\\|?*\x00-\x1F]/g, "_")
+      .replace(/\s+/g, "_") // 모든 공백 문자를 '_'로 대체
+      .replace(/_+/g, "_"); // 연속된 '_'를 하나로 합침
+
+    // 예약된 이름인지 확인 (Windows 기준)
+    const reservedNames = [
+      "CON",
+      "PRN",
+      "AUX",
+      "NUL",
+      "COM1",
+      "COM2",
+      "COM3",
+      "COM4",
+      "COM5",
+      "COM6",
+      "COM7",
+      "COM8",
+      "COM9",
+      "LPT1",
+      "LPT2",
+      "LPT3",
+      "LPT4",
+      "LPT5",
+      "LPT6",
+      "LPT7",
+      "LPT8",
+      "LPT9",
+    ];
+
+    let finalName = sanitized;
+    if (reservedNames.includes(sanitized.toUpperCase())) {
+      finalName = `_${sanitized}`;
+    }
+
+    // 파일 이름 길이 제한 (255 characters)
+    if (finalName.length > 255) {
+      finalName = finalName.substring(0, 255);
+    }
+
+    // 확장자를 추가하는 부분은 기존 코드에서 처리
+    if (!finalName.endsWith(".mp4")) {
+      finalName += ".mp4";
+    }
+
+    return finalName;
+  };
+
   const handleNameBlur = () => {
-    if (newVideoName && !newVideoName.endsWith(".mp4")) {
-      setNewVideoName(newVideoName + ".mp4");
+    if (newVideoName) {
+      const formattedName = sanitizeFileName(newVideoName);
+      setNewVideoName(formattedName);
     }
   };
 
