@@ -1,5 +1,3 @@
-##0722 main.py-5
-
 from fastapi import FastAPI, UploadFile, HTTPException, File, Form
 from fastapi.responses import JSONResponse
 from typing import List
@@ -13,7 +11,7 @@ import json
 import queue
 import threading
 
-# secret.json 파일에서 환경 변수를 로드
+# 기본 설정 로드
 with open('../config/secrets.json') as f:
     secrets = json.load(f)
 
@@ -29,9 +27,10 @@ S3_SECRET_ACCESS_KEY_F = secrets["S3_SECRET_ACCESS_KEY_F"]
 S3_BUCKET_NAME_F = secrets["S3_BUCKET_NAME_F"]
 S3_REGION_F = secrets["S3_REGION_F"]
 
+# FastAPI 앱 설정
 app = FastAPI()
 
-#S3 설정
+# S3 클라이언트 설정
 s3_client = boto3.client(
     's3',
     aws_access_key_id=S3_ACCESS_KEY_ID_F,
@@ -40,41 +39,19 @@ s3_client = boto3.client(
 )
 bucket_name = S3_BUCKET_NAME_F
 
-# MongoDB 설정
-#mongo_client = MongoClient(f"mongodb://{MONGODB_ID_F}:{MONGODB_PASSWORD_F}@mongo_f:{MONGODB_PORT_F}")
+# MongoDB 클라이언트 설정
 mongo_client = MongoClient(f"mongodb://{MONGODB_ID_F}:{MONGODB_PASSWORD_F}@{MONGODB_TEST_F}:{MONGODB_PORT_F}")
 db = mongo_client["videos"]
 collection = db["video"]
 
-def find_video_document(worknum):
-    return collection.find_one({"worknum": worknum})
-
-@app.get("/")
-async def root():
-    return {"message": "FastAPI-FACE"}
-
-@app.post("/f-trainfaces")
-async def input_train_image(
-    directory_name: str = Form(...), 
-    files: List[UploadFile] = File(...)
-):
-    if len(files) != 5:
-        raise HTTPException(status_code=400, detail="Exactly 5 images must be uploaded.")
-
-    UPLOAD_DIR = Path("knn_examples/train") / directory_name
-    UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
-
-    for file in files:
-        file_location = UPLOAD_DIR / file.filename
-        with file_location.open("wb") as buffer:
-            shutil.copyfileobj(file.file, buffer)
-
-    print({"info": f"Files saved in directory '{UPLOAD_DIR}'"})
-    return JSONResponse(content={"info": "Files are being processed"})
-
 # 비디오 처리 큐 생성
 video_queue = queue.Queue()
 
+# 작업 번호로 비디오 문서를 MongoDB에서 찾기
+def find_video_document(worknum):
+    return collection.find_one({"worknum": worknum})
+
+# 비디오 큐에서 작업을 처리
 def process_video_from_queue():
     while True:
         item = video_queue.get()
@@ -83,9 +60,9 @@ def process_video_from_queue():
         process_video(item)
         video_queue.task_done()
 
+# 비디오 처리 작업을 수행
 def process_video(item):
     file_location, filename, worknum = item
-    # test_blur_app.py 실행
     try:
         # 작업 상태를 '처리 중'으로 업데이트
         collection.update_one({"worknum": worknum}, {"$set": {"job_ok": 1}})
@@ -114,10 +91,51 @@ def process_video(item):
             # 작업 상태를 '완료'로 업데이트
             collection.update_one({"worknum": worknum}, {"$set": {"job_ok": 2}})
     except subprocess.CalledProcessError as e:
-        print(f"Error occured whild running test_blur_app.py: {e.stderr}")
+        print(f"Error occurred while running test_blur_app.py: {e.stderr}")
         # 작업 상태를 '에러'로 업데이트
         collection.update_one({"worknum": worknum}, {"$set": {"job_ok": -1}})
 
+def extract_number(s):
+    return int(''.join(filter(str.isdigit, s)))
+
+def find_pending_documents():
+    pending_list = []
+    documents = collection.find({"job_ok": 0})
+    for doc in documents:
+        pending_list.append(doc['worknum'])
+
+    # 정렬된 리스트
+    pending_sorted_list = sorted(pending_list, key=extract_number)
+    return pending_sorted_list
+
+# API Endpoints
+
+# Health Check
+@app.get("/")
+async def root():
+    return {"message": "FastAPI-FACE"}
+
+# 인식할 인물 사진 입력
+@app.post("/f-trainfaces")
+async def input_train_image(
+    directory_name: str = Form(...), 
+    files: List[UploadFile] = File(...)
+):
+    if len(files) != 5:
+        raise HTTPException(status_code=400, detail="Exactly 5 images must be uploaded.")
+
+    UPLOAD_DIR = Path("knn_examples/train") / directory_name
+    UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
+
+    for file in files:
+        file_location = UPLOAD_DIR / file.filename
+        with file_location.open("wb") as buffer:
+            shutil.copyfileobj(file.file, buffer)
+
+    print({"info": f"Files saved in directory '{UPLOAD_DIR}'"})
+    return JSONResponse(content={"info": "Files are being processed"})
+
+# 비디오 파일을 업로드하고 처리 큐에 추가
 @app.post("/f-editvideo")
 async def input_video(
     file: UploadFile = File(...), 
@@ -136,7 +154,7 @@ async def input_video(
     subdir_name = [d.name for d in Path("knn_examples/train").iterdir() if d.is_dir() and d.name.startswith(worknum)]
     name = subdir_name[0][6:] if subdir_name else ""
 
-    # mongodb 저장
+    # MongoDB 저장
     document = {
         "worknum": worknum,
         "filename": filename,
@@ -153,12 +171,7 @@ async def input_video(
     print({"info": f"file '{file.filename}' saved at '{file_location}'"})
     return JSONResponse(content={"info": "Video is being processed"})
 
-# 백그라운드에서 비디오 처리 쓰레드 시작
-thread = threading.Thread(target=process_video_from_queue)
-thread.daemon = True
-thread.start()
-
-
+# 처리된 비디오의 S3 URL 불러오기
 @app.get("/f-downloadvideo")
 async def get_download_link(worknum: str):
     try:
@@ -194,3 +207,16 @@ async def get_download_link(worknum: str):
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+# 백그라운드에서 비디오 처리 쓰레드 시작
+thread = threading.Thread(target=process_video_from_queue)
+thread.daemon = True
+thread.start()
+
+@app.get("/f-findlist")
+async def get_pending_jobs():
+    pending_jobs = find_pending_documents()
+    return JSONResponse(content={"pending_jobs": pending_jobs})
+    # except Exception as e:
+    #     logger.error(f"Error in get_pending_jobs: {e}")
+    #     raise HTTPException(status_code=500, detail="Failed to retrieve pending jobs")
