@@ -13,6 +13,7 @@ import FaceDetectionRequest from "./routes/FaceDetectionRequest";
 import Login from "./routes/Login";
 import MyPage from "./routes/MyPage";
 import InfoChange from "./routes/InfoChange";
+import Ticket from "./routes/Ticket";
 import EditDone from "./routes/EditDone";
 import Board from "./routes/Board";
 import BoardWrite from "./routes/BoardWrite";
@@ -36,6 +37,7 @@ function App() {
   const [isLogin, setIsLogin] = useState(sessionIsLogin || 0);
   const [opt, setOpt] = useState(sessionopt || "");
   const [isAdmin, setIsAdmin] = useState(sessionIsAdmin || 0);
+  const [ticket, setTicket] = useState(["0", "0", "0"]);
 
   useEffect(() => {
     window.sessionStorage.setItem("email", email);
@@ -86,11 +88,13 @@ function App() {
                 picture={picture}
                 isLogin={isLogin}
                 opt={opt}
+                ticket={ticket}
                 setEmail={setEmail}
                 setName={setName}
                 setPicture={setPicture}
                 setIsLogin={setIsLogin}
                 setOpt={setOpt}
+                setTicket={setTicket}
               />
             }
           />
@@ -108,11 +112,13 @@ function App() {
                 picture={picture}
                 isLogin={isLogin}
                 opt={opt}
+                ticket={ticket}
                 setEmail={setEmail}
                 setName={setName}
                 setPicture={setPicture}
                 setIsLogin={setIsLogin}
                 setOpt={setOpt}
+                setTicket={setTicket}
               />
             }
           />
@@ -165,11 +171,13 @@ function App() {
                 opt={opt}
                 picture={picture}
                 isLogin={isLogin}
+                ticket={ticket}
                 setIsLogin={setIsLogin}
                 setEmail={setEmail}
                 setName={setName}
                 setOpt={setOpt}
                 setPicture={setPicture}
+                setTicket={setTicket}
               />
             }
           />
@@ -188,6 +196,18 @@ function App() {
                 setOpt={setOpt}
                 setPicture={setPicture}
                 setIsLogin={setIsLogin}
+              />
+            }
+          />
+          <Route
+            path="/ticket"
+            element={
+              <Ticket
+                email={email}
+                picture={picture}
+                baseurl={baseurl}
+                ticket={ticket}
+                setTicket={setTicket}
               />
             }
           />
