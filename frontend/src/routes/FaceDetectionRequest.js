@@ -9,6 +9,7 @@ const FaceDetectionRequest = (props) => {
   const [newVideoName, setNewVideoName] = useState("");
   const [videoLength, setVideoLength] = useState(null);
   const [thumbnail, setThumbnail] = useState(null);
+  const [isLoading, setIsLoading] = useState(false); // 로딩 상태
   const [uploadedPhotos, setUploadedPhotos] = useState(null);
   const [index, setIndex] = useState(""); // 추가: 인덱스 상태 관리
   const [isOpen, setIsOpen] = useState(false);
@@ -35,9 +36,61 @@ const FaceDetectionRequest = (props) => {
     setNewVideoName(event.target.value);
   };
 
+  const sanitizeFileName = (name) => {
+    // 허용되지 않는 문자들을 '_'로 대체
+    const sanitized = name
+      .replace(/[<>:"\/\\|?*\x00-\x1F]/g, "_")
+      .replace(/\s+/g, "_") // 모든 공백 문자를 '_'로 대체
+      .replace(/_+/g, "_"); // 연속된 '_'를 하나로 합침
+
+    // 예약된 이름인지 확인 (Windows 기준)
+    const reservedNames = [
+      "CON",
+      "PRN",
+      "AUX",
+      "NUL",
+      "COM1",
+      "COM2",
+      "COM3",
+      "COM4",
+      "COM5",
+      "COM6",
+      "COM7",
+      "COM8",
+      "COM9",
+      "LPT1",
+      "LPT2",
+      "LPT3",
+      "LPT4",
+      "LPT5",
+      "LPT6",
+      "LPT7",
+      "LPT8",
+      "LPT9",
+    ];
+
+    let finalName = sanitized;
+    if (reservedNames.includes(sanitized.toUpperCase())) {
+      finalName = `_${sanitized}`;
+    }
+
+    // 파일 이름 길이 제한 (255 characters)
+    if (finalName.length > 255) {
+      finalName = finalName.substring(0, 255);
+    }
+
+    // 확장자를 추가하는 부분은 기존 코드에서 처리
+    if (!finalName.endsWith(".mp4")) {
+      finalName += ".mp4";
+    }
+
+    return finalName;
+  };
+
   const handleNameBlur = () => {
-    if (newVideoName && !newVideoName.endsWith(".mp4")) {
-      setNewVideoName(newVideoName + ".mp4");
+    if (newVideoName) {
+      const formattedName = sanitizeFileName(newVideoName);
+      setNewVideoName(formattedName);
     }
   };
 
@@ -79,13 +132,11 @@ const FaceDetectionRequest = (props) => {
 
     if (!uploadedPhotos) {
       console.log(uploadedPhotos);
-
-      // for (let [key, value] of uploadedPhotos.entries()) {
-      //   console.log(`${key}: ${value.name || value}`);
-      // } // log 확인
       alert("사진을 먼저 선택해주세요.");
       return;
     }
+
+    setIsLoading(true); // 로딩 상태 시작
 
     const email = props.email;
     const name = props.name;
@@ -162,6 +213,8 @@ const FaceDetectionRequest = (props) => {
     } catch (error) {
       console.error(error);
       // 일반 오류 처리 (예: 오류 메시지 표시)
+    } finally {
+      setIsLoading(false); // 로딩 상태 종료
     }
   };
 
@@ -235,9 +288,19 @@ const FaceDetectionRequest = (props) => {
               </label>
             </div>
           </div>
-          <button type="submit" className="submit-btn">
-            AIditor, 편집을 시작해줘!
-          </button>
+          {isLoading ? (
+            <button type="button" className="submit-btn">
+              <img
+                src="images/load.gif"
+                alt="loading"
+                style={{ height: "15px", margin: "0", padding: "0" }}
+              />
+            </button>
+          ) : (
+            <button type="submit" className="submit-btn">
+              "AIditor, 편집을 시작해줘!"
+            </button>
+          )}
         </form>
       </div>
       <PhotoUploadPopup
