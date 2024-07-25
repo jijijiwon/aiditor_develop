@@ -1,5 +1,3 @@
-##0722 test_blur_app.py-5
-
 import cv2
 import face_recognition
 import math
@@ -67,6 +65,8 @@ ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'mp4'}
 log_filename = 'process_video.log'
 logging.basicConfig(level=logging.INFO, filename=log_filename, filemode='a', format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger()
+
+# 함수들
 
 # 파일을 S3에 업로드
 def upload_to_s3(file_path, worknum):
