@@ -276,17 +276,19 @@ const PrivacyProtectionRequest = (props) => {
               </label>
             </div>
           </div>
-          <button type="submit" className="submit-btn">
-            {isLoading ? (
+          {isLoading ? (
+            <button type="button" className="submit-btn">
               <img
                 src="images/load.gif"
                 alt="loading"
                 style={{ height: "15px", margin: "0", padding: "0" }}
               />
-            ) : (
+            </button>
+          ) : (
+            <button type="submit" className="submit-btn">
               "AIditor, 편집을 시작해줘!"
-            )}
-          </button>
+            </button>
+          )}
         </form>
       </div>
     </>
