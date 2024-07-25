@@ -41,7 +41,8 @@ function Sidebar(props) {
               {/* <Link to="/developing">유해정보 블라인드</Link> */}
             </li>
             <li>
-              <Link to="/developing">개인정보 보호</Link>
+              <Link to="/RTPrivacy">개인정보 보호</Link>
+              {/* <Link to="/developing">개인정보 보호</Link> */}
             </li>
           </ul>
         </li>

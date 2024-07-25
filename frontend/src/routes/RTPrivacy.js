@@ -6,7 +6,7 @@ import "./RTModeration.css";
 // 환경 변수에서 API URL 가져오기
 const apiUrl = process.env.REACT_APP_RT_URL;
 
-function RTModeration() {
+function RTPrivacy() {
   // 비디오 및 캔버스 요소에 대한 참조 생성
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
@@ -68,7 +68,7 @@ function RTModeration() {
 
       try {
         // 서버로 이미지 업로드 요청
-        const response = await axios.post(`${apiUrl}/realtime-m`, formData, {
+        const response = await axios.post(`${apiUrl}/realtime-p`, formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
@@ -110,4 +110,4 @@ function RTModeration() {
   );
 }
 
-export default RTModeration;
+export default RTPrivacy;

@@ -5,6 +5,7 @@ import Sidebar from "./components/Sidebar";
 import Header from "./components/Header";
 import Main from "./routes/Main";
 import RTModeration from "./routes/RTModeration";
+import RTPrivacy from "./routes/RTPrivacy";
 import ModerationRequest from "./routes/ModerationRequest";
 import RequestDone from "./routes/RequestDone";
 import PrivacyProtectionRequest from "./routes/PrivacyProtectionRequest";
@@ -74,6 +75,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Main />} />
           <Route path="/RTModeration" element={<RTModeration />} />
+          <Route path="/RTPrivacy" element={<RTPrivacy />} />
           <Route
             path="/ModerationRequest"
             element={
