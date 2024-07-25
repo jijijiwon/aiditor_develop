@@ -31,6 +31,15 @@ class ErrorRequest(BaseModel):
     name: str
     content: str
 
+class TotalTicket(BaseModel):
+    email: EmailStr
+    totalticket: str
+
+class UsedTicket(BaseModel):
+    email: EmailStr
+    usedticket: str
+    remainticket: str
+
 class AnnounceRequest(BaseModel):
     title: str
     content: str
@@ -610,6 +619,61 @@ async def delete_user(email: str):
     finally:
         connection.close()
 
+# ticketTable
+@app.get("/selectticket")
+async def select_ticket(email: str):
+    connection = get_db_connection()
+    try:
+        with connection.cursor() as cursor:
+            sql = "SELECT * FROM ticketTable WHERE email = %s"
+            cursor.execute(sql, (email))
+
+            data = cursor.fetchall()
+            return data
+    finally:
+        connection.close()
+
+@app.post("/addticket")
+async def add_ticket(email: str):
+    connection = get_db_connection()
+    try:
+        with connection.cursor() as cursor:
+            sql = "INSERT INTO ticketTable email VALUES %s"
+            cursor.execute(sql, (email))
+
+            connection.commit()
+            return {"email": email}
+    finally:
+        connection.close()
+
+@app.put("/updatetotalticket")
+async def update_total_ticket(request: TotalTicket):
+    connection = get_db_connection()
+    try:
+        with connection.cursor() as cursor:
+            sql = "UPDATE ticketTable SET totalticket = %s WHERE email = %s"
+            values = (request.totalticket, request.email)
+            cursor.execute(sql, values)
+
+            connection.commit()
+            return request
+    finally:
+        connection.close()
+
+@app.put("/updateusedticket")
+async def update_used_ticket(request: UsedTicket):
+    connection = get_db_connection()
+    try:
+        with connection.cursor() as cursor:
+            sql = "UPDATE ticketTable SET usedticket = %s WHERE email = %s"
+            values = (request.usedticket, request.email)
+            cursor.execute(sql, values)
+
+            connection.commit()
+            return request
+    finally:
+        connection.close()
+
 # workTable
 @app.post("/addworknum")
 async def add_work_num(data: dict):
@@ -897,3 +961,4 @@ async def update_replynum(request: ReplyUpdateRequest):
             return request
     finally:
         connection.close()
+
