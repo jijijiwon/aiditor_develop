@@ -16,8 +16,8 @@ with open('../config/secrets.json') as f:
 FAST_API_USER_IP= secrets['FAST_API_USER_IP']
 
 # YOLO 모델 로드
-model_M = YOLO("app/addf2.pt")
-model_P = YOLO("app/card2.pt")
+model_M = YOLO("yolomodel/addf2.pt")
+model_P = YOLO("yolomodel/card2.pt")
 
 # 클래스 이름 정의
 class_names_M = ['knife', 'handgun', 'cigarette', 'fuckyou']
