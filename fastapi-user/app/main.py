@@ -34,6 +34,7 @@ class ErrorRequest(BaseModel):
 class TotalTicket(BaseModel):
     email: EmailStr
     totalticket: str
+    remainticket: str
 
 class UsedTicket(BaseModel):
     email: EmailStr
@@ -651,8 +652,8 @@ async def update_total_ticket(request: TotalTicket):
     connection = get_db_connection()
     try:
         with connection.cursor() as cursor:
-            sql = "UPDATE ticketTable SET totalticket = %s WHERE email = %s"
-            values = (request.totalticket, request.email)
+            sql = "UPDATE ticketTable SET totalticket = %s, remainticket = %s WHERE email = %s"
+            values = (request.totalticket, request.remainticket, request.email)
             cursor.execute(sql, values)
 
             connection.commit()
