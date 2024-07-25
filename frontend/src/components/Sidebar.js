@@ -37,8 +37,8 @@ function Sidebar(props) {
           </Link>
           <ul className="submenu">
             <li>
-              {/* <Link to="/RTModeration">유해정보 블라인드</Link> */}
-              <Link to="/developing">유해정보 블라인드</Link>
+              <Link to="/RTModeration">유해정보 블라인드</Link>
+              {/* <Link to="/developing">유해정보 블라인드</Link> */}
             </li>
             <li>
               <Link to="/developing">개인정보 보호</Link>

@@ -1,0 +1,26 @@
+.App {
+  text-align: center;
+}
+
+.video-container {
+  position: relative;
+  width: 640px;
+  height: 480px;
+  margin: auto;
+}
+
+.video-element {
+  width: 100%;
+  height: 100%;
+}
+
+.canvas-element {
+  display: none;
+}
+
+.detection-box {
+  position: absolute;
+  border: 2px solid red;
+  color: red;
+  pointer-events: none; /* 박스를 클릭할 수 없도록 함 */
+}
