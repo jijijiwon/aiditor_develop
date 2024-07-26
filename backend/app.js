@@ -184,6 +184,72 @@ app.delete("/deleteuser", async (req, res) => {
   }
 });
 
+// Ticket Table
+app.get("/selectticket", async (req, res) => {
+  const { email } = req.query;
+  try {
+    const response = await axios.get(`${FAST_API_USER}/selectticket`, {
+      params: { email },
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    console.log(response.data);
+    res.json(response.data);
+  } catch (error) {
+    console.error("Error fetching user data:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+app.put("/updatetotalticket", async (req, res) => {
+  const { email, totalticket, remainticket } = req.body;
+  try {
+    const response = await axios.put(
+      `${FAST_API_USER}/updatetotalticket`,
+      { email, totalticket, remainticket },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    res.json(response.data);
+  } catch (error) {
+    console.error("Error updating ticket:", error);
+    if (error.response) {
+      res.status(error.response.status).json(error.response.data);
+    } else {
+      res.status(500).json({ error: "Internal server error" });
+    }
+  }
+});
+
+app.put("/updateusedticket", async (req, res) => {
+  const { email, usedticket, remainticket } = req.body;
+  try {
+    const response = await axios.put(
+      `${FAST_API_USER}/updateusedticket`,
+      { email, usedticket, remainticket },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    res.json(response.data);
+  } catch (error) {
+    console.error("Error updating ticket:", error);
+    if (error.response) {
+      res.status(error.response.status).json(error.response.data);
+    } else {
+      res.status(500).json({ error: "Internal server error" });
+    }
+  }
+});
+
+// user work Table
+
 app.get("/selectuserwork", async (req, res) => {
   const { email } = req.query;
   try {
