@@ -1,11 +1,13 @@
 import { useGoogleLogin } from "@react-oauth/google";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./Login.css";
 
 const Login = (props) => {
   const navigate = useNavigate();
+  const location = useLocation();
+  let user = { email: "", name: "", picture: "" };
 
   const glogin = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
@@ -19,7 +21,7 @@ const Login = (props) => {
       console.log(userInfo.data);
       const profile = userInfo.data;
 
-      let user = {
+      user = {
         email: profile.email,
         name: profile.name,
         picture: profile.picture,
@@ -45,7 +47,10 @@ const Login = (props) => {
   };
 
   const klogin = () => {
-    alert("아직 카카오 로그인이 불가능해요!");
+    const KAKAO_REST_API_KEY = process.env.REACT_APP_KAKAO_REST_API_KEY;
+    const KAKAO_REDIRECT_URI = process.env.REACT_APP_KAKAO_REDIRECT_URI;
+    const kakaoURL = `https://kauth.kakao.com/oauth/authorize?client_id=${KAKAO_REST_API_KEY}&redirect_uri=${KAKAO_REDIRECT_URI}&response_type=code`;
+    window.location.href = kakaoURL;
   };
 
   async function getUser(user) {
@@ -78,6 +83,26 @@ const Login = (props) => {
       console.log(error);
     }
   }
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (location.state && location.state.email) {
+        user = location.state;
+        let response = await getUser(location.state);
+        console.log("Login Success:", response);
+
+        props.setEmail(response.email);
+        props.setName(response.name);
+        props.setPicture(response.picture);
+        props.setOpt(response.opt);
+        props.setIsLogin(1);
+        response.isadmin === 1 ? props.setIsAdmin(1) : props.setIsAdmin(0);
+
+        navigate(-2, { replace: true });
+      }
+    };
+    fetchData();
+  }, [location]);
 
   return (
     <div className="login-section">
