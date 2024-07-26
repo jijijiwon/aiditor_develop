@@ -22,8 +22,19 @@ const PrivacyProtectionRequest = (props) => {
   const type = "P";
   const navigate = useNavigate();
 
-  const items = ["credit_card", "receipt", "license_plate"];
+  const items = ["신용카드", "영수증", "자동차 번호판"];
   const [selectedLabels, setSelectedLabels] = useState(items);
+
+  async function convertLabels(selectedLabels) {
+    const labellist = {
+      신용카드: "credit_card",
+      영수증: "receipt",
+      "자동차 번호판": "license_plate",
+    };
+    const newLabels = selectedLabels.map((label) => labellist[label]);
+    console.log(newLabels);
+    return newLabels;
+  }
 
   async function selectticket() {
     try {
@@ -232,7 +243,7 @@ const PrivacyProtectionRequest = (props) => {
       const worknum = response.data;
       const powerOpt = power_opt[power_options.indexOf(power)];
       const mosaicOpt = mosaic_opt[mosaic_options.indexOf(mosaicStrength)];
-      const labels = selectedLabels;
+      const labels = await convertLabels(selectedLabels);
 
       const newFormData = new FormData();
       newFormData.append("videofile", videofile);
@@ -280,7 +291,7 @@ const PrivacyProtectionRequest = (props) => {
                     {thumbnail && <img src={thumbnail} alt="Video Thumbnail" />}
                   </>
                 ) : (
-                  "Upload video in your PC"
+                  "클릭하여 PC의 동영상을 선택해주세요💾"
                 )}
                 <input
                   type="file"
@@ -290,7 +301,7 @@ const PrivacyProtectionRequest = (props) => {
                 />
               </label>
               {videoLength && (
-                <>
+                <div style={{ textAlign: "center" }}>
                   <p>
                     선택한 영상의 길이: {Math.floor(videoLength / 60)}:
                     {Math.floor(videoLength % 60)
@@ -298,14 +309,14 @@ const PrivacyProtectionRequest = (props) => {
                       .padStart(2, "0")}{" "}
                   </p>
                   <p>사용 가능한 이용권: {convertTime(props.ticket[2])}</p>
-                </>
+                </div>
               )}
             </div>
             <div className="input-box">
               <h3>유해정보 블라인드 편집 요청</h3>
               <label>
                 편집 타입 :
-                <input type="text" value="Privacy Protection" readOnly />
+                <input type="text" value="개인정보 보호" readOnly />
               </label>
               <label>
                 저장할 비디오 이름 :
