@@ -688,3 +688,11 @@ app.get("/video-list", async (req, res) => {
 app.listen(port, () => {
   console.log(`Server started on port ${port}`);
 });
+
+app.get("/video-error", async (req, res) => {
+  const { worknum } = req.query;
+  const response = await axios.get(`${FAST_API_MP}/mp-errorwork`, {
+    params: { worknum },
+  });
+  res.json({ error: response.data["content"] });
+});
