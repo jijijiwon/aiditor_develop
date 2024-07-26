@@ -57,6 +57,12 @@ const User = ({ baseurl, email }) => {
         { state: { worknum: worknum, filename: filename } },
         { replace: true }
       );
+    } else if (isprocess === "E") {
+      navigate(
+        "/editerror",
+        { state: { worknum: worknum, filename: filename } },
+        { replace: true }
+      );
     } else {
       navigate(
         "/editing",
