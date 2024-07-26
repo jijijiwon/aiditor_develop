@@ -1,7 +1,7 @@
 import { useGoogleLogin } from "@react-oauth/google";
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import "./Login.css";
 
 const Login = (props) => {
@@ -98,7 +98,7 @@ const Login = (props) => {
         props.setIsLogin(1);
         response.isadmin === 1 ? props.setIsAdmin(1) : props.setIsAdmin(0);
 
-        navigate(-2, { replace: true });
+        navigate("/", { replace: true });
       }
     };
     fetchData();
