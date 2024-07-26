@@ -81,32 +81,69 @@ function RTPrivacy() {
     }, "image/jpeg");
   };
 
+  const labels = [
+    { label: "credit_card", kor: "신용카드💳", color: "#100DB1" },
+    { label: "receipt", kor: "영수증🧾", color: "#F80D38" },
+    { label: "license_plate", kor: "자동차 번호판🚙", color: "#FECA57" },
+  ];
+
   return (
-    <div className="rt">
-      <h1>WebCam Object Detection</h1>
-      <div
-        className="video-container"
-        style={{ width: videoSize.width, height: videoSize.height }}
-      >
-        <video ref={videoRef} autoPlay playsInline className="video-element" />
-        <canvas ref={canvasRef} className="canvas-element"></canvas>
-        {/* 감지된 객체 정보를 화면에 표시 */}
-        {detections.map((detection, index) => (
-          <div
-            key={index}
-            className="detection-box"
-            style={{
-              left: `${detection.box[0]}px`,
-              top: `${detection.box[1]}px`,
-              width: `${detection.box[2] - detection.box[0]}px`,
-              height: `${detection.box[3] - detection.box[1]}px`,
-            }}
-          >
-            {detection.class}
-          </div>
-        ))}
+    <>
+      <h3 style={{ color: "#F80D38", fontFamily: "TossFaceFont" }}>
+        🔐 실시간 개인정보 보호
+      </h3>
+      <div className="rt-moderation">
+        <div className="label-list">
+          <h5>유의사항</h5>
+          <p style={{ marginTop: "2px" }}>웹캠 허용 필수!📸</p>
+          <h5>감지하는 컨텐츠</h5>
+          {labels.map(function (menu, i) {
+            return (
+              <div id="label-list" key={i}>
+                <div className="title">
+                  <li
+                    style={{
+                      color: labels[i].color,
+                    }}
+                  >
+                    <p style={{ display: "inline", color: "black" }}>
+                      {labels[i].kor}
+                    </p>
+                  </li>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+        <div
+          className="video-container"
+          style={{ width: videoSize.width, height: videoSize.height }}
+        >
+          <video
+            ref={videoRef}
+            autoPlay
+            playsInline
+            className="video-element"
+          />
+          <canvas ref={canvasRef} className="canvas-element"></canvas>
+          {/* 감지된 객체 정보를 화면에 표시 */}
+          {detections.map((detection, index) => (
+            <div
+              key={index}
+              className="detection-box"
+              style={{
+                left: `${detection.box[0]}px`,
+                top: `${detection.box[1]}px`,
+                width: `${detection.box[2] - detection.box[0]}px`,
+                height: `${detection.box[3] - detection.box[1]}px`,
+              }}
+            >
+              {detection.class}
+            </div>
+          ))}
+        </div>
       </div>
-    </div>
+    </>
   );
 }
 
