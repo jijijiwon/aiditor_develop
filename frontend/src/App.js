@@ -15,13 +15,14 @@ import MyPage from "./routes/MyPage";
 import InfoChange from "./routes/InfoChange";
 import Ticket from "./routes/Ticket";
 import EditDone from "./routes/EditDone";
+import Editing from "./routes/Editing";
+import EditError from "./routes/EditError";
 import Board from "./routes/Board";
 import BoardWrite from "./routes/BoardWrite";
 import BoardSelected from "./routes/BoardSelected";
 import Announce from "./routes/Announce";
 import AnnounceSelected from "./routes/AnnounceSelected";
 import Developing from "./routes/Developing";
-import Editing from "./routes/Editing";
 
 const baseurl = process.env.REACT_APP_BACK_URL;
 function App() {
@@ -219,6 +220,10 @@ function App() {
           <Route
             path="/editing"
             element={<Editing baseurl={baseurl} email={email} name={name} />}
+          />
+          <Route
+            path="/editerror"
+            element={<EditError baseurl={baseurl} email={email} name={name} />}
           />
           <Route
             path="/board"
