@@ -22,8 +22,20 @@ const ModerationRequest = (props) => {
   const type = "M";
   const navigate = useNavigate();
 
-  const items = ["knife", "gun", "middle_finger", "cigarette"];
+  const items = ["칼", "총", "손가락 욕", "담배"];
   const [selectedLabels, setSelectedLabels] = useState(items);
+
+  async function convertLabels(selectedLabels) {
+    const labellist = {
+      칼: "knife",
+      총: "gun",
+      "손가락 욕": "middle_finger",
+      담배: "cigarette",
+    };
+    const newLabels = selectedLabels.map((label) => labellist[label]);
+    console.log(newLabels);
+    return newLabels;
+  }
 
   async function selectticket() {
     try {
@@ -231,7 +243,7 @@ const ModerationRequest = (props) => {
       const worknum = response.data;
       const powerOpt = power_opt[power_options.indexOf(power)];
       const mosaicOpt = mosaic_opt[mosaic_options.indexOf(mosaicStrength)];
-      const labels = selectedLabels;
+      const labels = await convertLabels(selectedLabels);
 
       const newFormData = new FormData();
       newFormData.append("videofile", videofile);
@@ -279,7 +291,7 @@ const ModerationRequest = (props) => {
                     {thumbnail && <img src={thumbnail} alt="Video Thumbnail" />}
                   </>
                 ) : (
-                  "Upload video in your PC"
+                  "클릭하여 PC의 동영상을 선택해주세요💾"
                 )}
                 <input
                   type="file"
@@ -289,7 +301,7 @@ const ModerationRequest = (props) => {
                 />
               </label>
               {videoLength && (
-                <>
+                <div style={{ textAlign: "center" }}>
                   <p>
                     선택한 영상의 길이: {Math.floor(videoLength / 60)}:
                     {Math.floor(videoLength % 60)
@@ -297,14 +309,14 @@ const ModerationRequest = (props) => {
                       .padStart(2, "0")}{" "}
                   </p>
                   <p>사용 가능한 이용권: {convertTime(props.ticket[2])}</p>
-                </>
+                </div>
               )}
             </div>
             <div className="input-box">
               <h3>유해정보 블라인드 편집 요청</h3>
               <label>
                 편집 타입 :
-                <input type="text" value="Moderation" readOnly />
+                <input type="text" value="유해정보 블라인드" readOnly />
               </label>
               <label>
                 저장할 비디오 이름 :
