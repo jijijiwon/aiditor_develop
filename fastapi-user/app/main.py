@@ -331,6 +331,9 @@ async def send_error_email(request: ErrorRequest):
                                     오류 내용을 확인하고 <a href="https://www.aiditor.link">사이트</a>에 접속하여
                                     다시 시도해주세요.
                                     </td>
+                                    <td style="display: block; margin-bottom: 10px">
+                                    📌 사용된 이용권은 자동으로 환불되었습니다.
+                                    </td>
                                 </tbody>
                                 </table>
                             </td>
@@ -773,7 +776,7 @@ async def error_process(worknum: str):
     connection = get_db_connection()
     try:
         with connection.cursor() as cursor:
-            sql = "SELECT email, name, opt FROM workTable WHERE worknum = %s"
+            sql = "SELECT email, name, opt, videolength FROM workTable WHERE worknum = %s"
             cursor.execute(sql, (worknum))
             data = cursor.fetchall()
 
@@ -781,10 +784,24 @@ async def error_process(worknum: str):
             values = ("E", worknum)
             cursor.execute(sql, values)
             connection.commit()
-
+            
             email = data[0][0]
             name = data[0][1]
             opt = data[0][2]
+            videolength = data[0][3]
+            videolength_list = videolength.split(":")
+            vlsec = int(videolength_list[2]) + int(videolength_list[1])*60 + int(videolength_list[0])*3600
+
+            sql = "SELECT usedticket, remainticket FROM ticketTable WHERE email = %s"
+            cursor.execute(sql, (email))
+            tdata = cursor.fetchall()
+
+            usedticket = int(tdata[0][0]) - vlsec
+            remainticket = int(tdata[0][1]) + vlsec
+
+            sql = "UPDATE ticketTable SET usedticket = %s, remainticket = %s WHERE email = %s"
+            cursor.execute(sql, (usedticket, remainticket, email))
+            connection.commit()
 
             if opt == "in":
                 return EmailRequest(email=email, name=name)
