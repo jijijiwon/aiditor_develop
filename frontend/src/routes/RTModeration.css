@@ -1,10 +1,19 @@
-.rt {
-  text-align: center;
+.rt-moderation {
+  max-width: 100%;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  font-family: "Pretendard", sans-serif;
+  display: flex;
 }
 
 .video-container {
   position: relative;
   margin: auto;
+  width: 80%;
+  padding-right: 20%;
 }
 
 .video-element {
@@ -21,4 +30,15 @@
   border: 2px solid red;
   color: red;
   pointer-events: none; /* 박스를 클릭할 수 없도록 함 */
+}
+
+.label-list {
+  text-align: left;
+  width: 20%;
+  margin-right: 0%;
+
+  h5 {
+    margin-top: 3px;
+    margin-bottom: 3px;
+  }
 }
