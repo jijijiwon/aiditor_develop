@@ -15,29 +15,26 @@
   border: 1.5px solid #100db1;
   margin: 10px 10px 20px 10px;
   vertical-align: middle;
-}
-
-.info-box img {
-  border-radius: 50%;
-  width: 80px;
-  height: 80px;
-  margin: 10px 20px;
-}
-
-.info-box .info {
-  display: inline-block;
-  height: 104px;
-  padding: 0px 1em;
-  p {
-    font-weight: lighter;
-    padding-top: 10px;
-    padding-bottom: 2px;
+  img {
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+    margin: 10px 20px;
   }
-}
-
-.info-box .info .pbold {
-  font-weight: bold;
-  padding: 10px 0px;
+  .info {
+    display: inline-block;
+    height: 104px;
+    padding: 0px 1em;
+    p {
+      font-weight: lighter;
+      padding-top: 10px;
+      padding-bottom: 2px;
+    }
+    .pbold {
+      font-weight: bold;
+      padding: 10px 0px;
+    }
+  }
 }
 
 .button-box {
@@ -215,5 +212,91 @@
   tbody tr:hover td {
     cursor: pointer;
     background: rgba(16, 13, 177, 0.1) !important;
+  }
+}
+
+/* ticket page */
+.ticket-info {
+  display: flex;
+  justify-content: space-evenly;
+  padding: 20px;
+  border-radius: 10px;
+  width: calc(100%-20px);
+  border: 1.5px solid #100db1;
+  margin: 10px 10px 20px 10px;
+  vertical-align: middle;
+  img {
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+    margin: 10px 20px;
+  }
+  .info {
+    display: inline-block;
+    height: 104px;
+    padding: 0px 1em;
+    p {
+      font-weight: lighter;
+      padding-top: 10px;
+      padding-bottom: 2px;
+    }
+    .pbold {
+      font-weight: bold;
+      padding: 10px 0px;
+    }
+  }
+}
+
+.ticket-linktext {
+  padding: 10px;
+  background-color: #feca57;
+  border-radius: 5px;
+  color: #ffffff;
+  position: absolute;
+  opacity: 0;
+  transition: all ease 0.5s;
+}
+.ticket-link:hover + .ticket-linktext {
+  opacity: 1;
+}
+
+.ticket-list {
+  display: flex;
+  justify-content: space-evenly;
+  padding: 20px;
+  border-radius: 10px;
+  width: calc(100%-20px);
+  border: 1.5px solid #ccc;
+  margin: 10px 10px 20px 10px;
+}
+
+.ticket-type {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  font-size: large;
+  font-weight: 300;
+
+  img {
+    width: 80px;
+    height: 80px;
+  }
+}
+
+.ticket-button {
+  padding: 5px 10px;
+  margin-top: 10px;
+  border: 1.5px solid #100db1;
+  border-radius: 10px;
+  font-size: medium;
+  color: #100db1;
+  background-color: #ffffff;
+
+  &:hover {
+    background-color: #100db1;
+    color: #ffffff;
+    font-weight: 500;
   }
 }
