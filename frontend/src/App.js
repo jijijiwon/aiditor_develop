@@ -22,6 +22,7 @@ import Announce from "./routes/Announce";
 import AnnounceSelected from "./routes/AnnounceSelected";
 import Developing from "./routes/Developing";
 import Editing from "./routes/Editing";
+import KakaoRedirect from "./routes/KakaoRedirect";
 
 const baseurl = process.env.REACT_APP_BACK_URL;
 function App() {
@@ -266,6 +267,7 @@ function App() {
             path="/developing"
             element={<Developing baseurl={baseurl} />}
           />
+          <Route path="/kakao-login/auth" element={<KakaoRedirect />} />
         </Routes>
       </div>
     </div>
