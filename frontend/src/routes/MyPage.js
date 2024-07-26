@@ -41,12 +41,13 @@ const MyPage = (props) => {
       .padStart(2, "0");
     const seconds = (ticketSeconds % 60).toString().padStart(2, "0");
 
-    return `${hours}시간 ${minutes}분 ${seconds}초`;
+    return `${hours}시간${minutes}분${seconds}초`;
   }
 
   useEffect(() => {
     selectticket();
   }, []);
+
   return (
     <>
       <div className="MyPageList">
@@ -54,48 +55,57 @@ const MyPage = (props) => {
           <div className="main-container">
             <h4 className="mini-title">내 정보</h4>
             <div className="info-box">
-              <img
-                src={props.picture}
-                alt="User Profile"
-                className="profile-img"
-              />
-              <table className="info-table">
-                <tbody>
-                  <tr>
-                    <td className="label">이메일</td>
-                    <td className="label">이름</td>
-                    <td className="label">메일 수신 여부</td>
-                    <td className="label">
-                      이용권{" "}
-                      <Link to="/ticket">
-                        <img
-                          src="/images/external.png"
-                          className="ticket-link"
-                          alt="구매하기"
-                        />
-                        <span className="ticket-linktext">구매하기</span>
-                      </Link>
-                    </td>
-                    <td rowSpan="10" className="button-box">
-                      <button
-                        onClick={handleChange}
-                        style={{ cursor: "pointer" }}
-                      >
-                        수정하기
-                      </button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="value">{props.email}</td>
-                    <td className="value">{props.name}</td>
-                    <td className="value">
-                      {props.opt === "in" ? "받음" : "받지 않음"}
-                    </td>
-                    <td className="value">{convertTime(props.ticket[2])}</td>
-                    <td></td>
-                  </tr>
-                </tbody>
-              </table>
+              <div className="info">
+                <img src={props.picture} alt="User Profile"></img>
+              </div>
+              <div className="info">
+                <p> 이메일 </p>
+                <p className="pbold" style={{ paddingTop: "13px" }}>
+                  {props.email}
+                </p>
+              </div>
+              <div className="info">
+                <p> 이름 </p>
+                <p className="pbold"> {props.name} </p>
+              </div>
+              <div className="info">
+                <p>메일 수신 여부</p>
+                <p className="pbold">
+                  {props.opt === "in" ? "받음" : "받지 않음"}
+                </p>
+              </div>
+              <div className="info">
+                <p>
+                  {" "}
+                  이용권{" "}
+                  <Link to="/ticket">
+                    <img
+                      src="/images/external.png"
+                      style={{
+                        width: "15px",
+                        height: "15px",
+                        padding: "0px",
+                        margin: "0px",
+                      }}
+                      className="ticket-link"
+                    />
+                    <p
+                      className="ticket-linktext"
+                      style={{ paddingTop: "5px" }}
+                    >
+                      구매하기
+                    </p>
+                  </Link>
+                </p>
+                <p className="pbold" style={{ paddingTop: "13px" }}>
+                  {convertTime(props.ticket[2])}
+                </p>
+              </div>
+              <div className="button-box">
+                <button onClick={handleChange} style={{ cursor: "pointer" }}>
+                  수정하기
+                </button>
+              </div>
             </div>
             {props.isadmin === 1 ? (
               <Admin baseurl={props.baseurl} />
