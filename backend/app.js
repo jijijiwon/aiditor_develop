@@ -225,6 +225,29 @@ app.put("/updatetotalticket", async (req, res) => {
   }
 });
 
+app.put("/updateusedticket", async (req, res) => {
+  const { email, usedticket, remainticket } = req.body;
+  try {
+    const response = await axios.put(
+      `${FAST_API_USER}/updateusedticket`,
+      { email, usedticket, remainticket },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    res.json(response.data);
+  } catch (error) {
+    console.error("Error updating ticket:", error);
+    if (error.response) {
+      res.status(error.response.status).json(error.response.data);
+    } else {
+      res.status(500).json({ error: "Internal server error" });
+    }
+  }
+});
+
 // user work Table
 
 app.get("/selectuserwork", async (req, res) => {

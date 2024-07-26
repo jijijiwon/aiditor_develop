@@ -99,10 +99,6 @@ function App() {
             }
           />
           <Route
-            path="/RequestDone"
-            element={<RequestDone baseurl={baseurl} />}
-          />
-          <Route
             path="/PrivacyProtectionRequest"
             element={
               <PrivacyProtectionRequest
@@ -122,7 +118,6 @@ function App() {
               />
             }
           />
-
           <Route
             path="/FaceDetectionRequest"
             element={
@@ -133,13 +128,19 @@ function App() {
                 picture={picture}
                 isLogin={isLogin}
                 opt={opt}
+                ticket={ticket}
                 setEmail={setEmail}
                 setName={setName}
                 setPicture={setPicture}
                 setIsLogin={setIsLogin}
                 setOpt={setOpt}
+                setTicket={setTicket}
               />
             }
+          />
+          <Route
+            path="/RequestDone"
+            element={<RequestDone baseurl={baseurl} />}
           />
           <Route
             path="/login"

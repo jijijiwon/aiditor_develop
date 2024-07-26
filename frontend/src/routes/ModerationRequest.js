@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./ModerationRequest.css";
 import { useNavigate } from "react-router-dom";
@@ -24,6 +24,38 @@ const ModerationRequest = (props) => {
 
   const items = ["knife", "gun", "middle_finger", "cigarette"];
   const [selectedLabels, setSelectedLabels] = useState(items);
+
+  async function selectticket() {
+    try {
+      console.log("email: ", props.email);
+      const email = props.email;
+      const response = await axios.get(props.baseurl + "/selectticket", {
+        params: { email: email },
+      });
+      console.log(response.data);
+
+      const ticketData = [
+        response.data["totalticket"],
+        response.data["usedticket"],
+        response.data["remainticket"],
+      ];
+
+      props.setTicket(ticketData);
+      return response.data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  function convertTime(ticketSeconds) {
+    const hours = Math.floor(ticketSeconds / 3600);
+    const minutes = Math.floor((ticketSeconds % 3600) / 60)
+      .toString()
+      .padStart(2, "0");
+    const seconds = (ticketSeconds % 60).toString().padStart(2, "0");
+
+    return `${hours}:${minutes}:${seconds}`;
+  }
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
@@ -133,6 +165,36 @@ const ModerationRequest = (props) => {
       alert("적어도 하나의 편집 컨텐츠를 선택해주세요.");
       return;
     }
+
+    if (props.ticket[2] - parseInt(videoLength) < 0) {
+      alert("먼저 이용권을 구매해주세요!");
+    } else {
+      let newusedticket = (
+        parseInt(props.ticket[1]) + parseInt(videoLength)
+      ).toString();
+      let newremainticket = (
+        parseInt(props.ticket[2]) - parseInt(videoLength)
+      ).toString();
+      props.setTicket([props.ticket[0], newusedticket, newremainticket]);
+
+      try {
+        const response = await axios.put(
+          `${props.baseurl}/updateusedticket`,
+          {
+            email: props.email,
+            usedticket: newusedticket,
+            remainticket: newremainticket,
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+      } catch (error) {
+        console.log(error);
+      }
+    }
     setIsLoading(true); // 로딩 상태 시작
 
     const email = props.email;
@@ -197,6 +259,10 @@ const ModerationRequest = (props) => {
     }
   };
 
+  useEffect(() => {
+    selectticket();
+  }, []);
+
   return (
     <>
       <h3 style={{ color: "#F80D38", fontFamily: "TossFaceFont" }}>
@@ -223,13 +289,15 @@ const ModerationRequest = (props) => {
                 />
               </label>
               {videoLength && (
-                <p>
-                  선택한 영상의 길이: {Math.floor(videoLength / 60)}:
-                  {Math.floor(videoLength % 60)
-                    .toString()
-                    .padStart(2, "0")}{" "}
-                  분
-                </p>
+                <>
+                  <p>
+                    선택한 영상의 길이: {Math.floor(videoLength / 60)}:
+                    {Math.floor(videoLength % 60)
+                      .toString()
+                      .padStart(2, "0")}{" "}
+                  </p>
+                  <p>사용 가능한 이용권: {convertTime(props.ticket[2])}</p>
+                </>
               )}
             </div>
             <div className="input-box">
