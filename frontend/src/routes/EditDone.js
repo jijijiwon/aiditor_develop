@@ -29,11 +29,11 @@ function EditDone(props) {
   const labelList = {
     knife: "칼🔪",
     gun: "총🔫",
-    middle_finger: "손가락욕🖕",
+    middle_finger: "손가락 욕🖕",
     cigarette: "담배🚬",
     credit_card: "신용카드💳",
     receipt: "영수증🧾",
-    license_plate: "자동차번호판🚙",
+    license_plate: "자동차 번호판🚙",
   };
 
   async function getMyVideo() {

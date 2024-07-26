@@ -306,7 +306,7 @@ const FaceDetectionRequest = (props) => {
                     {thumbnail && <img src={thumbnail} alt="Video Thumbnail" />}
                   </>
                 ) : (
-                  "Upload video in your PC"
+                  "클릭하여 PC의 동영상을 선택해주세요💾"
                 )}
                 <input
                   type="file"
@@ -316,7 +316,7 @@ const FaceDetectionRequest = (props) => {
                 />
               </label>
               {videoLength && (
-                <>
+                <div style={{ textAlign: "center" }}>
                   <p>
                     선택한 영상의 길이: {Math.floor(videoLength / 60)}:
                     {Math.floor(videoLength % 60)
@@ -324,14 +324,14 @@ const FaceDetectionRequest = (props) => {
                       .padStart(2, "0")}{" "}
                   </p>
                   <p>사용 가능한 이용권: {convertTime(props.ticket[2])}</p>
-                </>
+                </div>
               )}
             </div>
             <div className="input-box">
               <h3>얼굴 감지 편집 요청</h3>
               <label>
                 편집 타입 :
-                <input type="text" value="Face Detection" readOnly />
+                <input type="text" value="얼굴 감지" readOnly />
               </label>
               <label>
                 감지할 얼굴 입력 :
