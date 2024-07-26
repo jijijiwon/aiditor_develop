@@ -154,11 +154,11 @@ def process_video(worknum, video_path, filename, power, mosaic_strength, labels)
                 class_names = class_names_P
                 logger.info("model_P 선택됨")
             else:
-                raise ValueError(f"알 수 없는 작업 번호 접두사: {worknum}")
+                raise ValueError(f"알 수 없는 작업 번호 접두사")
 
             cap = cv2.VideoCapture(video_path)
             if not cap.isOpened():
-                raise FileNotFoundError(f"비디오 파일을 열 수 없습니다: {video_path}")
+                raise FileNotFoundError(f"비디오 파일을 열 수 없습니다")
 
             if not os.path.exists("processed_videos"):
                 os.makedirs("processed_videos")
