@@ -33,10 +33,11 @@ function App() {
   const sessionIsLogin = window.sessionStorage.getItem("isLogin");
   const sessionopt = window.sessionStorage.getItem("opt");
   const sessionIsAdmin = window.sessionStorage.getItem("isAdmin");
+
   const [email, setEmail] = useState(sessionEmail || "");
   const [name, setName] = useState(sessionName || "");
   const [picture, setPicture] = useState(sessionPicture || "");
-  const [isLogin, setIsLogin] = useState(sessionIsLogin === "true");
+  const [isLogin, setIsLogin] = useState(sessionIsLogin || 0);
   const [opt, setOpt] = useState(sessionopt || "");
   const [isAdmin, setIsAdmin] = useState(sessionIsAdmin || 0);
   const [ticket, setTicket] = useState(["0", "0", "0"]);
@@ -45,7 +46,7 @@ function App() {
     window.sessionStorage.setItem("email", email);
     window.sessionStorage.setItem("name", name);
     window.sessionStorage.setItem("picture", picture);
-    window.sessionStorage.setItem("isLogin", isLogin.toString());
+    window.sessionStorage.setItem("isLogin", isLogin);
     window.sessionStorage.setItem("opt", opt);
     window.sessionStorage.setItem("isAdmin", isAdmin);
   }, [email, name, picture, isLogin, opt, isAdmin]);

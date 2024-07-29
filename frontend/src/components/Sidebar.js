@@ -17,7 +17,7 @@ function Sidebar(props) {
 
   const handleNotuserClick = () => {
     console.log("handleNotuserClick: ", props.isLogin);
-    if (!props.isLogin) {
+    if (props.isLogin !== 1) {
       alert("로그인이 필요한 서비스입니다🐱");
       navigate("/login");
     } else {
