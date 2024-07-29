@@ -61,7 +61,7 @@ const PrivacyProtectionRequest = (props) => {
 
   const handleNotuserClick = (event) => {
     console.log("handleNotuserClick: ", props.isLogin);
-    if (!props.isLogin) {
+    if (props.isLogin !== 1) {
       event.preventDefault(); // 기본 동작 방지
       alert("로그인이 필요한 서비스입니다🐱");
       navigate("/login");
