@@ -136,6 +136,11 @@ body {
   }
 }
 
+.account ul li .mypage.active {
+  background-color: #dcdcdc;
+  color: #000;
+}
+
 .developer {
   font-size: 12px;
   text-align: left;
