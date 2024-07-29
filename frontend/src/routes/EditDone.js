@@ -21,7 +21,7 @@ function EditDone(props) {
     knife: "#100DB1",
     gun: "#763CEF",
     middle_finger: "#FECA57",
-    cigarrete: "#F80D38",
+    cigarette: "#F80D38",
     credit_card: "#100DB1",
     receipt: "#F80D38",
     license_plate: "#FECA57",
