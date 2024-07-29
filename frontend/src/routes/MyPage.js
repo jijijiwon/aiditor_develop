@@ -76,14 +76,6 @@ const MyPage = (props) => {
                         <span className="ticket-linktext">구매하기</span>
                       </Link>
                     </td>
-                    <td rowSpan="10" className="button-box">
-                      <button
-                        onClick={handleChange}
-                        style={{ cursor: "pointer" }}
-                      >
-                        수정하기
-                      </button>
-                    </td>
                   </tr>
                   <tr>
                     <td className="value">{props.email}</td>
@@ -96,6 +88,14 @@ const MyPage = (props) => {
                   </tr>
                 </tbody>
               </table>
+              <div className="button-box">
+                <button
+                  onClick={handleChange}
+                  style={{ cursor: "pointer", marginTop: "0px" }}
+                >
+                  수정하기
+                </button>
+              </div>
             </div>
             {props.isadmin === 1 ? (
               <Admin baseurl={props.baseurl} />
