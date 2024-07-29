@@ -17,7 +17,7 @@ function Header(props) {
     <div className="header user-card">
       {props.name ? <h2>반가워요! {props.name}:-)</h2> : <h2>환영합니다!</h2>}
       <div className="user-info" onClick={handleUserinfoClick}>
-        <span>{props.name || "Login"}</span>
+        <span>{props.name || "로그인"}</span>
         <img
           src={props.picture || "./images/profile.png"}
           alt="User Profile"

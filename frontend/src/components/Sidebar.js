@@ -116,7 +116,6 @@ function Sidebar(props) {
             className={
               location.pathname.includes("/Developing") ? "active" : ""
             }
-            onClick={handleNotuserClick}
           >
             <img
               src="/images/video-editor.png"
@@ -181,14 +180,14 @@ function Sidebar(props) {
               }`}
               onClick={handleNotuserClick}
             >
-              <img src="/images/user.png" alt="icon" className="menu-icon" />
-              My Page
+              <img src="/images/user.png" alt="icon" className="menu-icon" />내
+              정보
             </div>
           </li>
           <li>
             <Link to="/" onClick={handleLogout} style={{ color: "red" }}>
               <img src="/images/logout.png" alt="icon" className="menu-icon" />
-              Logout
+              로그아웃
             </Link>
           </li>
         </ul>
