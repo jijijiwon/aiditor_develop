@@ -81,9 +81,9 @@ function Sidebar(props) {
       <ul>
         <li>
           <Link
-            to="/RealTimeDescription"
+            to="/developing"
             className={
-              location.pathname.includes("/RealTimeDescription") ? "active" : ""
+              location.pathname.includes("/developing") ? "active" : ""
             }
           >
             <img src="/images/realtime.png" alt="icon" className="menu-icon" />
