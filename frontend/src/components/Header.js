@@ -6,7 +6,7 @@ function Header(props) {
   //로그인 staus 만들기
 
   const handleUserinfoClick = () => {
-    if (!props.isLogin) {
+    if (props.isLogin !== 1) {
       navigate("/login");
     } else {
       navigate("/mypage");
