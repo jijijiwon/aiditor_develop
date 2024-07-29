@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./ModerationRequest.css";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import DropdownInput from "../components/DropdownInput";
 import CheckboxList from "../components/CheckboxList";
 
@@ -19,6 +19,7 @@ const PrivacyProtectionRequest = (props) => {
   const [mosaicStrength, setMosaicStrength] = useState(mosaic_options[1]);
   const [thumbnail, setThumbnail] = useState(null);
   const [isLoading, setIsLoading] = useState(false); // 로딩 상태
+  const [isTicketOK, setIsTicketOK] = useState(true);
   const type = "P";
   const navigate = useNavigate();
 
@@ -144,6 +145,9 @@ const PrivacyProtectionRequest = (props) => {
     video.onloadedmetadata = () => {
       window.URL.revokeObjectURL(video.src);
       setVideoLength(video.duration);
+      if (video.duration > props.ticket[2]) {
+        setIsTicketOK(false);
+      }
     };
 
     video.src = URL.createObjectURL(file);
@@ -179,6 +183,7 @@ const PrivacyProtectionRequest = (props) => {
 
     if (props.ticket[2] - parseInt(videoLength) < 0) {
       alert("먼저 이용권을 구매해주세요!");
+      return;
     } else {
       let newusedticket = (
         parseInt(props.ticket[1]) + parseInt(videoLength)
@@ -308,7 +313,21 @@ const PrivacyProtectionRequest = (props) => {
                       .toString()
                       .padStart(2, "0")}{" "}
                   </p>
-                  <p>사용 가능한 이용권: {convertTime(props.ticket[2])}</p>
+                  {isTicketOK ? (
+                    <p>사용 가능한 이용권: {convertTime(props.ticket[2])}</p>
+                  ) : (
+                    <p style={{ color: "#F80D38" }}>
+                      사용 가능한 이용권: {convertTime(props.ticket[2])}
+                      <Link to="/ticket">
+                        <img
+                          src="/images/external.png"
+                          className="ticket-link"
+                          alt="구매하기"
+                        />
+                        <span className="ticket-linktext">구매하기</span>
+                      </Link>
+                    </p>
+                  )}
                 </div>
               )}
             </div>

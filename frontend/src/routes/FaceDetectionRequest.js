@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import Modal from "react-modal";
 import PhotoUploadPopup from "../components/PhotoUploadPopup";
 
@@ -13,6 +13,7 @@ const FaceDetectionRequest = (props) => {
   const [uploadedPhotos, setUploadedPhotos] = useState(null);
   const [index, setIndex] = useState(""); // 추가: 인덱스 상태 관리
   const [isOpen, setIsOpen] = useState(false);
+  const [isTicketOK, setIsTicketOK] = useState(true);
 
   const type = "F";
   const navigate = useNavigate();
@@ -133,6 +134,9 @@ const FaceDetectionRequest = (props) => {
     video.onloadedmetadata = () => {
       window.URL.revokeObjectURL(video.src);
       setVideoLength(video.duration);
+      if (video.duration > props.ticket[2]) {
+        setIsTicketOK(false);
+      }
     };
 
     video.src = URL.createObjectURL(file);
@@ -170,6 +174,7 @@ const FaceDetectionRequest = (props) => {
 
     if (props.ticket[2] - parseInt(videoLength) < 0) {
       alert("먼저 이용권을 구매해주세요!");
+      return;
     } else {
       let newusedticket = (
         parseInt(props.ticket[1]) + parseInt(videoLength)
@@ -323,7 +328,21 @@ const FaceDetectionRequest = (props) => {
                       .toString()
                       .padStart(2, "0")}{" "}
                   </p>
-                  <p>사용 가능한 이용권: {convertTime(props.ticket[2])}</p>
+                  {isTicketOK ? (
+                    <p>사용 가능한 이용권: {convertTime(props.ticket[2])}</p>
+                  ) : (
+                    <p style={{ color: "#F80D38" }}>
+                      사용 가능한 이용권: {convertTime(props.ticket[2])}
+                      <Link to="/ticket">
+                        <img
+                          src="/images/external.png"
+                          className="ticket-link"
+                          alt="구매하기"
+                        />
+                        <span className="ticket-linktext">구매하기</span>
+                      </Link>
+                    </p>
+                  )}
                 </div>
               )}
             </div>
