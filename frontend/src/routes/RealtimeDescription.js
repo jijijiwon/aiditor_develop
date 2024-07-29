@@ -11,9 +11,9 @@ function RealtimeDecsription() {
     { label: "담배", kor: "담배🚬", color: "#F80D38" },
   ];
   const labels_p = [
-    { label: "credit_card", kor: "신용카드💳", color: "#100DB1" },
-    { label: "receipt", kor: "영수증🧾", color: "#F80D38" },
-    { label: "license_plate", kor: "자동차 번호판🚙", color: "#FECA57" },
+    { label: "신용카드", kor: "신용카드💳", color: "#100DB1" },
+    { label: "영수증", kor: "영수증🧾", color: "#F80D38" },
+    { label: "자동차 번호판", kor: "자동차 번호판🚙", color: "#FECA57" },
   ];
 
   const handleMenuClick = (menu) => {
