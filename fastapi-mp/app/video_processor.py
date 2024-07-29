@@ -159,7 +159,7 @@ def process_video(worknum, video_path, filename, power, mosaic_strength, labels)
     logger = init_logger(worknum)
     logger.info(f"작업 라벨 {labels}에 대한 비디오 처리 시작")
 
-    frame_rate = 30
+    
 
 
     responsestart = requests.get(f'{FAST_API_USER_IP}/updateprocess?worknum={worknum}')
@@ -185,9 +185,11 @@ def process_video(worknum, video_path, filename, power, mosaic_strength, labels)
             if not os.path.exists("processed_videos"):
                 os.makedirs("processed_videos")
 
+
             output_path = os.path.join("processed_videos", f"processed_{os.path.basename(video_path)}")
             fourcc = cv2.VideoWriter_fourcc(*"mp4v")
-            out = cv2.VideoWriter(output_path, fourcc, frame_rate, (int(cap.get(3)), int(cap.get(4))))
+            frame_rate= cap.get(cv2.CAP_PROP_FPS)
+            out = cv2.VideoWriter(output_path, fourcc,frame_rate, (int(cap.get(3)), int(cap.get(4))))
 
             detection_results = []
 
@@ -365,6 +367,8 @@ def process_video(worknum, video_path, filename, power, mosaic_strength, labels)
     
     else:
         logger.info('삭제된 작업')
+        if os.path.exists(video_path):
+            os.remove(video_path)
         print(f'{worknum} 삭제된 작업')
 
 
