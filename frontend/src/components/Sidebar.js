@@ -1,4 +1,5 @@
 import { Link, useNavigate, useLocation } from "react-router-dom";
+import { Helmet } from "react-helmet";
 import "./Sidebar.css";
 
 function Sidebar(props) {
@@ -24,8 +25,54 @@ function Sidebar(props) {
     }
   };
 
+  const getTitle = (path) => {
+    switch (path) {
+      case "/RTModeration":
+        return "실시간 유해정보 블라인드";
+      case "/RTPrivacy":
+        return "실시간 개인정보 보호";
+      case "/ModerationRequest":
+        return "유해정보 블라인드";
+      case "/PrivacyProtectionRequest":
+        return "개인정보 보호";
+      case "/FaceDetectionRequest":
+        return "얼굴 감지";
+      case "/RequestDone":
+        return "편집 요청 완료";
+      case "/login":
+        return "AIvolution - 로그인";
+      case "/mypage":
+        return "AIvolution - My Page";
+      case "/infochange":
+        return "My Page - 정보 변경";
+      case "/ticket":
+        return "AIvolution - 이용권 구매";
+      case "/editdone":
+        return "편집 결과 확인";
+      case "/editing":
+        return "편집 결과 확인";
+      case "/editerror":
+        return "편집 결과 확인";
+      case "/board":
+        return "AIvolution - 게시판";
+      case "/boardwrite":
+        return "AIvolution - 게시판";
+      case "/announce":
+        return "AIvolution - 공지사항";
+      case "/annc":
+        return "AIvolution - 공지사항 상세";
+      case "/kakao-login/auth":
+        return "카카오 로그인";
+      default:
+        return "AIvolution";
+    }
+  };
+
   return (
     <div className="sidebar">
+      <Helmet>
+        <title>{getTitle(location.pathname)}</title>
+      </Helmet>
       <div className="logo">
         <Link to="/">
           <img src="/images/mainlogo.png" alt="icon" className="main-logo" />
