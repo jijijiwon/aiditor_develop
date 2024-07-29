@@ -59,6 +59,15 @@ const PrivacyProtectionRequest = (props) => {
     }
   }
 
+  const handleNotuserClick = (event) => {
+    console.log("handleNotuserClick: ", props.isLogin);
+    if (!props.isLogin) {
+      event.preventDefault(); // 기본 동작 방지
+      alert("로그인이 필요한 서비스입니다🐱");
+      navigate("/login");
+    }
+  };
+
   function convertTime(ticketSeconds) {
     const hours = Math.floor(ticketSeconds / 3600);
     const minutes = Math.floor((ticketSeconds % 3600) / 60)
@@ -318,7 +327,7 @@ const PrivacyProtectionRequest = (props) => {
                   ) : (
                     <p style={{ color: "#F80D38" }}>
                       사용 가능한 이용권: {convertTime(props.ticket[2])}
-                      <Link to="/ticket">
+                      <Link to="/ticket" onClick={handleNotuserClick}>
                         <img
                           src="/images/external.png"
                           className="ticket-link"
