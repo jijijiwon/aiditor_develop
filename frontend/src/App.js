@@ -4,6 +4,7 @@ import "./App.css";
 import Sidebar from "./components/Sidebar";
 import Header from "./components/Header";
 import Main from "./routes/Main";
+import RealtimeDescription from "./routes/RealtimeDescription";
 import RTModeration from "./routes/RTModeration";
 import RTPrivacy from "./routes/RTPrivacy";
 import ModerationRequest from "./routes/ModerationRequest";
@@ -78,6 +79,10 @@ function App() {
 
         <Routes>
           <Route path="/" element={<Main />} />
+          <Route
+            path="/RealtimeDescription"
+            element={<RealtimeDescription />}
+          />
           <Route path="/RTModeration" element={<RTModeration />} />
           <Route path="/RTPrivacy" element={<RTPrivacy />} />
           <Route
