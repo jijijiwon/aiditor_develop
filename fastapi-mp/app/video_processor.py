@@ -69,22 +69,44 @@ def encode_video(video_path):
 
 def add_audio_to_video(original_video, processed_video, output_video):
     try:
+        # Check if the original video has an audio track
         command = [
-            "ffmpeg",
-            "-i", processed_video,
+            "ffprobe",
             "-i", original_video,
-            "-c:v", "copy",
-            "-c:a", "aac",
-            "-strict", "experimental",
-            "-map", "0:v:0",
-            "-map", "1:a:0",
-            output_video
+            "-show_streams",
+            "-select_streams", "a",
+            "-loglevel", "error"
         ]
+        result = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True)
+        has_audio = bool(result.stdout.strip())
+
+        # Construct the ffmpeg command based on whether the original video has audio
+        if has_audio:
+            command = [
+                "ffmpeg",
+                "-i", processed_video,
+                "-i", original_video,
+                "-c:v", "copy",
+                "-c:a", "aac",
+                "-strict", "experimental",
+                "-map", "0:v:0",
+                "-map", "1:a:0",
+                output_video
+            ]
+        else:
+            command = [
+                "ffmpeg",
+                "-i", processed_video,
+                "-c:v", "copy",
+                output_video
+            ]
+        
         subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True)
+        return True
     except subprocess.CalledProcessError as e:
         print("오디오 추가 실패:", e)
         return False
-    return True
+
 
 def upload_to_s3(file_path, worknum):
     try:
