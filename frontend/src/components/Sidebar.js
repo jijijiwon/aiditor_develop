@@ -1,7 +1,10 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import "./Sidebar.css";
 
 function Sidebar(props) {
+  const location = useLocation();
+  const navigate = useNavigate();
+
   const handleLogout = () => {
     console.log("User signed out.");
     props.setName("");
@@ -11,7 +14,6 @@ function Sidebar(props) {
     props.setIsLogin(0);
   };
 
-  const navigate = useNavigate();
   const handleNotuserClick = () => {
     console.log("handleNotuserClick: ", props.isLogin);
     if (!props.isLogin) {
@@ -31,51 +33,93 @@ function Sidebar(props) {
       </div>
       <ul>
         <li>
-          <Link to="/developing" style={{ color: "#100db1" }}>
+          <Link
+            to="/developing"
+            className={
+              location.pathname.includes("/developing") ? "active" : ""
+            }
+          >
             <img src="/images/realtime.png" alt="icon" className="menu-icon" />
             실시간 모자이크
           </Link>
           <ul className="submenu">
             <li>
-              <Link to="/RTModeration">유해정보 블라인드</Link>
-              {/* <Link to="/developing">유해정보 블라인드</Link> */}
+              <Link
+                to="/RTModeration"
+                className={
+                  location.pathname === "/RTModeration" ? "active" : ""
+                }
+              >
+                유해정보 블라인드
+              </Link>
             </li>
             <li>
-              <Link to="/RTPrivacy">개인정보 보호</Link>
-              {/* <Link to="/developing">개인정보 보호</Link> */}
+              <Link
+                to="/RTPrivacy"
+                className={location.pathname === "/RTPrivacy" ? "active" : ""}
+              >
+                개인정보 보호
+              </Link>
             </li>
           </ul>
         </li>
         <li>
-          <Link to="/ModerationRequest" style={{ color: "#100db1" }}>
+          <Link
+            to="/Developing"
+            className={
+              location.pathname.includes("/Developing") ? "active" : ""
+            }
+            onClick={handleNotuserClick}
+          >
             <img
               src="/images/video-editor.png"
               alt="icon"
               className="menu-icon"
-              onClick={handleNotuserClick}
             />
             영상 편집기
           </Link>
           <ul className="submenu">
             <li>
-              <Link to="/ModerationRequest">유해정보 블라인드</Link>
+              <Link
+                to="/ModerationRequest"
+                className={
+                  location.pathname === "/ModerationRequest" ? "active" : ""
+                }
+              >
+                유해정보 블라인드
+              </Link>
             </li>
             <li>
-              <Link to="/PrivacyProtectionRequest">개인정보 보호</Link>
+              <Link
+                to="/PrivacyProtectionRequest"
+                className={
+                  location.pathname === "/PrivacyProtectionRequest"
+                    ? "active"
+                    : ""
+                }
+              >
+                개인정보 보호
+              </Link>
             </li>
             <li>
-              <Link to="/FaceDetectionRequest">얼굴 감지</Link>
+              <Link
+                to="/FaceDetectionRequest"
+                className={
+                  location.pathname === "/FaceDetectionRequest" ? "active" : ""
+                }
+              >
+                얼굴 감지
+              </Link>
             </li>
           </ul>
         </li>
         <li>
-          <Link to="/Board" style={{ color: "#100db1" }}>
-            <img
-              src="/images/board.png"
-              alt="icon"
-              className="menu-icon"
-              onClick={handleNotuserClick}
-            />
+          <Link
+            to="/Board"
+            className={location.pathname === "/Board" ? "active" : ""}
+            onClick={handleNotuserClick}
+          >
+            <img src="/images/board.png" alt="icon" className="menu-icon" />
             게시판
           </Link>
         </li>
@@ -84,7 +128,12 @@ function Sidebar(props) {
         <h3>사용자 계정</h3>
         <ul>
           <li>
-            <div className="mypage" onClick={handleNotuserClick}>
+            <div
+              className={`mypage ${
+                location.pathname === "/mypage" ? "active" : ""
+              }`}
+              onClick={handleNotuserClick}
+            >
               <img src="/images/user.png" alt="icon" className="menu-icon" />
               My Page
             </div>
