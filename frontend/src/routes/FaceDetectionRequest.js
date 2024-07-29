@@ -366,7 +366,7 @@ const FaceDetectionRequest = (props) => {
             </button>
           ) : (
             <button type="submit" className="submit-btn">
-              "AIditor, 편집을 시작해줘!"
+              AIditor, 편집을 시작해줘!
             </button>
           )}
         </form>
