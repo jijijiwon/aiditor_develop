@@ -63,7 +63,11 @@ const Login = (props) => {
       if (response.data !== null) {
         return response.data;
       } else {
-        return await addUser(user);
+        const newUser = await addUser(user);
+        if (newUser) {
+          await addTicket(user.email);
+        }
+        return newUser;
       }
     } catch (error) {
       console.log(error);
@@ -77,6 +81,24 @@ const Login = (props) => {
           "Content-Type": "application/json",
         },
       });
+      console.log(response.data);
+      return response.data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async function addTicket(email) {
+    try {
+      const response = await axios.post(
+        props.baseurl + "/addticket",
+        { email: email },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
       console.log(response.data);
       return response.data;
     } catch (error) {
