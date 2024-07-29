@@ -43,7 +43,15 @@ const MyPage = (props) => {
 
     return `${hours}시간 ${minutes}분 ${seconds}초`;
   }
-
+  const handleNotuserClick = () => {
+    console.log("handleNotuserClick: ", props.isLogin);
+    if (!props.isLogin) {
+      alert("로그인이 필요한 서비스입니다🐱");
+      navigate("/login");
+    } else {
+      navigate("/mypage");
+    }
+  };
   useEffect(() => {
     selectticket();
   }, []);
@@ -67,7 +75,7 @@ const MyPage = (props) => {
                     <td className="label">메일 수신 여부</td>
                     <td className="label">
                       이용권{" "}
-                      <Link to="/ticket">
+                      <Link to="/ticket" onClick={handleNotuserClick}>
                         <img
                           src="/images/external.png"
                           className="ticket-link"

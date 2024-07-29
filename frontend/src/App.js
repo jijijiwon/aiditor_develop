@@ -36,7 +36,7 @@ function App() {
   const [email, setEmail] = useState(sessionEmail || "");
   const [name, setName] = useState(sessionName || "");
   const [picture, setPicture] = useState(sessionPicture || "");
-  const [isLogin, setIsLogin] = useState(sessionIsLogin || 0);
+  const [isLogin, setIsLogin] = useState(sessionIsLogin === "true");
   const [opt, setOpt] = useState(sessionopt || "");
   const [isAdmin, setIsAdmin] = useState(sessionIsAdmin || 0);
   const [ticket, setTicket] = useState(["0", "0", "0"]);
@@ -45,10 +45,10 @@ function App() {
     window.sessionStorage.setItem("email", email);
     window.sessionStorage.setItem("name", name);
     window.sessionStorage.setItem("picture", picture);
-    window.sessionStorage.setItem("isLogin", isLogin);
+    window.sessionStorage.setItem("isLogin", isLogin.toString());
     window.sessionStorage.setItem("opt", opt);
     window.sessionStorage.setItem("isAdmin", isAdmin);
-  }, [name]);
+  }, [email, name, picture, isLogin, opt, isAdmin]);
 
   return (
     <div className="App">
