@@ -35,6 +35,7 @@ function InfoChange(props) {
   const handleDelete = async () => {
     try {
       await deleteUser();
+      await deleteTicket();
       setIsOpen(false);
       props.setName("");
       props.setEmail("");
@@ -76,6 +77,19 @@ function InfoChange(props) {
         params: { email: props.email },
       });
       console.log("User Deleted: ", response.data);
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  }
+
+  async function deleteTicket() {
+    try {
+      const response = await axios.delete(props.baseurl + "/deleteticket", {
+        params: { email: props.email },
+      });
+      console.log("Ticket Deleted: ", response.data);
       return response.data;
     } catch (error) {
       console.log(error);
@@ -156,13 +170,15 @@ function InfoChange(props) {
               <tr>
                 <td>이메일 주소, 이름 정보 삭제</td>
                 <td style={{ borderTop: "none" }}>
-                  회원이 맡긴 영상 편집 목록 삭제
+                  회원이 맡긴 영상 편집 목록,{" "}
+                  <span style={{ fontWeight: "600" }}>이용권</span> 삭제
                 </td>
               </tr>
             </table>
             <br />
             <p style={{ color: "grey", fontSize: "0.8em" }}>
-              회원 탈퇴시 데이터를 복구할 수 없으니 신중히 진행하세요.{" "}
+              회원 탈퇴시 구매한 이용권을 포함한 모든 데이터를 복구할 수 없으니
+              신중히 진행하세요.{" "}
             </p>
           </div>
           <footer className="modal-container-footer">

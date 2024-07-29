@@ -194,10 +194,25 @@ app.get("/selectticket", async (req, res) => {
         "Content-Type": "application/json",
       },
     });
-    console.log(response.data);
     res.json(response.data);
   } catch (error) {
     console.error("Error fetching user data:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+app.post("/addticket", async (req, res) => {
+  const { email } = req.body;
+  try {
+    const response = await axios.post(`${FAST_API_USER}/addticket`, null, {
+      params: { email },
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    res.json(response.data);
+  } catch (error) {
+    console.error("Error adding ticket:", error);
     res.status(500).json({ error: "Internal server error" });
   }
 });
@@ -245,6 +260,22 @@ app.put("/updateusedticket", async (req, res) => {
     } else {
       res.status(500).json({ error: "Internal server error" });
     }
+  }
+});
+
+app.delete("/deleteticket", async (req, res) => {
+  const { email } = req.query;
+  try {
+    const response = await axios.delete(`${FAST_API_USER}/deleteticket`, {
+      params: { email },
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    res.json(response.data);
+  } catch (error) {
+    console.error("Error deleting user:", error);
+    res.status(500).json({ error: "Internal server error" });
   }
 });
 
