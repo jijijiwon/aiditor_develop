@@ -19,6 +19,10 @@
       content="AI 자동 영상 편집을 제공하는 AIditor 입니다."
     />
     <script>
+      const sid = "%REACT_APP_HT_SID%";
+      const sname = "%REACT_APP_HT_SNAME%";
+      const cid = "%REACT_APP_HT_CID%";
+      const did = "%REACT_APP_HT_DID%";
       var ht = null;
       (function (id, scriptSrc, callback) {
         var d = document,
@@ -45,10 +49,10 @@
         "https://chat-static.happytalkio.com/sdk/happytalk.chat.v2.min.js",
         function () {
           ht = new Happytalk({
-            siteId: "4000003590",
-            siteName: "AIvolution",
-            categoryId: "184095",
-            divisionId: "184096",
+            siteId: sid,
+            siteName: sname,
+            categoryId: cid,
+            divisionId: did,
           });
         }
       );
