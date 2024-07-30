@@ -9,10 +9,15 @@
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
 }
 
+.des-menu {
+  display: flex;
+  flex-direction: row;
+}
+
 .des-background {
   display: flex;
   flex-direction: column;
-  max-width: 100%;
+  width: 100%;
   margin: 20px auto;
   align-items: center;
 }
@@ -26,9 +31,10 @@
 }
 
 #rt-moderation-des {
-  background-color: #e7e7e7;
   width: 90%;
   margin: auto 0;
+  border: solid 1px #d3d3d3;
+  box-shadow: none;
 }
 
 .des-text {
@@ -36,6 +42,8 @@
   padding: 20px;
   display: flex;
   flex-direction: column;
+  font-size: large;
+  line-height: 150%;
 }
 
 .des-text hr {
@@ -53,6 +61,22 @@
   margin: 2px;
 }
 
+#sample-video {
+  width: 100%;
+}
+
+.des-sample {
+  display: flex;
+  width: 100%;
+
+  figure img {
+    width: 100%;
+  }
+  figcaption {
+    text-align: center;
+  }
+}
+
 .link-keyword {
   position: relative;
   cursor: pointer;
@@ -60,7 +84,6 @@
 
 .tooltip {
   position: relative;
-  display: inline-block;
 }
 
 .linktext {
@@ -75,9 +98,11 @@
   transition: opacity 0.5s ease;
   pointer-events: none;
   z-index: 1;
-  width: 40vh;
+  min-width: 30vh;
+  max-width: 60vh;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
   text-align: justify;
+  font-weight: 100;
 }
 
 .tooltip:hover .linktext {

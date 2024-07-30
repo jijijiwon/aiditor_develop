@@ -7,6 +7,7 @@ import Main from "./routes/Main";
 import RealtimeDescription from "./routes/RealtimeDescription";
 import RTModeration from "./routes/RTModeration";
 import RTPrivacy from "./routes/RTPrivacy";
+import VideoEditorDecsription from "./routes/VideoEditorDescription";
 import ModerationRequest from "./routes/ModerationRequest";
 import RequestDone from "./routes/RequestDone";
 import PrivacyProtectionRequest from "./routes/PrivacyProtectionRequest";
@@ -86,6 +87,10 @@ function App() {
           />
           <Route path="/RTModeration" element={<RTModeration />} />
           <Route path="/RTPrivacy" element={<RTPrivacy />} />
+          <Route
+            path="/VideoEditorDescription"
+            element={<VideoEditorDecsription />}
+          />
           <Route
             path="/ModerationRequest"
             element={

@@ -5,7 +5,7 @@ import { useNavigate, Link } from "react-router-dom";
 import DropdownInput from "../components/DropdownInput";
 import CheckboxList from "../components/CheckboxList";
 
-const power_options = ["약하게", "중간", "강하게"];
+const power_options = ["낮게", "중간", "높게"];
 const power_opt = ["0.3", "0.5", "0.7"];
 
 const mosaic_options = ["약하게", "중간", "강하게"];
@@ -366,7 +366,7 @@ const ModerationRequest = (props) => {
                 </div>
               </label>
               <label>
-                감지 민감도 :
+                감지 정확도 :
                 <DropdownInput
                   options={power_options}
                   defaultValue={power_options[1]} // 디폴트 값 설정
