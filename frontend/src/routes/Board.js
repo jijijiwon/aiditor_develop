@@ -19,6 +19,8 @@ const Board = (props) => {
   const handleNeedLogin = () => {
     alert("로그인이 필요한 서비스입니다🐱");
   };
+  const isLogin = Number(props.isLogin) || 0;
+  const isAdmin = Number(props.isAdmin) || 0;
 
   const handlePageChange = ({ selected }) => {
     setCurrentPage(selected);
@@ -133,12 +135,12 @@ const Board = (props) => {
             />
           )}
         </div>
-        {props.isAdmin === 0 ? (
+        {isAdmin == 0 ? (
           <div
             className="button-box"
             style={{ marginRight: "1.5em", height: "1em", marginBottom: "1em" }}
           >
-            {props.isLogin === 1 ? (
+            {isLogin == 1 ? (
               <button
                 onClick={handleWrite}
                 style={{ cursor: "pointer", height: "36px", fontSize: "16px" }}

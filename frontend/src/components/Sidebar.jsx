@@ -13,6 +13,7 @@ function Sidebar(props) {
     props.setPicture("");
     props.setIsAdmin(0);
     props.setIsLogin(0);
+    props.setTicket([0, 0, 0]);
   };
 
   const handleNotuserClick = (event) => {
