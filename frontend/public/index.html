@@ -18,6 +18,41 @@
       property="og:description"
       content="AI 자동 영상 편집을 제공하는 AIditor 입니다."
     />
+    <script>
+      var ht = null;
+      (function (id, scriptSrc, callback) {
+        var d = document,
+          tagName = "script",
+          $script = d.createElement(tagName),
+          $element = d.getElementsByTagName(tagName)[0];
+
+        $script.id = id;
+        $script.async = true;
+        $script.src = scriptSrc;
+
+        if (callback) {
+          $script.addEventListener(
+            "load",
+            function (e) {
+              callback(null, e);
+            },
+            false
+          );
+        }
+        $element.parentNode.insertBefore($script, $element);
+      })(
+        "happytalkSDK",
+        "https://chat-static.happytalkio.com/sdk/happytalk.chat.v2.min.js",
+        function () {
+          ht = new Happytalk({
+            siteId: "4000003590",
+            siteName: "AIvolution",
+            categoryId: "184095",
+            divisionId: "184096",
+          });
+        }
+      );
+    </script>
     <title>AIvolution</title>
   </head>
   <body>
