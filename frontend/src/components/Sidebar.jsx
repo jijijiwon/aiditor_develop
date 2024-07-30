@@ -15,13 +15,12 @@ function Sidebar(props) {
     props.setIsLogin(0);
   };
 
-  const handleNotuserClick = () => {
+  const handleNotuserClick = (event) => {
     console.log("handleNotuserClick: ", props.isLogin);
     if (props.isLogin !== 1) {
+      event.preventDefault();
       alert("로그인이 필요한 서비스입니다🐱");
       navigate("/login");
-    } else {
-      navigate("/mypage");
     }
   };
 
@@ -112,9 +111,11 @@ function Sidebar(props) {
         </li>
         <li>
           <Link
-            to="/Developing"
+            to="/VideoEditorDescription"
             className={
-              location.pathname.includes("/Developing") ? "active" : ""
+              location.pathname.includes("/VideoEditorDescription")
+                ? "active"
+                : ""
             }
           >
             <img
