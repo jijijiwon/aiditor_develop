@@ -43,13 +43,12 @@ const MyPage = (props) => {
 
     return `${hours}시간 ${minutes}분 ${seconds}초`;
   }
-  const handleNotuserClick = () => {
+  const handleNotuserClick = (event) => {
     console.log("handleNotuserClick: ", props.isLogin);
     if (props.isLogin !== 1) {
+      event.preventDefault();
       alert("로그인이 필요한 서비스입니다🐱");
       navigate("/login");
-    } else {
-      navigate("/mypage");
     }
   };
   useEffect(() => {
