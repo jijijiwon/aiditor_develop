@@ -63,12 +63,14 @@ function App() {
         isLogin={isLogin}
         opt={opt}
         isAdmin={isAdmin}
+        ticket={ticket}
         setEmail={setEmail}
         setName={setName}
         setPicture={setPicture}
         setIsLogin={setIsLogin}
         setOpt={setOpt}
         setIsAdmin={setIsAdmin}
+        setTicket={setTicket}
       ></Sidebar>
       <div className="main">
         <Header
