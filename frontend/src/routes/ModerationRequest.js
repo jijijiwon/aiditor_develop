@@ -39,24 +39,29 @@ const ModerationRequest = (props) => {
   }
 
   async function selectticket() {
-    try {
-      console.log("email: ", props.email);
-      const email = props.email;
-      const response = await axios.get(props.baseurl + "/selectticket", {
-        params: { email: email },
-      });
-      console.log(response.data);
+    const isLogin = Number(props.isLogin) || 0; // props.isLogin을 숫자로 변환, 기본값 0
+    if (isLogin !== 1) {
+      props.setTicket([0, 0, 0]);
+    } else {
+      try {
+        console.log("email: ", props.email);
+        const email = props.email;
+        const response = await axios.get(props.baseurl + "/selectticket", {
+          params: { email: email },
+        });
+        console.log(response.data);
 
-      const ticketData = [
-        response.data["totalticket"],
-        response.data["usedticket"],
-        response.data["remainticket"],
-      ];
+        const ticketData = [
+          response.data["totalticket"],
+          response.data["usedticket"],
+          response.data["remainticket"],
+        ];
 
-      props.setTicket(ticketData);
-      return response.data;
-    } catch (error) {
-      console.log(error);
+        props.setTicket(ticketData);
+        return response.data;
+      } catch (error) {
+        console.log(error);
+      }
     }
   }
 
@@ -84,6 +89,7 @@ const ModerationRequest = (props) => {
     setVideoFile(file);
     getVideoLength(file);
     generateThumbnail(file);
+    selectticket();
   };
 
   const handleNameChange = (event) => {
@@ -284,10 +290,6 @@ const ModerationRequest = (props) => {
       setIsLoading(false); // 로딩 상태 종료
     }
   };
-
-  useEffect(() => {
-    selectticket();
-  }, []);
 
   return (
     <>
