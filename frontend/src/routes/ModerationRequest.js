@@ -61,9 +61,9 @@ const ModerationRequest = (props) => {
   }
 
   const handleNotuserClick = (event) => {
-    console.log("handleNotuserClick: ", props.isLogin);
-    if (props.isLogin !== 1) {
-      event.preventDefault(); // 기본 동작 방지
+    const isLogin = Number(props.isLogin) || 0; // props.isLogin을 숫자로 변환, 기본값 0
+    if (isLogin !== 1) {
+      event.preventDefault();
       alert("로그인이 필요한 서비스입니다🐱");
       navigate("/login");
     }

@@ -16,8 +16,8 @@ function Sidebar(props) {
   };
 
   const handleNotuserClick = (event) => {
-    console.log("handleNotuserClick: ", props.isLogin);
-    if (props.isLogin !== 1) {
+    const isLogin = Number(props.isLogin) || 0; // props.isLogin을 숫자로 변환, 기본값 0
+    if (isLogin !== 1) {
       event.preventDefault();
       alert("로그인이 필요한 서비스입니다🐱");
       navigate("/login");
@@ -164,7 +164,6 @@ function Sidebar(props) {
           <Link
             to="/Board"
             className={location.pathname === "/Board" ? "active" : ""}
-            onClick={handleNotuserClick}
           >
             <img src="/images/board.png" alt="icon" className="menu-icon" />
             게시판
@@ -175,15 +174,14 @@ function Sidebar(props) {
         <h3>사용자 계정</h3>
         <ul>
           <li>
-            <div
-              className={`mypage ${
-                location.pathname === "/mypage" ? "active" : ""
-              }`}
+            <Link
+              to="/Mypage"
+              className={location.pathname === "/mypage" ? "active" : ""}
               onClick={handleNotuserClick}
             >
               <img src="/images/user.png" alt="icon" className="menu-icon" />내
               정보
-            </div>
+            </Link>
           </li>
           <li>
             <Link to="/" onClick={handleLogout} style={{ color: "red" }}>
