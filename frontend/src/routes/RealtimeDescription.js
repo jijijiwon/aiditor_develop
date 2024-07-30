@@ -101,7 +101,7 @@ function RealtimeDecsription() {
                         </div>
                       ))}
                   <div className="linktext">
-                    표시된 라벨, 즉
+                    표시된 라벨인
                     {menu === "M"
                       ? labels_m.map((label, i) => (
                           <span key={i}>{label.label}</span>
@@ -122,12 +122,14 @@ function RealtimeDecsription() {
                     src="/images/sample_m.gif"
                     alt="sample"
                     className="link-keyword"
+                    id="sample-video"
                   />
                 ) : (
                   <img
                     src="/images/sample_p.gif"
                     alt="sample"
                     className="link-keyword"
+                    id="sample-video"
                   />
                 )}
                 <div className="linktext" style={{ left: "80%" }}>
@@ -137,7 +139,7 @@ function RealtimeDecsription() {
             </div>
           </div>
           {menu === "M" ? (
-            <div className="des-text" id="rt-moderation">
+            <div className="des-text">
               <h3 style={{ color: "#100DB1" }}>실시간 유해정보 블라인드</h3>
               <hr />
               <p>
@@ -147,11 +149,11 @@ function RealtimeDecsription() {
               <div>
                 <p>
                   웹브라우저 설정에서 웹캠을 허용하면, 가운데 화면에 사용자의
-                  카메라 화면이 보여집니다. 왼쪽에 표시된 라벨, 즉
+                  카메라 화면이 보여집니다. 왼쪽에 표시된 라벨인
                   {labels_m.map(function (label, i) {
                     return <span key={i}>{label["label"]}</span>;
                   })}
-                  으로 인식되는 컨텐츠를 인식하고 모자이크 합니다.
+                  을 인식하고 모자이크 합니다.
                 </p>
               </div>
             </div>
@@ -170,7 +172,7 @@ function RealtimeDecsription() {
                   {labels_p.map(function (label, i) {
                     return <span key={i}>{label.label}</span>;
                   })}
-                  으로 인식되는 컨텐츠를 인식하고 모자이크 합니다.
+                  을 인식하고 모자이크 합니다.
                 </p>
               </div>
             </div>

@@ -5,7 +5,7 @@ import { useNavigate, Link } from "react-router-dom";
 import DropdownInput from "../components/DropdownInput";
 import CheckboxList from "../components/CheckboxList";
 
-const power_options = ["약하게", "중간", "강하게"];
+const power_options = ["낮게", "중간", "높게"];
 const power_opt = ["0.3", "0.5", "0.7"];
 
 const mosaic_options = ["약하게", "중간", "강하게"];
@@ -341,7 +341,7 @@ const PrivacyProtectionRequest = (props) => {
               )}
             </div>
             <div className="input-box">
-              <h3>유해정보 블라인드 편집 요청</h3>
+              <h3>개인정보 보호 편집 요청</h3>
               <label>
                 편집 타입 :
                 <input type="text" value="개인정보 보호" readOnly />
@@ -366,7 +366,7 @@ const PrivacyProtectionRequest = (props) => {
                 </div>
               </label>
               <label>
-                감지 민감도 :
+                감지 정확도 :
                 <DropdownInput
                   options={power_options}
                   defaultValue={power_options[1]} // 디폴트 값 설정
