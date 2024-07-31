@@ -18,7 +18,7 @@ import requests
 with open('../config/secrets.json') as f:
     secrets = json.load(f)
 
-FAST_API_USER_IP= secrets['FAST_API_USER_IP']
+FAST_API_USER_IP = secrets['FAST_API_USER_IP']
 
 # MongoDB 설정
 MONGODB_ID_F = secrets["MONGODB_ID_F"]
@@ -100,6 +100,9 @@ def process_video(item):
                 collection.update_one({"worknum": worknum}, {"$set": {"job_ok": -1}})
                 print("Processing failed...")
                 return
+            
+            # 비디오 처리 완료 후 파일 삭제
+            cleanup_files()
         else:
             print(f"Processing for worknum {worknum} is not started as response is not '1'")
     except subprocess.CalledProcessError as e:
@@ -112,6 +115,31 @@ def process_video(item):
         # 작업 상태를 '에러'로 업데이트
         collection.update_one({"worknum": worknum}, {"$set": {"job_ok": -1}})
         print("Processing failed...")
+
+def cleanup_files():
+    # train 디렉토리 정리
+    train_dir = Path("knn_examples/train")
+    if train_dir.exists() and train_dir.is_dir():
+        print(f"Deleting train directory: {train_dir}")
+        shutil.rmtree(train_dir)
+    else:
+        print(f"Train directory does not exist or is not a directory: {train_dir}")
+    
+    # test 디렉토리 정리
+    test_dir = Path("knn_examples/test")
+    if test_dir.exists() and test_dir.is_dir():
+        print(f"Deleting test directory: {test_dir}")
+        shutil.rmtree(test_dir)
+    else:
+        print(f"Test directory does not exist or is not a directory: {test_dir}")
+
+    # output 디렉토리 정리
+    output_dir = Path("knn_examples/output")
+    if output_dir.exists() and output_dir.is_dir():
+        print(f"Deleting output directory: {output_dir}")
+        shutil.rmtree(output_dir)
+    else:
+        print(f"Output directory does not exist or is not a directory: {output_dir}")
 
 def extract_number(s):
     return int(''.join(filter(str.isdigit, s)))

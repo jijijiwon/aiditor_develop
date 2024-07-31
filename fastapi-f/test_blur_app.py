@@ -15,12 +15,14 @@ from pymongo import MongoClient
 import json
 import logging
 import subprocess
+from pathlib import Path
+import shutil
 
 # secret.json 파일에서 환경 변수를 로드
 with open('../config/secrets.json') as f:
     secrets = json.load(f)
 
-FAST_API_USER = secrets["FAST_API_USER_IP"]
+FAST_API_USER_IP = secrets["FAST_API_USER_IP"]
 
 # 사용자 정보를 저장하기 위한 Pydantic 모델
 class User(BaseModel):
@@ -190,7 +192,7 @@ def correct_labels(all_predictions, frame_count, window_size=10, threshold=5):
 
     return corrected_predictions[-1]
 
-#비디오를 처리하는 함수
+# 비디오를 처리하는 함수
 def process_video(input_video_path, output_video_name, knn_clf, worknum, window_size=10, threshold=4):
     logger = init_logger(worknum)
 
@@ -276,11 +278,39 @@ def process_video(input_video_path, output_video_name, knn_clf, worknum, window_
         logger.info(f"Uploaded video to S3: {s3_url}")
         print(s3_url)
 
+        # 비디오 처리 완료 후 파일 삭제
+        cleanup_files()
+
     except Exception as e:
         logger.error(f"An unexpected error occurred during video processing: {e}")
         collection.update_one({"worknum": worknum}, {"$set": {"job_ok": -1}})
         print("Processing failed...")
         raise
+
+def cleanup_files():
+    # train 디렉토리 정리
+    train_dir = Path("knn_examples/train")
+    if train_dir.exists() and train_dir.is_dir():
+        print(f"Deleting train directory: {train_dir}")
+        shutil.rmtree(train_dir)
+    else:
+        print(f"Train directory does not exist or is not a directory: {train_dir}")
+    
+    # test 디렉토리 정리
+    test_dir = Path("knn_examples/test")
+    if test_dir.exists() and test_dir.is_dir():
+        print(f"Deleting test directory: {test_dir}")
+        shutil.rmtree(test_dir)
+    else:
+        print(f"Test directory does not exist or is not a directory: {test_dir}")
+
+    # output 디렉토리 정리
+    output_dir = Path("knn_examples/output")
+    if output_dir.exists() and output_dir.is_dir():
+        print(f"Deleting output directory: {output_dir}")
+        shutil.rmtree(output_dir)
+    else:
+        print(f"Output directory does not exist or is not a directory: {output_dir}")
 
 def check_audio_track(video_path):
     try:
@@ -305,7 +335,6 @@ def run_command(command, logger, worknum):
         collection.update_one({"worknum": worknum}, {"$set": {"job_ok": -1}})
         print("Processing failed...")
         raise
-
 
 ##작업 이메일 보내기
     try:
