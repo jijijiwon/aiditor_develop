@@ -11,6 +11,7 @@ function Sidebar(props) {
     props.setName("");
     props.setEmail("");
     props.setPicture("");
+    props.setOpt("");
     props.setIsAdmin(0);
     props.setIsLogin(0);
     props.setTicket([0, 0, 0]);
