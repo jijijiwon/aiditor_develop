@@ -14,12 +14,13 @@ import requests
 from pymongo import MongoClient
 import json
 import logging
+import subprocess
 
 # secret.json 파일에서 환경 변수를 로드
 with open('../config/secrets.json') as f:
     secrets = json.load(f)
 
-FAST_API_USER= secrets["FAST_API_USER_IP"]
+FAST_API_USER = secrets["FAST_API_USER_IP"]
 
 # 사용자 정보를 저장하기 위한 Pydantic 모델
 class User(BaseModel):
@@ -38,7 +39,7 @@ S3_SECRET_ACCESS_KEY_F = secrets["S3_SECRET_ACCESS_KEY_F"]
 S3_BUCKET_NAME_F = secrets["S3_BUCKET_NAME_F"]
 S3_REGION_F = secrets["S3_REGION_F"]
 
-#S3 설정
+# S3 설정
 s3_client = boto3.client(
     's3',
     aws_access_key_id=S3_ACCESS_KEY_ID_F,
@@ -48,7 +49,6 @@ s3_client = boto3.client(
 bucket_name = S3_BUCKET_NAME_F
 
 # MongoDB 설정
-#mongo_client = MongoClient(f"mongodb://{MONGODB_ID_F}:{MONGODB_PASSWORD_F}@mongo_f:{MONGODB_PORT_F}")
 mongo_client = MongoClient(f"mongodb://{MONGODB_ID_F}:{MONGODB_PASSWORD_F}@{MONGODB_TEST_F}:{MONGODB_PORT_F}")
 db = mongo_client["videos"]
 collection = db["video"]
@@ -61,10 +61,30 @@ facerec = dlib.face_recognition_model_v1("dlib_face_recognition_resnet_model_v1.
 # 허용되는 파일 확장자 설정
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'mp4'}
 
-# 로거 설정
-log_filename = 'process_video.log'
-logging.basicConfig(level=logging.INFO, filename=log_filename, filemode='a', format='%(asctime)s - %(levelname)s - %(message)s')
-logger = logging.getLogger()
+# 로거 설정 함수
+def init_logger(worknum):
+    logger = logging.getLogger(worknum)
+    logger.setLevel(logging.INFO)
+    
+    # 파일 핸들러 설정
+    if not os.path.exists("logs"):
+        os.makedirs("logs")
+
+    log_file = os.path.join("logs", f"{worknum}.log")
+    fh = logging.FileHandler(log_file, encoding='utf-8')
+    fh.setLevel(logging.INFO)
+    
+    # 로그 포맷 설정
+    formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+    fh.setFormatter(formatter)
+    
+    # 핸들러 추가
+    logger.addHandler(fh)
+    
+    # 터미널 로그 제거
+    logger.propagate = False
+    
+    return logger
 
 # 함수들
 
@@ -77,40 +97,46 @@ def upload_to_s3(file_path, worknum):
 
 # 얼굴 인식 모델을 훈련시키는 함수
 def train(train_dir, model_save_path=None, n_neighbors=None, knn_algo='ball_tree', verbose=False):
+    logger = logging.getLogger()
     X, y = [], []
 
-    for class_dir in os.listdir(train_dir):
-        print(f"Processing {class_dir} ...")
-        if not os.path.isdir(os.path.join(train_dir, class_dir)):
-            continue
-
-        if not class_dir.startswith(worknum):
-            continue
-
-        for img_path in os.listdir(os.path.join(train_dir, class_dir)):
-            if img_path.split('.')[-1] not in ALLOWED_EXTENSIONS:
+    try:
+        for class_dir in os.listdir(train_dir):
+            logger.info(f"Processing {class_dir} ...")
+            if not os.path.isdir(os.path.join(train_dir, class_dir)):
                 continue
-            image = face_recognition.load_image_file(os.path.join(train_dir, class_dir, img_path))
-            face_bounding_boxes = face_recognition.face_locations(image)
 
-            if len(face_bounding_boxes) == 1:
-                X.append(face_recognition.face_encodings(image, known_face_locations=face_bounding_boxes)[0])
-                y.append(class_dir)
-            elif verbose:
-                print(f"Image {img_path} not suitable for training: {'Didn’t find a face' if len(face_bounding_boxes) < 1 else 'Found more than one face'}")
+            if not class_dir.startswith(worknum):
+                continue
 
-    n_neighbors = n_neighbors or int(round(math.sqrt(len(X))))
-    if verbose:
-        print(f"Chose n_neighbors automatically: {n_neighbors}")
+            for img_path in os.listdir(os.path.join(train_dir, class_dir)):
+                if img_path.split('.')[-1] not in ALLOWED_EXTENSIONS:
+                    continue
+                image = face_recognition.load_image_file(os.path.join(train_dir, class_dir, img_path))
+                face_bounding_boxes = face_recognition.face_locations(image)
 
-    knn_clf = neighbors.KNeighborsClassifier(n_neighbors=n_neighbors, algorithm=knn_algo, weights='distance')
-    knn_clf.fit(X, y)
+                if len(face_bounding_boxes) == 1:
+                    X.append(face_recognition.face_encodings(image, known_face_locations=face_bounding_boxes)[0])
+                    y.append(class_dir)
+                elif verbose:
+                    logger.info(f"Image {img_path} not suitable for training: {'Didn’t find a face' if len(face_bounding_boxes) < 1 else 'Found more than one face'}")
 
-    if model_save_path:
-        with open(model_save_path, 'wb') as f:
-            pickle.dump(knn_clf, f)
+        n_neighbors = n_neighbors or int(round(math.sqrt(len(X))))
+        if verbose:
+            logger.info(f"Chose n_neighbors automatically: {n_neighbors}")
 
-    return knn_clf
+        knn_clf = neighbors.KNeighborsClassifier(n_neighbors=n_neighbors, algorithm=knn_algo, weights='distance')
+        knn_clf.fit(X, y)
+
+        if model_save_path:
+            with open(model_save_path, 'wb') as f:
+                pickle.dump(knn_clf, f)
+        logger.info("Training completed successfully")
+        return knn_clf
+
+    except Exception as e:
+        logger.error(f"Training failed: {e}")
+        return None
 
 # 프레임에서 얼굴을 예측하는 함수
 def predict_frame(frame, knn_clf=None, model_path=None, distance_threshold=0.45):
@@ -166,62 +192,88 @@ def correct_labels(all_predictions, frame_count, window_size=10, threshold=5):
 
 # 비디오를 처리하는 함수
 def process_video(input_video_path, output_video_name, knn_clf, worknum, window_size=10, threshold=4):
-    cap = cv2.VideoCapture(input_video_path)
-    fps = cap.get(cv2.CAP_PROP_FPS)
-    width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
-    height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+    logger = init_logger(worknum)
+    
+    try:
+        cap = cv2.VideoCapture(input_video_path)
+        fps = cap.get(cv2.CAP_PROP_FPS)
+        width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+        height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
 
-    if not cap.isOpened():
-        print(f"Error: Unable to open video file {input_video_path}")
-        return
+        if not cap.isOpened():
+            logger.error(f"Error: Unable to open video file {input_video_path}")
+            collection.update_one({"worknum": worknum}, {"$set": {"job_ok": -1}})
+            raise Exception(f"Error: Unable to open video file {input_video_path}")
 
-    os.makedirs('output_frames', exist_ok=True)
+        os.makedirs('output_frames', exist_ok=True)
 
-    frame_count, saved_frame_count, all_predictions = 0, 0, []
+        frame_count, saved_frame_count, all_predictions = 0, 0, []
 
-    while cap.isOpened():
-        ret, frame = cap.read()
-        if not ret:
-            break
+        while cap.isOpened():
+            ret, frame = cap.read()
+            if not ret:
+                break
 
-        if frame_count % 1 == 0:
-            predictions = predict_frame(frame, knn_clf=knn_clf)
-            all_predictions.append(predictions)
-            corrected_predictions = correct_labels(all_predictions, frame_count, window_size, threshold)
+            if frame_count % 1 == 0:
+                predictions = predict_frame(frame, knn_clf=knn_clf)
+                all_predictions.append(predictions)
+                corrected_predictions = correct_labels(all_predictions, frame_count, window_size, threshold)
 
-            frame_with_predictions = show_prediction_labels_on_image(frame, corrected_predictions)
-            frame_filename = f"output_frames/frame_{saved_frame_count:04d}.jpg"
-            cv2.imwrite(frame_filename, frame_with_predictions)
-            logger.info(f"Saved frame {frame_count} as JPG")
+                frame_with_predictions = show_prediction_labels_on_image(frame, corrected_predictions)
+                frame_filename = f"output_frames/frame_{saved_frame_count:04d}.jpg"
+                cv2.imwrite(frame_filename, frame_with_predictions)
+                logger.info(f"Saved frame {frame_count} as JPG")
 
-            saved_frame_count += 1
+                saved_frame_count += 1
 
-        frame_count += 1
+            frame_count += 1
 
-    cap.release()
+        cap.release()
 
-    base_filename = os.path.splitext(output_video_name)[0]
-    video_path = f"knn_examples/output/{base_filename}_video.mp4"
-    audio_path = f"knn_examples/output/{base_filename}_audio.mp3"
+        base_filename = os.path.splitext(output_video_name)[0]
+        video_path = f"knn_examples/output/{base_filename}_video.mp4"
+        audio_path = f"knn_examples/output/{base_filename}_audio.mp3"
 
-    os.makedirs(os.path.dirname(video_path), exist_ok=True)
-    os.system(f"ffmpeg -r {fps} -i output_frames/frame_%04d.jpg -vcodec libx264 -pix_fmt yuv420p {video_path}")
+        os.makedirs(os.path.dirname(video_path), exist_ok=True)
+        
+        # ffmpeg 명령 실행 및 예외 처리
+        command = f"ffmpeg -r {fps} -i output_frames/frame_%04d.jpg -vcodec libx264 -pix_fmt yuv420p {video_path}"
+        run_command(command, logger, worknum)
 
-    os.system(f"ffmpeg -i {input_video_path} -q:a 0 -map a {audio_path}")
+        command = f"ffmpeg -i {input_video_path} -q:a 0 -map a {audio_path}"
+        run_command(command, logger, worknum)
 
-    final_output = f"knn_examples/output/{output_video_name}" if output_video_name.endswith('.mp4') else f"knn_examples/output/{output_video_name}.mp4"
-    os.system(f"ffmpeg -i {video_path} -i {audio_path} -c:v copy -c:a aac -strict experimental {final_output}")
+        final_output = f"knn_examples/output/{output_video_name}" if output_video_name.endswith('.mp4') else f"knn_examples/output/{output_video_name}.mp4"
+        command = f"ffmpeg -i {video_path} -i {audio_path} -c:v copy -c:a aac -strict experimental {final_output}"
+        run_command(command, logger, worknum)
 
-    for file_name in os.listdir('output_frames'):
-        file_path = os.path.join('output_frames', file_name)
-        if os.path.isfile(file_path):
-            os.unlink(file_path)
-    os.rmdir('output_frames')
+        for file_name in os.listdir('output_frames'):
+            file_path = os.path.join('output_frames', file_name)
+            if os.path.isfile(file_path):
+                os.unlink(file_path)
+        os.rmdir('output_frames')
 
-    s3_url = upload_to_s3(final_output, worknum)
-    collection.update_one({"worknum": worknum}, {"$set": {"s3_url": s3_url}})
+        s3_url = upload_to_s3(final_output, worknum)
+        collection.update_one({"worknum": worknum}, {"$set": {"s3_url": s3_url, "job_ok": 2}})
 
-    print(s3_url)
+        logger.info(f"Uploaded video to S3: {s3_url}")
+        print(s3_url)
+
+    except Exception as e:
+        logger.error(f"An unexpected error occurred during video processing: {e}")
+        collection.update_one({"worknum": worknum}, {"$set": {"job_ok": -1}})
+        print("Processing failed...")
+        raise
+
+# ffmpeg 명령 실행 함수
+def run_command(command, logger, worknum):
+    try:
+        subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True, shell=True)
+    except subprocess.CalledProcessError as e:
+        logger.error(f"Command failed: {command}\nError: {e}")
+        collection.update_one({"worknum": worknum}, {"$set": {"job_ok": -1}})
+        print("Processing failed...")
+        raise
 
     '''
 ##작업 이메일 보내기
@@ -248,27 +300,33 @@ def process_video(input_video_path, output_video_name, knn_clf, worknum, window_
         print(responsemail.json())
 '''
 
-# 메인 함수 : 비디오 처리 파이프라인 실행
 if __name__ == "__main__":
     input_video_path = sys.argv[1]
     output_video_name = sys.argv[2]
     worknum = sys.argv[3]
 
-    # 기존 확장자가 중복되지 않도록 처리
-    output_video_name = output_video_name.replace('.mp4', '')
-    
-    print("Training KNN classifier...")
-    logger.info("Training KNN classifier...")
+    try:
+        # 기존 확장자가 중복되지 않도록 처리
+        output_video_name = output_video_name.replace('.mp4', '')
+        
+        print("Training KNN classifier...")
+        logger = init_logger(worknum)
+        logger.info("Training KNN classifier...")
 
-    classifier = train("knn_examples/train", model_save_path="trained_knn_model.clf", n_neighbors=3)
+        classifier = train("knn_examples/train", model_save_path="trained_knn_model.clf", n_neighbors=3)
 
-    print("Training complete!")
-    logger.info("Training complete!")
+        print("Training complete!")
+        logger.info("Training complete!")
 
-    print(f"Processing video {input_video_path}")
-    logger.info(f"Processing video {input_video_path}")
+        print(f"Processing video {input_video_path}")
+        logger.info(f"Processing video {input_video_path}")
 
-    process_video(input_video_path, output_video_name, classifier, worknum)
+        process_video(input_video_path, output_video_name, classifier, worknum)
 
-    print("Processing complete!")
-    logger.info("Processing complete!")                                                                                                                                                                                                                                                                                                                 
+        print("Processing complete!")
+        logger.info("Processing complete!")
+    except Exception as e:
+        collection.update_one({"worknum": worknum}, {"$set": {"job_ok": -1}})
+        logger.error(f"An unexpected error occurred: {e}")
+        print(f"An unexpected error occurred: {e}")
+        print("Processing failed...")

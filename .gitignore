@@ -43,3 +43,4 @@ fastapi-f/**/**/*.png
 fastapi-f/*.log
 fastapi-f/**/**/*.mp3
 fastapi-f/**/**/*.mp4
+fastapi-f/**/**/*.log
