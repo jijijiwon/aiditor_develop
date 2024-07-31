@@ -1,3 +1,5 @@
+##0730 main.py -4
+
 from fastapi import FastAPI, UploadFile, HTTPException, File, Form
 from fastapi.responses import JSONResponse
 from typing import List
@@ -87,13 +89,18 @@ def process_video(item):
             print(f"Error occurred while running test_blur_app.py: {stderr.strip()}")
             # 작업 상태를 '에러'로 업데이트
             collection.update_one({"worknum": worknum}, {"$set": {"job_ok": -1}})
-        else:
-            # 작업 상태를 '완료'로 업데이트
-            collection.update_one({"worknum": worknum}, {"$set": {"job_ok": 2}})
+            print("Processing failed...")
+            return
     except subprocess.CalledProcessError as e:
         print(f"Error occurred while running test_blur_app.py: {e.stderr}")
         # 작업 상태를 '에러'로 업데이트
         collection.update_one({"worknum": worknum}, {"$set": {"job_ok": -1}})
+        print("Processing failed...")
+    except Exception as e:
+        print(f"An unexpected error occurred: {e}")
+        # 작업 상태를 '에러'로 업데이트
+        collection.update_one({"worknum": worknum}, {"$set": {"job_ok": -1}})
+        print("Processing failed...")
 
 def extract_number(s):
     return int(''.join(filter(str.isdigit, s)))
@@ -121,19 +128,25 @@ async def input_train_image(
     directory_name: str = Form(...), 
     files: List[UploadFile] = File(...)
 ):
-    if len(files) != 5:
-        raise HTTPException(status_code=400, detail="Exactly 5 images must be uploaded.")
+    try:
+        if len(files) != 5:
+            raise HTTPException(status_code=400, detail="Exactly 5 images must be uploaded.")
 
-    UPLOAD_DIR = Path("knn_examples/train") / directory_name
-    UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
+        UPLOAD_DIR = Path("knn_examples/train") / directory_name
+        UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
 
-    for file in files:
-        file_location = UPLOAD_DIR / file.filename
-        with file_location.open("wb") as buffer:
-            shutil.copyfileobj(file.file, buffer)
+        for file in files:
+            file_location = UPLOAD_DIR / file.filename
+            with file_location.open("wb") as buffer:
+                shutil.copyfileobj(file.file, buffer)
 
-    print({"info": f"Files saved in directory '{UPLOAD_DIR}'"})
-    return JSONResponse(content={"info": "Files are being processed"})
+        print({"info": f"Files saved in directory '{UPLOAD_DIR}'"})
+        return JSONResponse(content={"info": "Files are being processed"})
+    
+    except Exception as e:
+        # 그 외의 모든 예외를 처리하여 서버 오류 응답을 반환하고 로그를 기록
+        logger.error(f"Error in upload_file: {e}")  # 오류 로그
+        raise HTTPException(status_code=500, detail="Upload failed")
 
 # 비디오 파일을 업로드하고 처리 큐에 추가
 @app.post("/f-editvideo")
@@ -142,34 +155,40 @@ async def input_video(
     filename: str = Form(...),
     worknum: str = Form(...)
 ):
-    UPLOAD_DIR = Path("knn_examples/test")
-    UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
+    try:
+        UPLOAD_DIR = Path("knn_examples/test")
+        UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
 
-    # 비디오 파일 저장
-    file_location = UPLOAD_DIR / file.filename
-    with file_location.open("wb") as buffer:
-        shutil.copyfileobj(file.file, buffer)
-    
-    # name 정의
-    subdir_name = [d.name for d in Path("knn_examples/train").iterdir() if d.is_dir() and d.name.startswith(worknum)]
-    name = subdir_name[0][6:] if subdir_name else ""
+        # 비디오 파일 저장
+        file_location = UPLOAD_DIR / file.filename
+        with file_location.open("wb") as buffer:
+            shutil.copyfileobj(file.file, buffer)
 
-    # MongoDB 저장
-    document = {
-        "worknum": worknum,
-        "filename": filename,
-        "video_file_path": str(file_location),
-        "s3_url": "",
-        "labels": name,
-        "job_ok": 0  # 초기 상태
-    }
-    collection.insert_one(document)
+        # name 정의
+        subdir_name = [d.name for d in Path("knn_examples/train").iterdir() if d.is_dir() and d.name.startswith(worknum)]
+        name = subdir_name[0][6:] if subdir_name else ""
 
-    # 큐에 비디오 처리 작업 추가
-    video_queue.put((file_location, filename, worknum))
+        # MongoDB 저장
+        document = {
+            "worknum": worknum,
+            "filename": filename,
+            "video_file_path": str(file_location),
+            "s3_url": "",
+            "labels": name,
+            "job_ok": 0  # 초기 상태
+        }
+        collection.insert_one(document)
 
-    print({"info": f"file '{file.filename}' saved at '{file_location}'"})
-    return JSONResponse(content={"info": "Video is being processed"})
+        # 큐에 비디오 처리 작업 추가
+        video_queue.put((file_location, filename, worknum))
+
+        print({"info": f"file '{file.filename}' saved at '{file_location}'"})
+        return JSONResponse(content={"info": "Video is being processed"})
+
+    except Exception as e:
+        # 그 외의 모든 예외를 처리하여 서버 오류 응답을 반환하고 로그를 기록
+        logger.error(f"Error in upload_video: {e}")  # 오류 로그
+        raise HTTPException(status_code=500, detail="Upload failed")
 
 # 처리된 비디오의 S3 URL 불러오기
 @app.get("/f-downloadvideo")
@@ -203,10 +222,16 @@ async def get_download_link(worknum: str):
         return {
             "download_url": download_url,
             "labels": str(document.get("labels")) 
-            }
+        }
+
+    except HTTPException as http_exc:
+        # HTTPException의 경우 별도로 처리하여 적절한 응답을 반환
+        raise http_exc
 
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        # 그 외의 모든 예외를 처리하여 서버 오류 응답을 반환하고 로그를 기록
+        logger.error(f"Error in get_download_link: {e}")  # 오류 로그
+        raise HTTPException(status_code=500, detail="An unexpected error occurred while processing the request")
 
 # 백그라운드에서 비디오 처리 쓰레드 시작
 thread = threading.Thread(target=process_video_from_queue)
@@ -215,8 +240,9 @@ thread.start()
 
 @app.get("/f-findlist")
 async def get_pending_jobs():
-    pending_jobs = find_pending_documents()
-    return JSONResponse(content={"pending_jobs": pending_jobs})
-    # except Exception as e:
-    #     logger.error(f"Error in get_pending_jobs: {e}")
-    #     raise HTTPException(status_code=500, detail="Failed to retrieve pending jobs")
+    try:
+        pending_jobs = find_pending_documents()
+        return JSONResponse(content={"pending_jobs": pending_jobs})
+    except Exception as e:
+        logger.error(f"Error in get_pending_jobs: {e}")
+        raise HTTPException(status_code=500, detail="Failed to retrieve pending jobs")
