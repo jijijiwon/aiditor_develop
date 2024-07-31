@@ -76,7 +76,7 @@ async def detect_objects(file: UploadFile = File(...)):
     image = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
     
     # 객체 감지 수행
-    results = model_M(image)
+    results = model_P(image)
 
     # YOLOv8 결과 처리
     detections = []
