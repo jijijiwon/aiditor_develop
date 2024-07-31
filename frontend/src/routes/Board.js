@@ -137,7 +137,7 @@ const Board = (props) => {
         </div>
         {isAdmin == 0 ? (
           <div
-            className="button-box"
+            className="board-button-box"
             style={{ marginRight: "1.5em", height: "1em", marginBottom: "1em" }}
           >
             {isLogin == 1 ? (
@@ -158,7 +158,7 @@ const Board = (props) => {
           </div>
         ) : (
           <div
-            className="button-box"
+            className="board-button-box"
             style={{ marginRight: "1.5em", height: "1em", marginBottom: "1em" }}
           ></div>
         )}
