@@ -12,10 +12,13 @@ from pymongo import MongoClient
 import json
 import queue
 import threading
+import requests
 
 # 기본 설정 로드
 with open('../config/secrets.json') as f:
     secrets = json.load(f)
+
+FAST_API_USER_IP= secrets['FAST_API_USER_IP']
 
 # MongoDB 설정
 MONGODB_ID_F = secrets["MONGODB_ID_F"]
@@ -66,31 +69,39 @@ def process_video_from_queue():
 def process_video(item):
     file_location, filename, worknum = item
     try:
-        # 작업 상태를 '처리 중'으로 업데이트
-        collection.update_one({"worknum": worknum}, {"$set": {"job_ok": 1}})
+        # 비디오 처리 상태를 업데이트하기 위해 외부 API에 GET 요청을 보냄
+        response = requests.get(f'{FAST_API_USER_IP}/updateprocess?worknum={worknum}')
+        print(f"response.text: {response.text}")
         
-        process = subprocess.Popen(
-            ["python3", "test_blur_app.py", str(file_location), filename, worknum],
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-            text=True
-        )
+        # 응답 텍스트가 '1'인 경우에만 비디오 처리 시작
+        if response.text == '1':
+            # 작업 상태를 '처리 중'으로 업데이트
+            collection.update_one({"worknum": worknum}, {"$set": {"job_ok": 1}})
+            
+            process = subprocess.Popen(
+                ["python3", "test_blur_app.py", str(file_location), filename, worknum],
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                text=True
+            )
 
-        # 실시간으로 출력 읽기
-        while True:
-            output = process.stdout.readline()
-            if output == "" and process.poll() is not None:
-                break
-            if output:
-                print(output.strip())
+            # 실시간으로 출력 읽기
+            while True:
+                output = process.stdout.readline()
+                if output == "" and process.poll() is not None:
+                    break
+                if output:
+                    print(output.strip())
 
-        stderr = process.stderr.read()
-        if process.returncode != 0:
-            print(f"Error occurred while running test_blur_app.py: {stderr.strip()}")
-            # 작업 상태를 '에러'로 업데이트
-            collection.update_one({"worknum": worknum}, {"$set": {"job_ok": -1}})
-            print("Processing failed...")
-            return
+            stderr = process.stderr.read()
+            if process.returncode != 0:
+                print(f"Error occurred while running test_blur_app.py: {stderr.strip()}")
+                # 작업 상태를 '에러'로 업데이트
+                collection.update_one({"worknum": worknum}, {"$set": {"job_ok": -1}})
+                print("Processing failed...")
+                return
+        else:
+            print(f"Processing for worknum {worknum} is not started as response is not '1'")
     except subprocess.CalledProcessError as e:
         print(f"Error occurred while running test_blur_app.py: {e.stderr}")
         # 작업 상태를 '에러'로 업데이트
