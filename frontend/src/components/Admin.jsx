@@ -95,6 +95,7 @@ const Admin = ({ baseurl }) => {
   async function getUserList() {
     try {
       const response = await axios.get(baseurl + "/selectalluser");
+      console.log(response.data);
       return response.data;
     } catch (error) {
       console.log(error);

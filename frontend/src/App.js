@@ -187,6 +187,7 @@ function App() {
                 opt={opt}
                 picture={picture}
                 isLogin={isLogin}
+                isAdmin={isAdmin}
                 ticket={ticket}
                 setIsLogin={setIsLogin}
                 setEmail={setEmail}
