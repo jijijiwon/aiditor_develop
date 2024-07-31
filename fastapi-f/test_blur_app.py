@@ -306,30 +306,33 @@ def run_command(command, logger, worknum):
         print("Processing failed...")
         raise
 
-    '''
+
 ##작업 이메일 보내기
-    responsfinish = requests.put(f'{FAST_API_USER}/finishprocess?worknum={worknum}')
-    responsfinish = responsfinish.json()
-    print(responsfinish)
+    try:
+        responsfinish = requests.put(f'{FAST_API_USER_IP}/finishprocess?worknum={worknum}')
+        responsfinish = responsfinish.json()
 
-    if responsfinish == 0:        
-        print('작업 완료 이메일X')
-    else:
-        email = responsfinish['email']
-        name = responsfinish['name']
-        data = User(email=email, name=name)
+        if responsfinish == 0:
+            logger.info('작업 완료 이메일X')
+            print('작업 완료 이메일X')
+        else:
+            email = responsfinish['email']
+            name = responsfinish['name']
+            data = User(email=email, name=name)
 
-        url = f"{FAST_API_USER}/sendemail"
-        headers = {
-            "accept": "application/json",
-            "Content-Type": "application/json"
-        }
+            url = f"{FAST_API_USER_IP}/sendemail"
+            headers = {
+                "accept": "application/json",
+                "Content-Type": "application/json"
+            }
 
-        responsemail = requests.post(url, headers=headers, json=data.dict())
+            responsemail = requests.post(url, headers=headers, json=data.dict())
+            logger.info('작업 완료 이메일 전송')
+            print('작업 완료 이메일 전송')
+            logger.info(responsemail.json())
+    except requests.RequestException as e:
+                logger.error(f"작업 완료 요청 실패: {e}")
 
-        print('작업 완료 이메일 전송')
-        print(responsemail.json())
-'''
 
 if __name__ == "__main__":
     input_video_path = sys.argv[1]
