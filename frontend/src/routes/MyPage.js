@@ -7,6 +7,7 @@ import User from "../components/User";
 
 const MyPage = (props) => {
   const navigate = useNavigate();
+  const isAdmin = Number(props.isAdmin) || 0;
 
   const handleChange = () => {
     navigate("/infochange", { replace: true });
@@ -105,7 +106,7 @@ const MyPage = (props) => {
                 </button>
               </div>
             </div>
-            {props.isadmin === 1 ? (
+            {isAdmin === 1 ? (
               <Admin baseurl={props.baseurl} />
             ) : (
               <User baseurl={props.baseurl} email={props.email} />
