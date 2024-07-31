@@ -190,10 +190,10 @@ def correct_labels(all_predictions, frame_count, window_size=10, threshold=5):
 
     return corrected_predictions[-1]
 
-# 비디오를 처리하는 함수
+#비디오를 처리하는 함수
 def process_video(input_video_path, output_video_name, knn_clf, worknum, window_size=10, threshold=4):
     logger = init_logger(worknum)
-    
+
     try:
         cap = cv2.VideoCapture(input_video_path)
         fps = cap.get(cv2.CAP_PROP_FPS)
@@ -231,27 +231,44 @@ def process_video(input_video_path, output_video_name, knn_clf, worknum, window_
         cap.release()
 
         base_filename = os.path.splitext(output_video_name)[0]
-        video_path = f"knn_examples/output/{base_filename}_video.mp4"
-        audio_path = f"knn_examples/output/{base_filename}_audio.mp3"
+        audio_exists = check_audio_track(input_video_path)
 
-        os.makedirs(os.path.dirname(video_path), exist_ok=True)
-        
-        # ffmpeg 명령 실행 및 예외 처리
-        command = f"ffmpeg -r {fps} -i output_frames/frame_%04d.jpg -vcodec libx264 -pix_fmt yuv420p {video_path}"
+        if audio_exists:
+            video_path = f"knn_examples/output/{base_filename}_video.mp4"
+            audio_path = f"knn_examples/output/{base_filename}_audio.mp3"
+
+            os.makedirs(os.path.dirname(video_path), exist_ok=True)
+            
+            # 오디오가 있는 경우 비디오 생성
+            command = f"ffmpeg -r {fps} -i output_frames/frame_%04d.jpg -vcodec libx264 -pix_fmt yuv420p {video_path}"
+            run_command(command, logger, worknum)
+
+            # 오디오 트랙 추출
+            command = f"ffmpeg -i {input_video_path} -q:a 0 -map a {audio_path}"
+            run_command(command, logger, worknum)
+
+            final_output = f"knn_examples/output/{output_video_name}" if output_video_name.endswith('.mp4') else f"knn_examples/output/{output_video_name}.mp4"
+            command = f"ffmpeg -i {video_path} -i {audio_path} -c:v copy -c:a aac -strict experimental {final_output}"
+        else:
+            video_path = f"knn_examples/output/{base_filename}.mp4"
+
+            os.makedirs(os.path.dirname(video_path), exist_ok=True)
+            
+            # 오디오가 없는 경우 비디오 생성
+            command = f"ffmpeg -r {fps} -i output_frames/frame_%04d.jpg -vcodec libx264 -pix_fmt yuv420p {video_path}"
+            final_output = video_path
+
         run_command(command, logger, worknum)
 
-        command = f"ffmpeg -i {input_video_path} -q:a 0 -map a {audio_path}"
-        run_command(command, logger, worknum)
-
-        final_output = f"knn_examples/output/{output_video_name}" if output_video_name.endswith('.mp4') else f"knn_examples/output/{output_video_name}.mp4"
-        command = f"ffmpeg -i {video_path} -i {audio_path} -c:v copy -c:a aac -strict experimental {final_output}"
-        run_command(command, logger, worknum)
-
+        # output_frames 디렉토리 삭제
         for file_name in os.listdir('output_frames'):
             file_path = os.path.join('output_frames', file_name)
             if os.path.isfile(file_path):
                 os.unlink(file_path)
-        os.rmdir('output_frames')
+        try:
+            os.rmdir('output_frames')
+        except Exception as e:
+            logger.error(f"Error removing output_frames directory: {e}")
 
         s3_url = upload_to_s3(final_output, worknum)
         collection.update_one({"worknum": worknum}, {"$set": {"s3_url": s3_url, "job_ok": 2}})
@@ -265,12 +282,26 @@ def process_video(input_video_path, output_video_name, knn_clf, worknum, window_
         print("Processing failed...")
         raise
 
-# ffmpeg 명령 실행 함수
+def check_audio_track(video_path):
+    try:
+        result = subprocess.run(
+            ["ffmpeg", "-i", video_path],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True
+        )
+        return "Audio:" in result.stderr
+    except Exception as e:
+        print(f"Error checking audio track: {e}")
+        return False
+
 def run_command(command, logger, worknum):
     try:
-        subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True, shell=True)
+        result = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True, shell=True)
+        logger.info(f"Command output: {result.stdout}")
+        logger.info(f"Command error (if any): {result.stderr}")
     except subprocess.CalledProcessError as e:
-        logger.error(f"Command failed: {command}\nError: {e}")
+        logger.error(f"Command failed: {command}\nError: {e.stderr}")
         collection.update_one({"worknum": worknum}, {"$set": {"job_ok": -1}})
         print("Processing failed...")
         raise
