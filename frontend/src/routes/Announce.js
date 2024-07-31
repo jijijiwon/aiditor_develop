@@ -128,7 +128,7 @@ const Announce = (props) => {
         </div>
         {props.isAdmin === 1 ? (
           <div
-            className="button-box"
+            className="board-button-box"
             style={{ marginRight: "1.5em", height: "1em", marginBottom: "1em" }}
           >
             <button
@@ -140,7 +140,7 @@ const Announce = (props) => {
           </div>
         ) : (
           <div
-            className="button-box"
+            className="board-button-box"
             style={{ marginRight: "1.5em", height: "1em", marginBottom: "1em" }}
           ></div>
         )}
