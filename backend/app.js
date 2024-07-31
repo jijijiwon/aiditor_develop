@@ -706,14 +706,26 @@ app.get("/myvideo", async (req, res) => {
 
 app.get("/video-list", async (req, res) => {
   const { worknum } = req.query;
-  const response = await axios.get(`${FAST_API_MP}/mp-findlist`);
-  const worklist = response.data.pending_jobs;
 
-  console.log(worknum);
-  const count = worklist.indexOf(worknum) + 1;
-  console.log(count);
+  if (worknum.charAt(0) !== "F") {
+    const response = await axios.get(`${FAST_API_MP}/mp-findlist`);
+    const worklist = response.data.pending_jobs;
 
-  res.json({ count: count });
+    console.log(worknum);
+    const count = worklist.indexOf(worknum) + 1;
+    console.log(count);
+
+    res.json({ count: count });
+  } else {
+    const response = await axios.get(`${FAST_API_F}/f-findlist`);
+    const worklist = response.data.pending_jobs;
+
+    console.log(worknum);
+    const count = worklist.indexOf(worknum) + 1;
+    console.log(count);
+
+    res.json({ count: count });
+  }
 });
 
 app.listen(port, () => {
