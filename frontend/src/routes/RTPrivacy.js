@@ -137,9 +137,7 @@ function RTPrivacy() {
                 width: `${detection.box[2] - detection.box[0]}px`,
                 height: `${detection.box[3] - detection.box[1]}px`,
               }}
-            >
-              {detection.class}
-            </div>
+            ></div>
           ))}
         </div>
       </div>
