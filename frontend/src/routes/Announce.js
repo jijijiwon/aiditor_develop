@@ -10,8 +10,6 @@ const Announce = (props) => {
   const [pageCount, setPageCount] = useState(0);
   const itemsPerPage = 8;
 
-  console.log("is Admin?: ", props.isAdmin);
-
   const handleWrite = () => {
     navigate("/boardwrite", { replace: true });
   };
