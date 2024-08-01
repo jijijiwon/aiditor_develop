@@ -2,9 +2,9 @@
 set -e
 
 # JSON 파일에서 필요한 값 추출
-ADMIN_ID=$(grep "ADMIN_ID" /shared/secrets.json | cut -d '"' -f4)
-ADMIN_NAME=$(grep "ADMIN_NAME" /shared/secrets.json | cut -d'"' -f4)
-ADMIN_PICTURE=$(grep "ADMIN_PICTURE" /shared/secrets.json | cut -d'"' -f4)
+ADMIN_ID=$(grep "ADMIN_ID" /app/secrets.json | cut -d '"' -f4)
+ADMIN_NAME=$(grep "ADMIN_NAME" /app/secrets.json | cut -d'"' -f4)
+ADMIN_PICTURE=$(grep "ADMIN_PICTURE" /app/secrets.json | cut -d'"' -f4)
 
 # MySQL 명령 실행
 mysql -u "${MYSQL_USER}" -p"$MYSQL_ROOT_PASSWORD" <<EOSQL
