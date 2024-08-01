@@ -10,7 +10,7 @@ const BoardSelected = (props) => {
 
   async function getBoard() {
     try {
-      console.log("boardnum: ", boardnum);
+      // console.log("boardnum: ", boardnum);
       const response = await axios.get(props.baseurl + "/getboard", {
         params: { boardnum: boardnum },
       });
@@ -23,7 +23,7 @@ const BoardSelected = (props) => {
   useEffect(() => {
     const fetchData = async () => {
       const result = await getBoard();
-      console.log(result);
+      // console.log(result);
       setBoard(result);
     };
     fetchData();

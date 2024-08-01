@@ -10,7 +10,7 @@ const AnncSelected = (props) => {
 
   async function getAnnc() {
     try {
-      console.log("boardnum: ", boardnum);
+      // console.log("boardnum: ", boardnum);
       const response = await axios.get(props.baseurl + "/getannounce", {
         params: { boardnum: boardnum },
       });
@@ -23,7 +23,7 @@ const AnncSelected = (props) => {
   useEffect(() => {
     const fetchData = async () => {
       const result = await getAnnc();
-      console.log(result);
+      // console.log(result);
       setAnnc(result);
     };
     fetchData();
