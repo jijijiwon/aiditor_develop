@@ -23,13 +23,14 @@ fastapi-user/__pycache__
 fastapi-mp/Dockerfile
 fastapi-mp/Dockerfile.mongo
 fastapi-mp/mongod.conf
-fastapi-mp/__pycache__
-fastapi-mp/app/*.pt
+**/**/__pycache__
+fastapi-mp/yolomodel
 fastapi-mp/.venv
 fastapi-mp/downloads/*
 fastapi-mp/logs/*
 fastapi-mp/processed_videos/*
 fastapi-mp/app/__pycache__
+fastapi-mp/app2/__pycache__
 fastapi-mp/mongo_docker.txt
 
 
