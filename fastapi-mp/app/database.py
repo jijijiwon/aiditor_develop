@@ -1,4 +1,4 @@
-from app.config import collection
+from app.configdb import collection
 
 
 def extract_number(s):
