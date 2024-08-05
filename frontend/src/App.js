@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useNavigate } from "react-router-dom";
+import CryptoJS from "crypto-js";
 import "./App.css";
 import Sidebar from "./components/Sidebar";
 import Header from "./components/Header";
@@ -29,28 +30,78 @@ import KakaoRedirect from "./routes/KakaoRedirect";
 
 const baseurl = process.env.REACT_APP_BACK_URL;
 function App() {
-  const sessionEmail = window.sessionStorage.getItem("email");
-  const sessionName = window.sessionStorage.getItem("name");
-  const sessionPicture = window.sessionStorage.getItem("picture");
-  const sessionIsLogin = window.sessionStorage.getItem("isLogin");
-  const sessionopt = window.sessionStorage.getItem("opt");
-  const sessionIsAdmin = window.sessionStorage.getItem("isAdmin");
+  const navigate = useNavigate();
+  const secretKey = process.env.REACT_APP_CRYPTO_SECRET_KEY;
+  const ENCRYPTION_PREFIX = process.env.REACT_APP_CRYPTO_PREFIX;
 
-  const [email, setEmail] = useState(sessionEmail || "");
-  const [name, setName] = useState(sessionName || "");
-  const [picture, setPicture] = useState(sessionPicture || "");
-  const [isLogin, setIsLogin] = useState(sessionIsLogin || 0);
-  const [opt, setOpt] = useState(sessionopt || "");
-  const [isAdmin, setIsAdmin] = useState(sessionIsAdmin || 0);
+  // 암호화
+  const encrypt = (data) => {
+    const encrypted = CryptoJS.AES.encrypt(
+      JSON.stringify(data),
+      secretKey
+    ).toString();
+    return ENCRYPTION_PREFIX + encrypted;
+  };
+
+  // 복호화
+  const decrypt = (encryptedData) => {
+    if (!encryptedData.startsWith(ENCRYPTION_PREFIX)) {
+      console.warn("Data is not in the expected encrypted format");
+      return null;
+    }
+
+    const realEncryptedData = encryptedData.slice(ENCRYPTION_PREFIX.length);
+
+    try {
+      const bytes = CryptoJS.AES.decrypt(realEncryptedData, secretKey);
+      const decryptedData = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+      return decryptedData;
+    } catch (error) {
+      console.error(error);
+      return null;
+    }
+  };
+
+  // sessionStorage에서 암호화된 데이터를 가져와 복호화하는 함수
+  const getDecryptedSessionItem = (key) => {
+    const data = window.sessionStorage.getItem(key);
+    if (!data) return null;
+
+    const decryptedData = decrypt(data);
+    if (decryptedData === null) {
+      alert("비정상적인 접근이 감지되었습니다. 로그아웃 됩니다.");
+      window.sessionStorage.clear();
+      navigate("/", { replace: true });
+      window.location.reload();
+      return null;
+    } else {
+      return decryptedData;
+    }
+
+    // 데이터가 암호화된 형식인지 확인
+  };
+
+  const [email, setEmail] = useState(getDecryptedSessionItem("email") || "");
+  const [name, setName] = useState(getDecryptedSessionItem("name") || "");
+  const [picture, setPicture] = useState(
+    getDecryptedSessionItem("picture") || ""
+  );
+  const [isLogin, setIsLogin] = useState(
+    getDecryptedSessionItem("isLogin") || 0
+  );
+  const [opt, setOpt] = useState(getDecryptedSessionItem("opt") || "");
+  const [isAdmin, setIsAdmin] = useState(
+    getDecryptedSessionItem("isAdmin") || 0
+  );
   const [ticket, setTicket] = useState(["0", "0", "0"]);
 
   useEffect(() => {
-    window.sessionStorage.setItem("email", email);
-    window.sessionStorage.setItem("name", name);
-    window.sessionStorage.setItem("picture", picture);
-    window.sessionStorage.setItem("isLogin", isLogin);
-    window.sessionStorage.setItem("opt", opt);
-    window.sessionStorage.setItem("isAdmin", isAdmin);
+    window.sessionStorage.setItem("email", encrypt(email));
+    window.sessionStorage.setItem("name", encrypt(name));
+    window.sessionStorage.setItem("picture", encrypt(picture));
+    window.sessionStorage.setItem("isLogin", encrypt(isLogin));
+    window.sessionStorage.setItem("opt", encrypt(opt));
+    window.sessionStorage.setItem("isAdmin", encrypt(isAdmin));
   }, [email, name, picture, isLogin, opt, isAdmin]);
 
   return (
