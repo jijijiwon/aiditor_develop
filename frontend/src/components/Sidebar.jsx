@@ -8,7 +8,7 @@ function Sidebar(props) {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    console.log("User signed out.");
+    // console.log("User signed out.");
     props.setName("");
     props.setEmail("");
     props.setPicture("");

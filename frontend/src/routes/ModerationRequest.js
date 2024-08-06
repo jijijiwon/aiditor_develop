@@ -34,7 +34,7 @@ const ModerationRequest = (props) => {
       담배: "cigarette",
     };
     const newLabels = selectedLabels.map((label) => labellist[label]);
-    console.log(newLabels);
+    // console.log(newLabels);
     return newLabels;
   }
 
@@ -44,12 +44,12 @@ const ModerationRequest = (props) => {
       props.setTicket([0, 0, 0]);
     } else {
       try {
-        console.log("email: ", props.email);
+        // console.log("email: ", props.email);
         const email = props.email;
         const response = await axios.get(props.baseurl + "/selectticket", {
           params: { email: email },
         });
-        console.log(response.data);
+        // console.log(response.data);
 
         const ticketData = [
           response.data["totalticket"],

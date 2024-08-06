@@ -11,14 +11,14 @@ const Login = (props) => {
 
   const glogin = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
-      console.log(tokenResponse);
+      // console.log(tokenResponse);
       // 액세스 토큰을 사용하여 사용자 정보 가져옴
       const userInfo = await axios.get(
         "https://www.googleapis.com/oauth2/v3/userinfo",
         { headers: { Authorization: `Bearer ${tokenResponse.access_token}` } }
       );
 
-      console.log(userInfo.data);
+      // console.log(userInfo.data);
       const profile = userInfo.data;
 
       user = {
@@ -28,7 +28,7 @@ const Login = (props) => {
       };
 
       let response = await getUser(user);
-      console.log("Login Success:", response);
+      // console.log("Login Success:", response);
 
       props.setEmail(response.email);
       props.setName(response.name);
@@ -55,11 +55,11 @@ const Login = (props) => {
 
   async function getUser(user) {
     try {
-      console.log("email: ", user.email);
+      // console.log("email: ", user.email);
       const response = await axios.get(props.baseurl + "/selectuser", {
         params: { email: user.email },
       });
-      console.log(response.data);
+      // console.log(response.data);
       if (response.data !== null) {
         return response.data;
       } else {
@@ -81,7 +81,7 @@ const Login = (props) => {
           "Content-Type": "application/json",
         },
       });
-      console.log(response.data);
+      // console.log(response.data);
       return response.data;
     } catch (error) {
       console.log(error);
@@ -99,7 +99,7 @@ const Login = (props) => {
           },
         }
       );
-      console.log(response.data);
+      // console.log(response.data);
       return response.data;
     } catch (error) {
       console.log(error);
@@ -111,7 +111,7 @@ const Login = (props) => {
       if (location.state && location.state.email) {
         user = location.state;
         let response = await getUser(location.state);
-        console.log("Login Success:", response);
+        // console.log("Login Success:", response);
 
         props.setEmail(response.email);
         props.setName(response.name);

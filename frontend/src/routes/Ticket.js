@@ -4,12 +4,12 @@ import axios from "axios";
 function Ticket(props) {
   async function selectticket() {
     try {
-      console.log("email: ", props.email);
+      // console.log("email: ", props.email);
       const email = props.email;
       const response = await axios.get(props.baseurl + "/selectticket", {
         params: { email: email },
       });
-      console.log(response.data);
+      // console.log(response.data);
 
       const ticketData = [
         response.data["totalticket"],

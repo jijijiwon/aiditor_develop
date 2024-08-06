@@ -76,7 +76,7 @@ function InfoChange(props) {
       const response = await axios.delete(props.baseurl + "/deleteuser", {
         params: { email: props.email },
       });
-      console.log("User Deleted: ", response.data);
+      // console.log("User Deleted: ", response.data);
       return response.data;
     } catch (error) {
       console.log(error);
@@ -89,7 +89,7 @@ function InfoChange(props) {
       const response = await axios.delete(props.baseurl + "/deleteticket", {
         params: { email: props.email },
       });
-      console.log("Ticket Deleted: ", response.data);
+      // console.log("Ticket Deleted: ", response.data);
       return response.data;
     } catch (error) {
       console.log(error);
@@ -108,7 +108,7 @@ function InfoChange(props) {
           },
         }
       );
-      console.log(response.data);
+      // console.log(response.data);
       return response.data;
     } catch (error) {
       console.log(error);

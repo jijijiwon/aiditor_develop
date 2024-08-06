@@ -14,7 +14,7 @@ const Admin = ({ baseurl }) => {
   const openModal = () => {
     if (selectedUser) {
       setIsOpen(true);
-      console.log("현재 선택된 사용자: ", selectedUser);
+      // console.log("현재 선택된 사용자: ", selectedUser);
     }
   };
   const closeModal = () => {
@@ -95,7 +95,7 @@ const Admin = ({ baseurl }) => {
   async function getUserList() {
     try {
       const response = await axios.get(baseurl + "/selectalluser");
-      console.log(response.data);
+      // console.log(response.data);
       return response.data;
     } catch (error) {
       console.log(error);
@@ -104,7 +104,7 @@ const Admin = ({ baseurl }) => {
 
   async function updateAdmin(email, isadmin) {
     try {
-      console.log("들어온 값: ", email, isadmin);
+      // console.log("들어온 값: ", email, isadmin);
       const response = await axios.put(
         baseurl + "/updateadmin",
         { email: email, isadmin: isadmin },
@@ -114,7 +114,7 @@ const Admin = ({ baseurl }) => {
           },
         }
       );
-      console.log(response.data);
+      // console.log(response.data);
       return response.data;
     } catch (error) {
       console.log(error);
