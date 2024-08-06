@@ -18,7 +18,7 @@ FRONT_IP = secrets['FRONT_IP']
 
 # CORS 설정
 origins = [
-    "https://www.aivolution.link",  # React 앱이 실행되는 도메인
+    FRONT_IP,  # React 앱이 실행되는 도메인
 ]
 
 app.add_middleware(

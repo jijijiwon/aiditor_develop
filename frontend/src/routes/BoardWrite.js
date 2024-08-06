@@ -7,6 +7,7 @@ const BoardWrite = (props) => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const navigate = useNavigate();
+  const isAdmin = Number(props.isAdmin) || 0;
 
   const handleAddAnnounce = async () => {
     const formData = {
@@ -53,7 +54,7 @@ const BoardWrite = (props) => {
   };
 
   const handleClose = () => {
-    console.log("isAdmin? ", props.isAdmin);
+    // console.log("isAdmin? ", props.isAdmin);
     props.isAdmin
       ? navigate("/announce", { replace: true })
       : navigate("/board", { replace: true });
@@ -122,7 +123,7 @@ const BoardWrite = (props) => {
           className="modal-container-footer"
           style={{ borderTop: "none", paddingTop: "0em" }}
         >
-          {props.isAdmin ? (
+          {isAdmin === 1 ? (
             <button onClick={handleAddAnnounce} className="button is-primary">
               작성완료
             </button>

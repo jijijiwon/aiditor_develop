@@ -5,7 +5,7 @@ import os
 import asyncio
 import logging
 from concurrent.futures import ThreadPoolExecutor
-from app.config import s3_client, bucket_name  # S3 클라이언트와 버킷 이름 설정
+from app.configdb import s3_client, bucket_name  # S3 클라이언트와 버킷 이름 설정
 from app.database import insert_video_document, find_video_document, update_video_document, find_pending_documents, find_error_documents # 데이터베이스 관련 함수
 from app.video_processor import process_video  # 비디오 처리 함수
 import shutil

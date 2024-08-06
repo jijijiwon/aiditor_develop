@@ -12,8 +12,8 @@ function EditDone(props) {
   const [url, setUrl] = useState("다운로드링크");
   const [ODResult, setODResult] = useState([]);
 
-  console.log("worknum: ", worknum);
-  console.log("filename: ", filename);
+  // console.log("worknum: ", worknum);
+  // console.log("filename: ", filename);
 
   const isFirstLetterF = worknum.charAt(0) === "F";
 
@@ -45,7 +45,7 @@ function EditDone(props) {
         },
       });
 
-      console.log(response.data);
+      // console.log(response.data);
 
       setUrl(response.data.url);
 
@@ -58,12 +58,12 @@ function EditDone(props) {
 
         setODResult(labels);
 
-        console.log(response.data.url);
-        console.log(labels);
+        // console.log(response.data.url);
+        // console.log(labels);
       } else {
         setODResult([response.data.labels]);
 
-        console.log(ODResult);
+        // console.log(ODResult);
       }
 
       return response.data;

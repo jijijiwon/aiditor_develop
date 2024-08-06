@@ -32,12 +32,12 @@ const FaceDetectionRequest = (props) => {
       props.setTicket([0, 0, 0]);
     } else {
       try {
-        console.log("email: ", props.email);
+        // console.log("email: ", props.email);
         const email = props.email;
         const response = await axios.get(props.baseurl + "/selectticket", {
           params: { email: email },
         });
-        console.log(response.data);
+        // console.log(response.data);
 
         const ticketData = [
           response.data["totalticket"],
@@ -182,7 +182,7 @@ const FaceDetectionRequest = (props) => {
     event.preventDefault();
 
     if (!uploadedPhotos) {
-      console.log(uploadedPhotos);
+      // console.log(uploadedPhotos);
       alert("사진을 먼저 선택해주세요.");
       return;
     }
@@ -249,11 +249,11 @@ const FaceDetectionRequest = (props) => {
       );
 
       const worknum = response.data;
-      console.log(worknum);
+      // console.log(worknum);
 
       // 인덱스 수정
       const modifiedIndex = worknum + index;
-      console.log(modifiedIndex);
+      // console.log(modifiedIndex);
 
       // 얼굴 사진 전송
       const photoFormData = new FormData();
@@ -272,7 +272,7 @@ const FaceDetectionRequest = (props) => {
         }
       );
 
-      console.log(photoResponse.data);
+      // console.log(photoResponse.data);
 
       const newFormData = new FormData();
       newFormData.append("videofile", videofile);

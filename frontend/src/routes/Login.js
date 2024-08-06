@@ -11,14 +11,14 @@ const Login = (props) => {
 
   const glogin = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
-      console.log(tokenResponse);
+      // console.log(tokenResponse);
       // 액세스 토큰을 사용하여 사용자 정보 가져옴
       const userInfo = await axios.get(
         "https://www.googleapis.com/oauth2/v3/userinfo",
         { headers: { Authorization: `Bearer ${tokenResponse.access_token}` } }
       );
 
-      console.log(userInfo.data);
+      // console.log(userInfo.data);
       const profile = userInfo.data;
 
       user = {
@@ -28,7 +28,7 @@ const Login = (props) => {
       };
 
       let response = await getUser(user);
-      console.log("Login Success:", response);
+      // console.log("Login Success:", response);
 
       props.setEmail(response.email);
       props.setName(response.name);
@@ -42,10 +42,6 @@ const Login = (props) => {
     onError: () => console.log("Login Failed"),
   });
 
-  const nlogin = () => {
-    alert("아직 네이버 로그인이 불가능해요!");
-  };
-
   const klogin = () => {
     const KAKAO_REST_API_KEY = process.env.REACT_APP_KAKAO_REST_API_KEY;
     const KAKAO_REDIRECT_URI = process.env.REACT_APP_KAKAO_REDIRECT_URI;
@@ -55,11 +51,11 @@ const Login = (props) => {
 
   async function getUser(user) {
     try {
-      console.log("email: ", user.email);
+      // console.log("email: ", user.email);
       const response = await axios.get(props.baseurl + "/selectuser", {
         params: { email: user.email },
       });
-      console.log(response.data);
+      // console.log(response.data);
       if (response.data !== null) {
         return response.data;
       } else {
@@ -81,7 +77,7 @@ const Login = (props) => {
           "Content-Type": "application/json",
         },
       });
-      console.log(response.data);
+      // console.log(response.data);
       return response.data;
     } catch (error) {
       console.log(error);
@@ -99,7 +95,7 @@ const Login = (props) => {
           },
         }
       );
-      console.log(response.data);
+      // console.log(response.data);
       return response.data;
     } catch (error) {
       console.log(error);
@@ -111,7 +107,7 @@ const Login = (props) => {
       if (location.state && location.state.email) {
         user = location.state;
         let response = await getUser(location.state);
-        console.log("Login Success:", response);
+        // console.log("Login Success:", response);
 
         props.setEmail(response.email);
         props.setName(response.name);
@@ -139,14 +135,6 @@ const Login = (props) => {
       >
         <img src="./images/google.png" alt="Google Login" />
         <span>구글로 로그인</span>
-      </button>
-      <button
-        onClick={() => nlogin()}
-        className="social-button"
-        id="custom-naver-button"
-      >
-        <img src="./images/naver.png" alt="Naver Login" />
-        <span>네이버로 로그인</span>
       </button>
       <button
         onClick={() => klogin()}

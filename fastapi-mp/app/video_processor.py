@@ -3,7 +3,7 @@ import subprocess
 import os
 import json
 import requests
-from app.config import s3_client, bucket_name
+from app.configdb import s3_client, bucket_name
 from app.database import update_video_document
 from app.models import User, ErrorRequest
 from ultralytics import YOLO

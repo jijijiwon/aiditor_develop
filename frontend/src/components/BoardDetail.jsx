@@ -24,7 +24,7 @@ const BoardDetail = ({
     const response = await axios.get(baseurl + "/getreply", {
       params: { boardnum: boardnum },
     });
-    console.log(response.data);
+    // console.log(response.data);
     return response.data;
   }
 
@@ -34,7 +34,7 @@ const BoardDetail = ({
         "Content-Type": "application/json",
       },
     });
-    console.log(response.data);
+    // console.log(response.data);
     return response.data;
   }
 
@@ -44,7 +44,7 @@ const BoardDetail = ({
         "Content-Type": "application/json",
       },
     });
-    console.log(response.data);
+    // console.log(response.data);
     return response.data;
   }
 
@@ -59,7 +59,7 @@ const BoardDetail = ({
           },
         }
       );
-      console.log("이메일을 전송했습니다.", response.data);
+      // console.log("이메일을 전송했습니다.", response.data);
     } catch (error) {
       console.error("Error sending email:", error);
     }
@@ -93,7 +93,7 @@ const BoardDetail = ({
   useEffect(() => {
     const fetchData = async () => {
       const result = await getReply(boardnum);
-      console.log(result);
+      // console.log(result);
       setReplies(result.reverse());
       setReplyNum(result.length);
     };
