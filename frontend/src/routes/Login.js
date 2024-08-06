@@ -42,10 +42,6 @@ const Login = (props) => {
     onError: () => console.log("Login Failed"),
   });
 
-  const nlogin = () => {
-    alert("아직 네이버 로그인이 불가능해요!");
-  };
-
   const klogin = () => {
     const KAKAO_REST_API_KEY = process.env.REACT_APP_KAKAO_REST_API_KEY;
     const KAKAO_REDIRECT_URI = process.env.REACT_APP_KAKAO_REDIRECT_URI;
@@ -139,14 +135,6 @@ const Login = (props) => {
       >
         <img src="./images/google.png" alt="Google Login" />
         <span>구글로 로그인</span>
-      </button>
-      <button
-        onClick={() => nlogin()}
-        className="social-button"
-        id="custom-naver-button"
-      >
-        <img src="./images/naver.png" alt="Naver Login" />
-        <span>네이버로 로그인</span>
       </button>
       <button
         onClick={() => klogin()}
