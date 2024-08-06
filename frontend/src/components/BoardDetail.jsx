@@ -59,7 +59,7 @@ const BoardDetail = ({
           },
         }
       );
-      console.log("이메일을 전송했습니다.", response.data);
+      // console.log("이메일을 전송했습니다.", response.data);
     } catch (error) {
       console.error("Error sending email:", error);
     }

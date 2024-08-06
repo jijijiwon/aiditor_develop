@@ -41,7 +41,7 @@ const KakaoRedirect = () => {
           })
             .then((response) => response.json())
             .then((userData) => {
-              console.log(userData);
+              // console.log(userData);
               navigate("/login", {
                 state: {
                   email: userData.kakao_account.email,

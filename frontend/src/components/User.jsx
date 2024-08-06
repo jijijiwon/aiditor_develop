@@ -86,7 +86,7 @@ const User = ({ baseurl, email }) => {
 
   async function getWorkList() {
     try {
-      console.log("email: ", email);
+      // console.log("email: ", email);
       const response = await axios.get(baseurl + "/selectuserwork", {
         params: { email: email },
       });
@@ -101,7 +101,7 @@ const User = ({ baseurl, email }) => {
       const response = await axios.delete(baseurl + "/deletework", {
         params: { worknum: worknum },
       });
-      console.log("Work Deleted: ", response.data);
+      // console.log("Work Deleted: ", response.data);
       return response.data;
     } catch (error) {
       console.log(error);
@@ -112,7 +112,7 @@ const User = ({ baseurl, email }) => {
   useEffect(() => {
     const fetchData = async () => {
       const result = await getWorkList();
-      console.log("Work List: ", result);
+      // console.log("Work List: ", result);
 
       const sortedresult = result.sort((a, b) => {
         const order = { Y: 3, E: 2, W: 1 };
@@ -120,7 +120,7 @@ const User = ({ baseurl, email }) => {
       });
 
       setWorklist(sortedresult);
-      console.log("Sorted Work List: ", sortedresult);
+      // console.log("Sorted Work List: ", sortedresult);
     };
     fetchData();
   }, []);

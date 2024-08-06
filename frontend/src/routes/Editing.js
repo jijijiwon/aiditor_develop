@@ -14,8 +14,8 @@ function Editing(props) {
   const [workDiscription, setWorkDiscription] =
     useState("편집을 진행하고 있어요.");
 
-  console.log("worknum: ", worknum);
-  console.log("filename: ", filename);
+  // console.log("worknum: ", worknum);
+  // console.log("filename: ", filename);
 
   async function workingStatus() {
     try {
@@ -34,7 +34,7 @@ function Editing(props) {
         setWorkDiscription(disc);
       }
 
-      console.log(response.data);
+      // console.log(response.data);
 
       return response.data;
     } catch (error) {

@@ -73,7 +73,7 @@ function RTPrivacy() {
             "Content-Type": "multipart/form-data",
           },
         });
-        console.log(response.data.detections); // 감지된 객체 출력
+        // console.log(response.data.detections); // 감지된 객체 출력
         setDetections(response.data.detections);
       } catch (error) {
         console.error("Error uploading file:", error);

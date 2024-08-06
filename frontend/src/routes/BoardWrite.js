@@ -53,7 +53,7 @@ const BoardWrite = (props) => {
   };
 
   const handleClose = () => {
-    console.log("isAdmin? ", props.isAdmin);
+    // console.log("isAdmin? ", props.isAdmin);
     props.isAdmin
       ? navigate("/announce", { replace: true })
       : navigate("/board", { replace: true });
