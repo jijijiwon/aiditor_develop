@@ -9,3 +9,5 @@ requests
 pymongo
 fastapi
 uvicorn
+python-multipart
+email-validator

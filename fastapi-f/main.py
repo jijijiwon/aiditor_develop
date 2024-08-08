@@ -13,6 +13,11 @@ import json
 import queue
 import threading
 import requests
+import logging
+
+#로그 설정
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 # 기본 설정 로드
 with open('../config/secrets.json') as f:
