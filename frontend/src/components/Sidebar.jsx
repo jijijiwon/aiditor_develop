@@ -101,43 +101,6 @@ function Sidebar(props) {
         <ul>
           <li>
             <Link
-              to="/RealtimeDescription"
-              className={
-                location.pathname.includes("/RealtimeDescription")
-                  ? "active"
-                  : ""
-              }
-            >
-              <img
-                src="/images/realtime.png"
-                alt="icon"
-                className="menu-icon"
-              />
-              실시간 모자이크
-            </Link>
-            <ul className="submenu">
-              <li>
-                <Link
-                  to="/RTModeration"
-                  className={
-                    location.pathname === "/RTModeration" ? "active" : ""
-                  }
-                >
-                  유해정보 블라인드
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/RTPrivacy"
-                  className={location.pathname === "/RTPrivacy" ? "active" : ""}
-                >
-                  개인정보 보호
-                </Link>
-              </li>
-            </ul>
-          </li>
-          <li>
-            <Link
               to="/VideoEditorDescription"
               className={
                 location.pathname.includes("/VideoEditorDescription")
@@ -185,6 +148,43 @@ function Sidebar(props) {
                   }
                 >
                   얼굴 감지
+                </Link>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <Link
+              to="/RealtimeDescription"
+              className={
+                location.pathname.includes("/RealtimeDescription")
+                  ? "active"
+                  : ""
+              }
+            >
+              <img
+                src="/images/realtime.png"
+                alt="icon"
+                className="menu-icon"
+              />
+              실시간 모자이크
+            </Link>
+            <ul className="submenu">
+              <li>
+                <Link
+                  to="/RTModeration"
+                  className={
+                    location.pathname === "/RTModeration" ? "active" : ""
+                  }
+                >
+                  유해정보 블라인드
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/RTPrivacy"
+                  className={location.pathname === "/RTPrivacy" ? "active" : ""}
+                >
+                  개인정보 보호
                 </Link>
               </li>
             </ul>
