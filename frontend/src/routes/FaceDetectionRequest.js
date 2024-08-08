@@ -178,6 +178,12 @@ const FaceDetectionRequest = (props) => {
     video.src = URL.createObjectURL(file);
   };
 
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault(); // 엔터 키 눌렀을 때 기본 동작 방지
+    }
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -381,6 +387,7 @@ const FaceDetectionRequest = (props) => {
                   value={newVideoName}
                   onChange={handleNameChange}
                   onBlur={handleNameBlur}
+                  onKeyDown={handleKeyDown}
                   required
                 />
               </label>
