@@ -208,7 +208,7 @@ async def send_email(request: EmailRequest):
                                 line-height: 20px;
                                 "
                             >
-                                Copyright © 2024 AIDitor All Rights Reserved.
+                                Copyright © 2024 AIc All Rights Reserved.
                             </td>
                             </tr>
                         </tbody>
@@ -221,7 +221,7 @@ async def send_email(request: EmailRequest):
         </html>
         """
         message = MIMEText(html, "html")
-        message["Subject"] = f"AIditor: {request.name}님이 요청한 동영상 편집을 완료했어요!🎉"
+        message["Subject"] = f"아이크: {request.name}님이 요청한 동영상 편집을 완료했어요!🎉"
         message["To"] = request.email
 
         # 이메일 전송
@@ -367,7 +367,7 @@ async def send_error_email(request: ErrorRequest):
                                 line-height: 20px;
                                 "
                             >
-                                Copyright © 2024 AIDitor All Rights Reserved.
+                                Copyright © 2024 AIc All Rights Reserved.
                             </td>
                             </tr>
                         </tbody>
@@ -380,7 +380,7 @@ async def send_error_email(request: ErrorRequest):
         </html>
         """
         message = MIMEText(html, "html")
-        message["Subject"] = f"AIditor: {request.name}님이 요청한 동영상 편집에 오류가 발생했어요.😭"
+        message["Subject"] = f"아이크: {request.name}님이 요청한 동영상 편집에 오류가 발생했어요.😭"
         message["To"] = request.email
 
         # 이메일 전송
@@ -514,7 +514,7 @@ async def send_email2(data: BoardNum):
                                 line-height: 20px;
                                 "
                             >
-                                Copyright © 2024 AIDitor All Rights Reserved.
+                                Copyright © 2024 AIc All Rights Reserved.
                             </td>
                             </tr>
                         </tbody>
@@ -527,7 +527,7 @@ async def send_email2(data: BoardNum):
             </html>
         """
         message = MIMEText(html, "html")
-        message["Subject"] = f"AIditor: {name}님이 문의하신 내용에 대한 답변이 완료되었습니다.🎉"
+        message["Subject"] = f"아이크: {name}님이 문의하신 내용에 대한 답변이 완료되었습니다.🎉"
         message["To"] = email
 
         # 이메일 전송

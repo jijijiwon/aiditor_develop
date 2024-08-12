@@ -20,7 +20,6 @@ function Sidebar(props) {
 
   const banners = [
     { image: "./images/banner2.png", url: "https://www.trippass.link" },
-    { image: "./images/banner1.gif", url: "https://www.trippass.link" },
     { image: "./images/banner3.png", url: "https://www.aivolution.link" },
     { image: "./images/banner4.png", url: "https://www.soribwa.com" },
     { image: "./images/banner5.png", url: "https://www.aivolution.link" },
@@ -47,11 +46,11 @@ function Sidebar(props) {
   const getTitle = (path) => {
     switch (path) {
       case "/RTModeration":
-        return "실시간 유해정보 블라인드";
+        return "실시간 유해 정보 블라인드";
       case "/RTPrivacy":
         return "실시간 개인정보 보호";
       case "/ModerationRequest":
-        return "유해정보 블라인드";
+        return "유해 정보 블라인드";
       case "/PrivacyProtectionRequest":
         return "개인정보 보호";
       case "/FaceDetectionRequest":
@@ -113,7 +112,7 @@ function Sidebar(props) {
                 alt="icon"
                 className="menu-icon"
               />
-              영상 편집기
+              영상 모자이크
             </Link>
             <ul className="submenu">
               <li>
@@ -123,7 +122,7 @@ function Sidebar(props) {
                     location.pathname === "/ModerationRequest" ? "active" : ""
                   }
                 >
-                  유해정보 블라인드
+                  유해 정보 블라인드
                 </Link>
               </li>
               <li>
@@ -176,7 +175,7 @@ function Sidebar(props) {
                     location.pathname === "/RTModeration" ? "active" : ""
                   }
                 >
-                  유해정보 블라인드
+                  유해 정보 블라인드
                 </Link>
               </li>
               <li>

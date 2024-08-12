@@ -28,7 +28,7 @@ function VideoEditorDecsription() {
   return (
     <div className="Main">
       <div className="content">
-        <h2 style={{ color: "#100DB1" }}>AIditor 사용법💡</h2>
+        <h2 style={{ color: "#100DB1" }}>아이크 사용법💡</h2>
         <p>궁금한 기능에 마우스를 올려보세요!</p>
       </div>
       <div className="des">
@@ -39,10 +39,10 @@ function VideoEditorDecsription() {
               id="rt-menu"
             >
               <h3 className="link-keyword" onClick={() => handleMenuClick("M")}>
-                🛡 유해정보 블라인드
+                🛡 유해 정보 블라인드
               </h3>
               <div className="linktext">
-                이 기능은 영상 속 유해정보를 모자이크합니다.
+                이 기능은 영상 속 유해 정보를 모자이크합니다.
               </div>
             </div>
             <div
@@ -87,13 +87,13 @@ function VideoEditorDecsription() {
                       <p>
                         위의 화면과 같은 메뉴를 통해 직접 비디오를 선택하고,
                         인식할 인물을 입력하여 요청을 제출하면 이후의 모든
-                        과정은 자동으로 진행됩니다. AIditor가 자동 편집을 마친
+                        과정은 자동으로 진행됩니다. 아이크가 자동 편집을 마친
                         후에는 메일을 통해 안내받을 수 있습니다.
                       </p>
                       <p>
                         <h3 style={{ color: "#343434" }}>감지할 얼굴 입력</h3>-
                         '나'로 인식할 인물의 사진을 5장 입력해야 합니다.
-                        AIditor는 이 사진으로 얼굴을 학습하여 타인과 구별합니다.
+                        아이크는 이 사진으로 얼굴을 학습하여 타인과 구별합니다.
                         감지된 전체 인물 중 학습된 인물을 제외하고 모두 모자이크
                         됩니다.
                       </p>
@@ -104,21 +104,21 @@ function VideoEditorDecsription() {
                 return (
                   <div className="des-text" id="rt-moderation">
                     {menu === "M" ? (
-                      <h3 style={{ color: "#100DB1" }}>유해정보 블라인드</h3>
+                      <h3 style={{ color: "#100DB1" }}>유해 정보 블라인드</h3>
                     ) : (
                       <h3 style={{ color: "#100DB1" }}>개인정보 보호</h3>
                     )}
                     <hr />
                     <p>
                       이 기능은 선택한 영상 속{" "}
-                      {menu === "M" ? "유해정보" : "개인정보"}를 자동으로 인식,
+                      {menu === "M" ? "유해 정보" : "개인정보"}를 자동으로 인식,
                       편집해주는 기능입니다.
                     </p>
                     <div>
                       <p>
                         위의 화면과 같은 메뉴를 통해 직접 비디오를 선택하고,
                         편집할 컨텐츠와 옵션을 설정하여 요청을 제출하면 이후의
-                        모든 과정은 자동으로 진행됩니다. AIditor가 자동 편집을
+                        모든 과정은 자동으로 진행됩니다. 아이크가 자동 편집을
                         마친 후에는 메일을 통해 안내받을 수 있습니다.
                       </p>
                       <br />

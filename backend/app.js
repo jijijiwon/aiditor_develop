@@ -515,7 +515,7 @@ app.post("/sendemail2", async (req, res) => {
   }
 });
 
-// 영상 편집기
+// 영상 모자이크
 app.post("/video-reqeust", async (req, res) => {
   const { email, name, opt, filename, wtype, videolength } = req.body;
   try {

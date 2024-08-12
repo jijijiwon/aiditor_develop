@@ -23,7 +23,7 @@ function RealtimeDecsription() {
   return (
     <div className="Main">
       <div className="content">
-        <h2 style={{ color: "#100DB1" }}>AIditor 사용법💡</h2>
+        <h2 style={{ color: "#100DB1" }}>아이크 사용법💡</h2>
         <p>궁금한 기능에 마우스를 올려보세요!</p>
       </div>
       <div className="des">
@@ -34,11 +34,11 @@ function RealtimeDecsription() {
               id="rt-menu"
             >
               <h3 className="link-keyword" onClick={() => handleMenuClick("M")}>
-                🛡 실시간 유해정보 블라인드
+                🛡 실시간 유해 정보 블라인드
               </h3>
               <div className="linktext">
-                이 기능은 웹캠을 통해 보여지는 여러분의 영상에서 실시간으로
-                유해정보를 모자이크합니다.
+                이 기능은 웹캠을 통해 보여지는 여러분의 영상에서 실시간으로 유해
+                정보를 모자이크합니다.
               </div>
             </div>
             <div
@@ -140,11 +140,11 @@ function RealtimeDecsription() {
           </div>
           {menu === "M" ? (
             <div className="des-text">
-              <h3 style={{ color: "#100DB1" }}>실시간 유해정보 블라인드</h3>
+              <h3 style={{ color: "#100DB1" }}>실시간 유해 정보 블라인드</h3>
               <hr />
               <p>
-                이 기능은 웹캠을 통해 보여지는 여러분의 영상에서 실시간으로
-                유해정보를 모자이크합니다.
+                이 기능은 웹캠을 통해 보여지는 여러분의 영상에서 실시간으로 유해
+                정보를 모자이크합니다.
               </p>
               <div>
                 <p>

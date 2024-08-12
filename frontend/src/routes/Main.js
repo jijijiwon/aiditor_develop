@@ -3,26 +3,27 @@ import "./Main.css";
 function Main(props) {
   var description = [
     {
-      menu: "유해정보 블라인드",
-      des: "이것의 기능은 유해정보를 인식하여 편집하는 것입니다. 유해정보 이미지는 모자이크 처리가 진행됩니다. 이를 통하여 안전한 고품질의 비디오를 얻을 수 있습니다.",
+      menu: "유해 정보 블라인드",
+      des: "유해 정보 블라인드에서는 유해 정보를 인식하고, 인식된 이미지에 모자이크 처리를 진행합니다. 이를 통하여 안전한 고품질의 비디오를 제공합니다.",
       color: "#763CEF",
     },
     {
       menu: "개인정보 보호",
-      des: "이것의 기능은 사용자 개인 정보를 인식하여 편집하는 것입니다.개인 정보와 관련된 신용 카드, 영수증, 자동차 번호판 등을 모자이크 하여 안전한 비디오를 제공합니다.",
+      des: "개인정보 보호에서는 사용자 및 타인의 개인정보를 인식하고, 인식된 이미지에 모자이크 처리를 진행합니다. 개인 정보와 관련된 신용 카드, 영수증, 자동차 번호판 등이 모자이크되며, 이를 통하여 안전한 비디오를 제공합니다.",
       color: "#FECA57",
     },
     {
       menu: "얼굴 감지",
-      des: "이것의 기능은 사용자의 얼굴을 인식하여 비디오를 편집하는 것입니다. 설정한 인물외 타인을 모자이크 하거나 등장 부분만을 추출하여 짧게 편집된 비디오를 제공합니다.",
+      des: "얼굴 감지에서는 사용자의 얼굴을 인식하여 비디오를 편집합니다. 설정한 인물 외의 타인이 모자이크되며, 이를 통하여 안전한 비디오를 제공합니다.",
       color: "#100DB4",
     },
   ];
   return (
     <div className="Main">
       <div className="content">
-        <h2 style={{ color: "#F80D38" }}>AIditor에 오신 것을 환영합니다!</h2>
-        <p>어떤 종류의 편집 기능을 원하시나요?</p>
+        <h2 style={{ color: "#F80D38", marginBottom: "16px" }}>
+          아이크에 오신 것을 환영합니다!
+        </h2>
         <div className="cards">
           <div className="card" id="moderation">
             <img src="/images/moderationdes.png" alt="Moderation" />
@@ -42,7 +43,7 @@ function Main(props) {
           style={{ width: "30%", marginRight: "20px" }}
         />
         <div>
-          <h2>AIditor 사용법</h2>
+          <h2>아이크 사용법</h2>
           <div>
             {description.map(function (menu, i) {
               return (

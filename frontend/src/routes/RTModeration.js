@@ -91,7 +91,7 @@ function RTModeration() {
   return (
     <>
       <h3 style={{ color: "#F80D38", fontFamily: "TossFaceFont" }}>
-        🛡 실시간 유해정보 블라인드
+        🛡 실시간 유해 정보 블라인드
       </h3>
       <div className="rt-moderation">
         <div className="label-list">

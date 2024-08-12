@@ -402,7 +402,7 @@ const PrivacyProtectionRequest = (props) => {
             </button>
           ) : (
             <button type="submit" className="submit-btn">
-              AIditor, 편집을 시작해줘!
+              아이크, 편집을 시작해줘!
             </button>
           )}
         </form>
