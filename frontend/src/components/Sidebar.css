@@ -1,5 +1,6 @@
 .main-logo {
-  width: 90%;
+  width: 70%;
+  margin-bottom: 1em;
 }
 
 body {
@@ -29,6 +30,7 @@ body {
 
 .banner {
   width: 100%;
+  margin-bottom: 1em;
   img {
     width: calc(100% + 40px);
     cursor: pointer;

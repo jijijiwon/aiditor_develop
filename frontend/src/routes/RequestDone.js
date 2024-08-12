@@ -8,7 +8,7 @@ function RequestDone(props) {
   };
   return (
     <>
-      <h3 style={{ color: "#F80D38" }}>유해정보 블라인드</h3>
+      <h3 style={{ color: "#F80D38" }}>유해 정보 블라인드</h3>
       <div className="moderation-done">
         <div className="icon">
           <img src="images/logo.png" alt="Moderation Icon" />

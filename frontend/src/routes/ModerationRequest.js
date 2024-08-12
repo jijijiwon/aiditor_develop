@@ -300,7 +300,7 @@ const ModerationRequest = (props) => {
   return (
     <>
       <h3 style={{ color: "#F80D38", fontFamily: "TossFaceFont" }}>
-        🛡 유해정보 블라인드
+        🛡 유해 정보 블라인드
       </h3>
       <div className="moderation">
         <form onSubmit={handleSubmit}>
@@ -349,10 +349,10 @@ const ModerationRequest = (props) => {
               )}
             </div>
             <div className="input-box">
-              <h3>유해정보 블라인드 편집 요청</h3>
+              <h3>유해 정보 블라인드 편집 요청</h3>
               <label>
                 편집 타입 :
-                <input type="text" value="유해정보 블라인드" readOnly />
+                <input type="text" value="유해 정보 블라인드" readOnly />
               </label>
               <label>
                 저장할 비디오 이름 :
@@ -402,7 +402,7 @@ const ModerationRequest = (props) => {
             </button>
           ) : (
             <button type="submit" className="submit-btn">
-              AIditor, 편집을 시작해줘!
+              아이크, 편집을 시작해줘!
             </button>
           )}
         </form>

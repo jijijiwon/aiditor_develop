@@ -121,7 +121,7 @@ const BoardDetail = ({
                   <div key={i} className="detail-reply-content">
                     <div className="reply-writer">
                       <img src="../images/logo.png" alt="logo" />
-                      <span>AIditor</span>
+                      <span>아이크</span>
                     </div>
                     <div className="reply-content">
                       <h5>{reply.content}</h5>

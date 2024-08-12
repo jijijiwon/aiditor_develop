@@ -142,11 +142,11 @@ function DesM(props) {
             </div>
           </div>
           <div className="input-box">
-            <h3>유해정보 블라인드 편집 요청</h3>
+            <h3>유해 정보 블라인드 편집 요청</h3>
             <div className="tooltip">
               <label className="link-keyword">
                 편집 타입 :
-                <input type="text" value="유해정보 블라인드" readOnly />
+                <input type="text" value="유해 정보 블라인드" readOnly />
               </label>
               <div className="linktext" style={{ left: "60%" }}>
                 메뉴에 따라 자동으로 입력됩니다. <br />
@@ -220,7 +220,7 @@ function DesM(props) {
             style={{ display: "flex", justifyContent: "center" }}
           >
             <button type="submit" className="submit-btn">
-              AIditor, 편집을 시작해줘!
+              아이크, 편집을 시작해줘!
             </button>
           </div>
           <div className="linktext" style={{ left: "70%" }}>
