@@ -10,9 +10,11 @@ function RTModeration() {
   // 비디오 및 캔버스 요소에 대한 참조 생성
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
-  // 감지된 객체 정보를 저장하는 상태 변수
+
+  // 상태 변수 생성
   const [detections, setDetections] = useState([]);
-  const [videoSize, setVideoSize] = useState({ width: 640, height: 480 });
+  const [videoSize, setVideoSize] = useState({ width: 960, height: 540 });
+  const [isMirrored, setIsMirrored] = useState(false); // 반전 여부 관리
 
   useEffect(() => {
     // 웹캠 스트림 설정 함수
@@ -20,7 +22,10 @@ function RTModeration() {
       try {
         // 웹캠 비디오 스트림 요청
         const stream = await navigator.mediaDevices.getUserMedia({
-          video: true,
+          video: {
+            width: { ideal: 960 }, // 이상적인 너비 설정
+            height: { ideal: 540 }, // 이상적인 높이 설정
+          },
         });
         if (videoRef.current) {
           // 비디오 요소에 스트림 설정
@@ -33,12 +38,11 @@ function RTModeration() {
     getUserMedia();
 
     // 주기적으로 이미지 캡처 및 업로드
-    const intervalId = setInterval(captureAndUpload, 1000); // 1초 간격
+    const intervalId = setInterval(captureAndUpload, 500); // 0.5초 간격
     return () => clearInterval(intervalId); // 컴포넌트 언마운트 시 정리
   }, []);
 
   const captureAndUpload = async () => {
-    // 캔버스의 2D 컨텍스트 가져오기
     if (!canvasRef.current || !videoRef.current) return;
     const context = canvasRef.current.getContext("2d");
 
@@ -63,7 +67,6 @@ function RTModeration() {
     // 캔버스를 Blob 형식으로 변환
     canvasRef.current.toBlob(async (blob) => {
       const formData = new FormData();
-      // FormData에 Blob 추가
       formData.append("file", blob, "webcam.jpg");
 
       try {
@@ -73,12 +76,18 @@ function RTModeration() {
             "Content-Type": "multipart/form-data",
           },
         });
-        // console.log(response.data.detections); // 감지된 객체 출력
+
+        // 감지된 객체 정보를 상태로 저장
         setDetections(response.data.detections);
       } catch (error) {
         console.error("Error uploading file:", error);
       }
     }, "image/jpeg");
+  };
+
+  // 반전 토글 함수
+  const toggleMirror = () => {
+    setIsMirrored(!isMirrored);
   };
 
   const labels = [
@@ -98,33 +107,39 @@ function RTModeration() {
           <h5>유의사항</h5>
           <p style={{ marginTop: "2px" }}>웹캠 허용 필수!📸</p>
           <h5>감지하는 컨텐츠</h5>
-          {labels.map(function (menu, i) {
-            return (
-              <div id="label-list" key={i}>
-                <div className="title">
-                  <li
-                    style={{
-                      color: labels[i].color,
-                    }}
-                  >
-                    <p style={{ display: "inline", color: "black" }}>
-                      {labels[i].kor}
-                    </p>
-                  </li>
-                </div>
+          {labels.map((menu, i) => (
+            <div id="label-list" key={i}>
+              <div className="title">
+                <li style={{ color: labels[i].color }}>
+                  <p style={{ display: "inline", color: "black" }}>
+                    {labels[i].kor}
+                  </p>
+                </li>
               </div>
-            );
-          })}
+            </div>
+          ))}
+          <h5 style={{ marginTop: "10px" }}>
+            화면 방향 설정
+            <button
+              onClick={toggleMirror}
+              className={isMirrored ? "active-button" : ""}
+              style={{ marginBottom: "10px" }}
+            >
+              {isMirrored ? "좌우 반전중" : "원본"}
+            </button>
+          </h5>
         </div>
-        <div
-          className="video-container"
-          style={{ width: videoSize.width, height: videoSize.height }}
-        >
+        <div className="video-container">
           <video
             ref={videoRef}
             autoPlay
             playsInline
             className="video-element"
+            style={{
+              width: videoSize.width,
+              height: videoSize.height,
+              transform: isMirrored ? "scaleX(-1)" : "scaleX(1)", // 비디오 요소를 좌우 반전
+            }}
           />
           <canvas ref={canvasRef} className="canvas-element"></canvas>
           {/* 감지된 객체 정보를 화면에 표시 */}
@@ -133,7 +148,13 @@ function RTModeration() {
               key={index}
               className="detection-box"
               style={{
-                left: `${detection.box[0]}px`,
+                left: isMirrored
+                  ? `${
+                      videoSize.width -
+                      (detection.box[2] - detection.box[0]) -
+                      detection.box[0]
+                    }px`
+                  : `${detection.box[0]}px`,
                 top: `${detection.box[1]}px`,
                 width: `${detection.box[2] - detection.box[0]}px`,
                 height: `${detection.box[3] - detection.box[1]}px`,

@@ -13,7 +13,7 @@
   position: relative;
   margin: auto;
   width: 80%;
-  padding-right: 20%;
+  padding-right: 15%;
 }
 
 .video-element {
@@ -27,7 +27,6 @@
 
 .detection-box {
   position: absolute;
-
   pointer-events: none; /* 박스를 클릭할 수 없도록 함 */
   backdrop-filter: blur(10px); /* 감지된 객체 영역에 블러 효과 적용 */
   -webkit-backdrop-filter: blur(10px); /* 사파리 브라우저 호환성 */
@@ -41,5 +40,24 @@
   h5 {
     margin-top: 3px;
     margin-bottom: 3px;
+  }
+
+  button {
+    margin: 10px;
+    border-radius: 5px;
+    color: black;
+    background-color: #ffffff;
+
+    &:hover {
+      cursor: pointer;
+      background-color: #100db1;
+      color: #ffffff;
+    }
+
+    &:active,
+    &.active-button {
+      background-color: #100db1;
+      color: #ffffff;
+    }
   }
 }
