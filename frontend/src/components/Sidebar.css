@@ -11,7 +11,6 @@ body {
 }
 
 .sidebar-container {
-  position: absolute;
   width: 16%;
   margin: 2%;
   margin-right: 3%;
@@ -25,22 +24,6 @@ body {
   display: flex;
   flex-direction: column;
   border-radius: 10px;
-  margin-bottom: 20px; /* sidebar와 banner 사이의 간격 */
-}
-
-.banner {
-  width: 100%;
-  margin-bottom: 1em;
-  img {
-    width: calc(100% + 40px);
-    cursor: pointer;
-  }
-  span {
-    position: absolute;
-    font-size: 0.7em;
-    background-color: #ccc;
-    padding: 0.3em 0.6em;
-  }
 }
 
 .logo {
