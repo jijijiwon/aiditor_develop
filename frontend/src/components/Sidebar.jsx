@@ -1,11 +1,19 @@
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import "./Sidebar.css";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 function Sidebar(props) {
   const location = useLocation();
   const navigate = useNavigate();
+  const sidebarRef = useRef(null);
+
+  useEffect(() => {
+    if (sidebarRef.current) {
+      const height = sidebarRef.current.offsetHeight;
+      console.log(`height: ${height}px`);
+    }
+  }, []);
 
   const handleLogout = () => {
     // console.log("User signed out.");

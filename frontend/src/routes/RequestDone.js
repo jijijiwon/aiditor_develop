@@ -1,11 +1,53 @@
 import "./ModerationRequest.css";
 import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import Modal from "react-modal";
 
 function RequestDone(props) {
   const navigate = useNavigate();
+
+  const images = [
+    "/images/banner2.png",
+    "/images/banner3.png",
+    "/images/banner4.png",
+    "/images/banner5.png",
+  ];
+
+  const [randomIndex, setRandomIndex] = useState(0);
+
+  const [isOpen, setIsOpen] = useState(false);
+
+  const closeModal = () => {
+    setIsOpen(false);
+  };
+
   const handleButtonClick = () => {
     navigate("/", { replace: true });
   };
+
+  const modalStyle = {
+    overlay: {
+      backgroundColor: "rgba(0, 0, 0, 0.5)",
+    },
+    content: {
+      top: "50%",
+      left: "50%",
+      right: "auto",
+      bottom: "auto",
+      marginRight: "-50%",
+      transform: "translate(-50%, -50%)",
+      padding: 0,
+      border: "none",
+      background: "none",
+    },
+  };
+
+  useEffect(() => {
+    const index = Math.floor(Math.random() * images.length);
+    setRandomIndex(index);
+    setIsOpen(true);
+  }, []);
+
   return (
     <>
       <h3 style={{ color: "#F80D38" }}>요청 완료</h3>
@@ -22,9 +64,21 @@ function RequestDone(props) {
         </p>
         <button onClick={handleButtonClick}>완료</button>
       </div>
-      <div className="long-banner">
-        <h1>long-banner</h1>
-      </div>
+      <Modal isOpen={isOpen} onRequestClose={closeModal} style={modalStyle}>
+        <div className="modal-container">
+          <header
+            className="modal-container-header"
+            style={{ padding: "0.5em 2em" }}
+          >
+            <h3> </h3>
+            <h3 style={{ textAlign: "center" }}>광고</h3>
+            <button className="icon-button" onClick={closeModal}>
+              <img src="images/close.png" alt="Close Icon" />
+            </button>
+          </header>
+          <img src={images[randomIndex]} alt="Random"></img>
+        </div>
+      </Modal>
     </>
   );
 }

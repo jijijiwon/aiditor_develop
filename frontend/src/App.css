@@ -37,12 +37,14 @@ img {
   -webkit-user-drag: none;
 }
 
+.App {
+  display: flex;
+}
+
 .main {
-  width: 100%;
-  min-height: 130vh;
+  width: 81%;
   overflow: auto;
   padding: 2%;
-  padding-left: 23%;
   box-sizing: border-box;
 }
 
