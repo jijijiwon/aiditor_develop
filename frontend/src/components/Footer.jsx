@@ -8,7 +8,7 @@ const Footer = (props) => {
     >
       <h1>아이크</h1>
       <p>© 2024. AIc. All Rights Reserved.</p>
-      <p>사용된 영상은 작업 후 모두 폐기됩니다.</p>
+      <p>자동 영상 모자이크 서비스, 아이크입니다.</p>
     </div>
   );
 };
