@@ -10,6 +10,14 @@
   src: url("./PretendardVariable.ttf") format("truetype");
 }
 
+@font-face {
+  font-family: "DNFBitBitv2";
+  font-style: normal;
+  font-weight: 400;
+  src: url("//cdn.df.nexon.com/img/common/font/DNFBitBitv2.otf")
+    format("opentype");
+}
+
 body {
   font-family: "Pretendard";
   margin: 0;
@@ -31,6 +39,7 @@ img {
 
 .main {
   width: 100%;
+  min-height: 130vh;
   overflow: auto;
   padding: 2%;
   padding-left: 23%;
@@ -95,4 +104,55 @@ img {
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
+}
+
+.footer-container {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: #eee;
+  text-align: center;
+  transform: translateY(0);
+  transition: transform 0.3s ease-in-out;
+  z-index: 1;
+}
+
+.footer-container.hidden {
+  transform: translateY(100%); /* footer-container 전체를 화면 아래로 이동 */
+}
+
+.footer-banner {
+  width: 100%;
+  padding-top: 5px;
+  background-color: #eee;
+  text-align: center;
+  height: 100px;
+  z-index: 1;
+}
+
+.footer-button {
+  position: absolute; /* footer-container 안에서 위치 조정 */
+  left: 0;
+  bottom: 100px; /* footer-banner 위에 버튼 위치 */
+  background-color: #dbdbdb;
+  border: none;
+  border-radius: 4px 4px 0 0;
+  z-index: 2;
+  padding: 2px 20px;
+  img {
+    width: 20px;
+    transition: transform 0.3s ease-in-out;
+  }
+}
+
+.footer-button::after {
+  content: "";
+  display: block;
+  position: absolute;
+  bottom: -3px; /* 버튼 바로 아래에 줄을 표시 */
+  left: 0;
+  width: 100vw;
+  height: 3px; /* 줄의 높이를 3px로 설정 */
+  background-color: #dbdbdb; /* 줄의 색상을 설정 */
 }

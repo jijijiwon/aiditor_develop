@@ -36,7 +36,7 @@ function Main(props) {
           </div>
         </div>
       </div>
-      <div className="footer">
+      <div className="main-footer">
         <img
           src="/images/describe.png"
           alt="Face Extraction"

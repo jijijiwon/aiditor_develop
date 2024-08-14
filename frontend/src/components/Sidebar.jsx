@@ -18,22 +18,6 @@ function Sidebar(props) {
     props.setTicket([0, 0, 0]);
   };
 
-  const banners = [
-    { image: "./images/banner2.png", url: "https://www.trippass.link" },
-    { image: "./images/banner3.png", url: "https://www.aivolution.link" },
-    { image: "./images/banner4.png", url: "https://www.soribwa.com" },
-    { image: "./images/banner5.png", url: "https://www.aivolution.link" },
-  ];
-
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
-
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      setCurrentImageIndex((prevIndex) => (prevIndex + 1) % banners.length);
-    }, 7000); // 7초마다 이미지 변경
-    return () => clearInterval(intervalId);
-  }, []);
-
   const handleNotuserClick = (event) => {
     const isLogin = Number(props.isLogin) || 0; // props.isLogin을 숫자로 변환, 기본값 0
     if (isLogin !== 1) {
@@ -230,16 +214,6 @@ function Sidebar(props) {
           <p>+9005253@gmail.com</p>
           <p>+juyeon0310@naver.com</p>
         </div>
-      </div>
-      <div className="banner">
-        <span>AD</span>
-        <a
-          href={banners[currentImageIndex].url}
-          target="_blank"
-          rel="noopner noreferrer"
-        >
-          <img src={banners[currentImageIndex].image} alt="banner"></img>
-        </a>
       </div>
     </div>
   );

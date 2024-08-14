@@ -1,0 +1,11 @@
+.footer {
+  background-color: #444;
+  color: #fff;
+  padding: 1.5em 20em;
+  transition: transform 0.3s ease-in-out;
+  h1 {
+    font-family: "DNFBitBitv2", sans-serif;
+    letter-spacing: 3px;
+    font-size: 2em;
+  }
+}
