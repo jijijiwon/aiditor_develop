@@ -8,7 +8,7 @@ function RequestDone(props) {
   };
   return (
     <>
-      <h3 style={{ color: "#F80D38" }}>유해 정보 블라인드</h3>
+      <h3 style={{ color: "#F80D38" }}>요청 완료</h3>
       <div className="moderation-done">
         <div className="icon">
           <img src="images/logo.png" alt="Moderation Icon" />
@@ -21,6 +21,9 @@ function RequestDone(props) {
           이메일 수신 동의를 하지 않으면 메일을 받을 수 없어요🤐
         </p>
         <button onClick={handleButtonClick}>완료</button>
+      </div>
+      <div className="long-banner">
+        <h1>long-banner</h1>
       </div>
     </>
   );

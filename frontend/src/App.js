@@ -4,6 +4,7 @@ import CryptoJS from "crypto-js";
 import "./App.css";
 import Sidebar from "./components/Sidebar";
 import Header from "./components/Header";
+import Footer from "./components/Footer";
 import Main from "./routes/Main";
 import RealtimeDescription from "./routes/RealtimeDescription";
 import RTModeration from "./routes/RTModeration";
@@ -33,6 +34,12 @@ function App() {
   const navigate = useNavigate();
   const secretKey = process.env.REACT_APP_CRYPTO_SECRET_KEY;
   const ENCRYPTION_PREFIX = process.env.REACT_APP_CRYPTO_PREFIX;
+
+  const [visible, setVisible] = useState(true);
+
+  const handleToggle = () => {
+    setVisible(!visible);
+  };
 
   // 암호화
   const encrypt = (data) => {
@@ -103,6 +110,22 @@ function App() {
     window.sessionStorage.setItem("opt", encrypt(opt));
     window.sessionStorage.setItem("isAdmin", encrypt(isAdmin));
   }, [email, name, picture, isLogin, opt, isAdmin]);
+
+  const longbanners = [
+    { image: "./images/trippass.png", url: "https://www.trippass.link" },
+    { image: "./images/pdfast.png", url: "https://www.aivolution.link" },
+    { image: "./images/soriba.png", url: "https://www.soribwa.com" },
+    { image: "./images/seesaw.png", url: "https://www.aivolution.link" },
+  ];
+
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setCurrentImageIndex((prevIndex) => (prevIndex + 1) % longbanners.length);
+    }, 7000); // 7초마다 이미지 변경
+    return () => clearInterval(intervalId);
+  }, []);
 
   return (
     <div className="App">
@@ -339,6 +362,27 @@ function App() {
           />
           <Route path="/kakao-login/auth" element={<KakaoRedirect />} />
         </Routes>
+      </div>
+      <Footer visible={visible} />
+      <div className={`footer-container ${visible ? "" : "hidden"}`}>
+        <button onClick={handleToggle} className="footer-button">
+          <img
+            src="images/uparrow.png"
+            alt={visible ? "close banner" : "open banner"}
+            style={{
+              transform: visible ? "rotate(180deg)" : "rotate(0deg)",
+            }}
+          />
+        </button>
+        <div className="footer-banner">
+          <a
+            href={longbanners[currentImageIndex].url}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <img src={longbanners[currentImageIndex].image} alt="long-banner" />
+          </a>
+        </div>
       </div>
     </div>
   );

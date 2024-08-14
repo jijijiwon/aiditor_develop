@@ -208,7 +208,7 @@ async def send_email(request: EmailRequest):
                                 line-height: 20px;
                                 "
                             >
-                                Copyright © 2024 AIc All Rights Reserved.
+                                © 2024. AIc. All Rights Reserved.
                             </td>
                             </tr>
                         </tbody>
@@ -367,7 +367,7 @@ async def send_error_email(request: ErrorRequest):
                                 line-height: 20px;
                                 "
                             >
-                                Copyright © 2024 AIc All Rights Reserved.
+                                © 2024. AIc. All Rights Reserved.
                             </td>
                             </tr>
                         </tbody>
@@ -514,7 +514,7 @@ async def send_email2(data: BoardNum):
                                 line-height: 20px;
                                 "
                             >
-                                Copyright © 2024 AIc All Rights Reserved.
+                                © 2024. AIc. All Rights Reserved.
                             </td>
                             </tr>
                         </tbody>

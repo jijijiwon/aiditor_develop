@@ -30,7 +30,7 @@
   margin-bottom: 0;
 }
 
-.footer {
+.main-footer {
   margin-top: 20px;
   padding: 20px;
   background-color: #fff;
@@ -41,12 +41,12 @@
   display: flex;
 }
 
-.footer ul {
+.main-footer ul {
   list-style-type: none;
   padding: 0;
 }
 
-.footer ul li {
+.main-footer ul li {
   margin: 5px 0;
 }
 
