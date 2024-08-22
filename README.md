@@ -1,7 +1,7 @@
 <h1 align="center"> 🎥 아이크[AIC] 🎥 </h1>
 
 <div align="center">
-<img src="https://github.com/user-attachments/assets/717ba1b5-01a2-493b-85b0-3dbe1fb31330" width="40%" title="아이크" alt="AIc"></img>
+<img src="https://github.com/user-attachments/assets/d7fef5e9-33de-4107-8308-1b802055e6a5" title="아이크" alt="AIc"></img>
 
 <b>🔗[아이크 바로가기](https://www.aiditor.link, "aiditor link")</b> <br>
 </div>
@@ -13,7 +13,7 @@
 1. [📄프로젝트 소개](#project)
 2. [👨‍👩‍👧‍👦팀 소개 및 역할](#team)
 3. [🗓️개발 일정](#period)
-4. [🔨기술 스택 및 이유](#technology-stack)
+4. [🔨기술 스택](#technology-stack)
 5. [🔍기능 및 구조](#function-and-structure)
 6. [👫협업 방식](#cooperation)
 
@@ -171,4 +171,391 @@
 - 서류 작업 및 세부사항 수정
 - Footer 생성 및 Footer-banner 제작
 - **최종 발표**
+
+## <span id="techonoloy-stack">4. ⛏️기술 스택</span>
+
+<table>
+  <tr>
+    <td align="center" width="150px"> 사용 기술 </td>
+    <td width="850px">
+      <img src="https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=React&logoColor=ffffff"/>&nbsp
+      <img src="https://img.shields.io/badge/React%20Router-CA4245?style=for-the-badge&logo=ReactRouter&logoColor=ffffff"/>&nbsp
+      <img src="https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=FastAPI&logoColor=ffffff"/>&nbsp
+      <img src="https://img.shields.io/badge/Node.js-5FA04E?style=for-the-badge&logo=Node.js&logoColor=ffffff"/>&nbsp
+      <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=Python&logoColor=ffffff"/>&nbsp
+      <img src="https://img.shields.io/badge/OpenCV-5C3EE8?style=for-the-badge&logo=OpenCV&logoColor=ffffff"/>&nbsp
+      <img src="https://img.shields.io/badge/Dlib-008000?style=for-the-badge&logo=Dlib&logoColor=ffffff"/>&nbsp
+      <img src="https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=HTML5&logoColor=ffffff"/>&nbsp
+      <img src="https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=CSS3&logoColor=ffffff"/>&nbsp
+    </td>
+  </tr>
+  <tr>
+    <td align="center"> 데이터베이스 </td>
+    <td>
+      <img src="https://img.shields.io/badge/Amazon%20S3-569A31?style=for-the-badge&logo=AmazonS3&logoColor=ffffff"/>&nbsp
+      <img src="https://img.shields.io/badge/MysQL-4479A1?style=for-the-badge&logo=MySQL&logoColor=ffffff"/>&nbsp
+      <img src="https://img.shields.io/badge/MongoDB-47A248?style=for-the-badge&logo=MongoDB&logoColor=ffffff"/>&nbsp
+    </td>
+  </tr>
+  <tr>
+    <td align="center"> 클라우드 인프라 및 관리 </td>
+    <td>
+      <img src="https://img.shields.io/badge/Amazon%20EC2-FF9900?style=for-the-badge&logo=AmazonEC2&logoColor=ffffff"/>&nbsp
+      <img src="https://img.shields.io/badge/AWS%20Elastic%20Load%20Balancing-8C4FFF?style=for-the-badge&logo=AWSElasticLoadBalancing&logoColor=ffffff"/>&nbsp
+    </td>
+  <tr>
+    <td align="center"> 패키지 </td>
+    <td>
+      <img src="https://img.shields.io/badge/npm-CB3837?style=for-the-badge&logo=NPM&logoColor=ffffff"/>&nbsp
+    </td>
+  </tr>
+  <tr>
+    <td align="center"> 컨테이너화 </td>
+    <td>
+      <img src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=Docker&logoColor=ffffff"/>&nbsp
+    </td>
+  <tr>
+    <td align="center"> 포맷터 </td>
+    <td>
+      <img src="https://img.shields.io/badge/Prettier-373338?style=for-the-badge&logo=Prettier&logoColor=ffffff"/>&nbsp
+    </td>
+  </tr>
+  <tr>
+    <td align="center"> 협업 </td>
+    <td>
+      <img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=GitHub&logoColor=ffffff"/>&nbsp
+      <img src="https://img.shields.io/badge/Notion-5a5d69?style=for-the-badge&logo=Notion&logoColor=ffffff"/>&nbsp
+    </td>
+  </tr>
+  <tr>
+    <td align="center"> 디자인 </td>
+    <td>
+      <img src="https://img.shields.io/badge/Figma-d90f42?style=for-the-badge&logo=Figma&logoColor=ffffff"/>&nbsp
+    </td>
+  </tr>
+  <tr>
+    <td align="center"> IDE </td>
+    <td>
+      <img src="https://img.shields.io/badge/VSCode-007ACC?style=for-the-badge&logo=VSCode&logoColor=ffffff"/>&nbsp
+    </td>
+  </tr>
+</table>
+
+<br>
+
+## <span id="function-and-structure">5. 🔍기능 및 구조</span>
+
+### 기능
+
+<!--
+- 메인 화면
+- 로그인
+- 로그아웃
+
+- 영상 편집기
+  - 유해정보 블라인드
+  - 개인정보 보호
+  - 얼굴 감지
+- 실시간 모자이크
+  - 유해정보 블라인드
+  - 개인정보 보호
+
+- 문의 게시판 조회 및 등록
+- 공지사항 조회
+
+- 내 정보
+  - 내 정보 수정
+  - 이용권 구매
+  - 맡긴 영상 확인
+  - 진행 상황 확인
+  - 완료 영상 확인 및 다운로드
+-->
+
+<table>
+  <thead align="center">
+    <th width="500px"> 메인 화면 </th>
+    <th width="500px"> 로그인 </th>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <img src="https://github.com/user-attachments/assets/1bccb6fe-c8d3-4e78-a7ef-4d6267c168b9"/>
+      </td>
+      <td>
+        <img src="https://github.com/user-attachments/assets/0b1feafc-51f4-4cfb-91c9-ffe5d3944fe6"/>
+      </td>
+    </tr>
+    <tr>
+      <td> 왼쪽의 사이드바를 통해 원하는 메뉴에 접근할 수 있습니다. 하단에는 광고용 배너와 사용자 편의를 위한 챗봇이 있습니다. 광고용 배너는 왼쪽 하단의 버튼을 눌러 제거할 수 있습니다. </td>
+      <td> 오른쪽 상단의 로그인을 클릭하여 로그인을 할 수 있습니다. 회원 정보가 존재하지 않는 경우 로그인과 동시에 자동으로 회원 가입이 진행되며, 구글 로그인과 카카오 로그인을 제공합니다. </td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <thead align="center">
+    <th width="500px"> 로그아웃 </th>
+    <th width="500px"> 영상 편집기 - 유해정보 블라인드 </th>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <img src="https://github.com/user-attachments/assets/b25c71f5-6468-4d30-afd0-97543d58e2e8"/>
+      </td>
+      <td>
+        <img src="https://github.com/user-attachments/assets/8296f585-06aa-40a1-8b79-c99ab977816f"/>
+      </td>
+    </tr>
+    <tr>
+      <td> 왼쪽의 로그아웃 버튼을 클릭해 로그아웃할 수 있습니다. </td>
+      <td> 편집을 원하는 영상을 넣고 감지 정확도와 모자이크 강도, 편집할 컨텐츠를 선택한 후 편집을 요청할 수 있습니다. 편집이 완료되면 이메일 수신 동의자에 한하여 이메일이 발송됩니다. </td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <thead align="center">
+    <th width="500px"> 영상 편집기 - 개인정보 보호 </th>
+    <th width="500px"> 영상 편집기 - 얼굴 감지 </th>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <img src="https://github.com/user-attachments/assets/3bfbbdef-e04e-4c75-ae40-cdc2f933950f"/>
+      </td>
+      <td>
+        <img src="https://github.com/user-attachments/assets/efc960e3-5c12-48b1-b71d-74527a17ca75"/>
+      </td>
+    </tr>
+    <tr>
+      <td> 왼쪽의 로그아웃 버튼을 클릭해 로그아웃할 수 있습니다. </td>
+      <td> 편집을 원하는 영상을 넣고 감지 정확도와 모자이크 강도, 편집할 컨텐츠를 선택한 후 편집을 요청할 수 있습니다. 편집이 완료되면 이메일 수신 동의자에 한하여 이메일이 발송됩니다. </td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <thead align="center">
+    <th width="500px"> 실시간 모자이크 - 유해정보 블라인드 </th>
+    <th width="500px"> 실시간 모자이크 - 개인정보 보호 </th>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <img src="https://github.com/user-attachments/assets/c25d2bbb-affd-4bf6-bac6-2ac4c48b5c45"/>
+      </td>
+      <td>
+        <img src="https://github.com/user-attachments/assets/b3120d82-a891-41e7-b315-10b4554d9282"/>
+      </td>
+    </tr>
+    <tr>
+      <td> 왼쪽의 로그아웃 버튼을 클릭해 로그아웃할 수 있습니다. </td>
+      <td> 편집을 원하는 영상을 넣고 감지 정확도와 모자이크 강도, 편집할 컨텐츠를 선택한 후 편집을 요청할 수 있습니다. 편집이 완료되면 이메일 수신 동의자에 한하여 이메일이 발송됩니다. </td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <thead align="center">
+    <th width="500px"> 문의 게시판 </th>
+    <th width="500px"> 공지사항 </th>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <img src="https://github.com/user-attachments/assets/20c16627-af55-45a7-a19d-23060a344141"/>
+      </td>
+      <td>
+        <img src="https://github.com/user-attachments/assets/9b95b044-bd5e-4813-836e-b3708545cdb3"/>
+      </td>
+    </tr>
+    <tr>
+      <td> 왼쪽의 로그아웃 버튼을 클릭해 로그아웃할 수 있습니다. </td>
+      <td> 편집을 원하는 영상을 넣고 감지 정확도와 모자이크 강도, 편집할 컨텐츠를 선택한 후 편집을 요청할 수 있습니다. 편집이 완료되면 이메일 수신 동의자에 한하여 이메일이 발송됩니다. </td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <thead align="center">
+    <th width="500px"> 내 정보 </th>
+    <th width="500px"> 이용권 구매 </th>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <img src="https://github.com/user-attachments/assets/e4e78610-6522-4ee1-bc6c-603808a8a1ff"/>
+      </td>
+      <td>
+        <img src="https://github.com/user-attachments/assets/c62067d5-16e4-4c70-8236-bdf6fa746505"/>
+      </td>
+    </tr>
+    <tr>
+      <td> 왼쪽의 로그아웃 버튼을 클릭해 로그아웃할 수 있습니다. </td>
+      <td> 편집을 원하는 영상을 넣고 감지 정확도와 모자이크 강도, 편집할 컨텐츠를 선택한 후 편집을 요청할 수 있습니다. 편집이 완료되면 이메일 수신 동의자에 한하여 이메일이 발송됩니다. </td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <thead align="center">
+    <th width="500px"> 회원 정보 수정 </th>
+    <th width="500px"> 회원 탈퇴 </th>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <img src="https://github.com/user-attachments/assets/d2f9259e-e125-4dad-b2d2-1ffc38f99a37"/>
+      </td>
+      <td>
+        <img src="https://github.com/user-attachments/assets/51bff484-1c15-4750-9a35-459de0b81c9b"/>
+      </td>
+    </tr>
+    <tr>
+      <td> 왼쪽의 로그아웃 버튼을 클릭해 로그아웃할 수 있습니다. </td>
+      <td> 편집을 원하는 영상을 넣고 감지 정확도와 모자이크 강도, 편집할 컨텐츠를 선택한 후 편집을 요청할 수 있습니다. 편집이 완료되면 이메일 수신 동의자에 한하여 이메일이 발송됩니다. </td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <thead align="center">
+    <th width="500px"> 작업 삭제 </th>
+    <th width="500px"> 작업 완료 상세 페이지 </th>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <img src="https://github.com/user-attachments/assets/c5706bf1-301a-4be0-9f59-8ff5d03975ba"/>
+      </td>
+      <td>
+        <img src="https://github.com/user-attachments/assets/9af1da4d-4323-415d-99ab-baa883e35a24"/>
+      </td>
+    </tr>
+    <tr>
+      <td> 왼쪽의 로그아웃 버튼을 클릭해 로그아웃할 수 있습니다. </td>
+      <td> 편집을 원하는 영상을 넣고 감지 정확도와 모자이크 강도, 편집할 컨텐츠를 선택한 후 편집을 요청할 수 있습니다. 편집이 완료되면 이메일 수신 동의자에 한하여 이메일이 발송됩니다. </td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <thead align="center">
+    <th width="500px"> 작업 진행중 </th>
+    <th width="500px"> 작업 에러 발생 </th>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <img src="https://github.com/user-attachments/assets/4ee7efa6-0970-44e6-9a46-84d1c2fda76a"/>
+      </td>
+      <td>
+        <img src="https://github.com/user-attachments/assets/6c9d8fe5-c082-41f2-ab40-a2ab4825c9aa"/>
+      </td>
+    </tr>
+    <tr>
+      <td> 왼쪽의 로그아웃 버튼을 클릭해 로그아웃할 수 있습니다. </td>
+      <td> 편집을 원하는 영상을 넣고 감지 정확도와 모자이크 강도, 편집할 컨텐츠를 선택한 후 편집을 요청할 수 있습니다. 편집이 완료되면 이메일 수신 동의자에 한하여 이메일이 발송됩니다. </td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <thead align="center">
+    <th width="500px"> 관리자 페이지 </th>
+    <th width="500px"> 작업 완료 이메일 </th>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <img src="관리자 페이지"/>
+      </td>
+      <td>
+        <img src="이메일 세트"/>
+      </td>
+    </tr>
+    <tr>
+      <td> 왼쪽의 로그아웃 버튼을 클릭해 로그아웃할 수 있습니다. </td>
+      <td> 편집을 원하는 영상을 넣고 감지 정확도와 모자이크 강도, 편집할 컨텐츠를 선택한 후 편집을 요청할 수 있습니다. 편집이 완료되면 이메일 수신 동의자에 한하여 이메일이 발송됩니다. </td>
+    </tr>
+  </tbody>
+</table>
+
+### 구조
+
+```
+backend/
+├── app.js
+├── Dockerfile
+└── package.json
+
+config/
+└── secrets.json
+
+fastapi-f/
+├── knn_examples/
+├── logs/
+│   ├── dlib_face_recognition_resnet_model_v1.dat
+│   ├── Dockerfile
+│   ├── main.py
+│   ├── shape_predictor_68_face_landmarks.dat
+│   ├── test_blur_app.py
+│   └── trained_knn_model.clf
+└── requirements.txt
+
+fastapi-mp/
+├── app/
+│   ├── configdb.py
+│   ├── database.py
+│   ├── main.py
+│   ├── models.py
+│   └── video_processor.py
+├── app2/
+│   ├── main2.py
+│   ├── downloads/
+│   ├── logs/
+│   └── processed_videos/
+└── yolomodel/
+    ├── addf2.pt
+    ├── card2.pt
+    ├── Dockerfile
+    ├── Dockerfile.mongo
+    ├── mongod.conf
+    └── requirements.txt
+
+fastapi-user/
+├── app/
+│   ├── main.py
+│   ├── Dockerfile
+│   ├── init.sh
+│   ├── my.cnf
+│   └── requirements.txt
+└── frontend/
+    ├── public/
+    │   ├── images/
+    │   ├── favicon.ico
+    │   ├── index.html
+    │   └── manifest.json
+    └── src/
+        ├── components/
+        ├── routes/
+        ├── App.css
+        ├── App.js
+        ├── App.test.js
+        ├── index.css
+        ├── index.js
+        ├── PretendardVariable.ttf
+        ├── reportWebVitals.js
+        ├── TossFaceFontMac.ttf
+        ├── .gitignore
+        ├── config-overrides.js
+        ├── Dockerfile
+        ├── package-lock.json
+        ├── package.json
+        └── README.md
+├── .env
+├── .gitignore
+├── docker-compose.yml
+└── Makefile
+```
 
