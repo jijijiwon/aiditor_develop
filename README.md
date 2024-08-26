@@ -104,73 +104,69 @@
 ## <span id="period">3. 🗓️개발 일정</span>
 ![image](https://github.com/user-attachments/assets/b642af25-33cc-43e2-8561-8ed1030e2ea3)
 
-### 기능 테스트 발표
+<details>
+  <summary><b>세부 일정</b></summary>
+  <div markdown="1">
+    <h3> 기능 테스트 발표 </h3>
+    <h4>Week1 (6/7 ~ 6/13)</h4>
+    <li> 코드 리뷰 및 모델 선정 </li>
+    <h4> Week2 (6/14 ~ 6/20) </h4>
+    <li> 학습 데이터 선정 </li>
+    <li> React 설계 및 구현 </li>
+    <li> python-yolo 테스트 </li>
+    <h4> Week3 (6/21 ~ 6/26) </h4>
+    <li> 구글 로그인 구현 </li>
+    <li> 기본 DB 세팅 </li>
+    <li> React moderation 페이지 구현 </li>
+    <li> yolon8 Streamlit으로 구현 </li>
+    <li> React FastAPI 구현 </li>
+    <li> <b>1차 중간발표</b> </li>
+    <h3> 착수 발표 </h3>
+    <h4> Week1 (6/27 ~ 7/3) </h4>
+    <li> 기능 정의서 작성 </li>
+    <li> 로그인 및 메일 기능 구현 </li>
+    <li> moderation 학습 테스트 & face 모델 테스트 후 모델 확정 </li>
+    <li> 도메인 구매 </li>
+    <li> 작업 DB 생성 및 관리 </li>
+    <li> 발표 자료 제작 </li>
+    <li> <b>2차 중간발표</b> </li>
+    <h4> Week2 (7/4 ~ 7/10) </h4>
+    <li> 회원 관리 기능 설계 및 구현 </li>
+    <li> React 작업별 상세 페이지 구현 </li>
+    <li> 모듈화 및 로그 저장 </li>
+    <li> 프로그램 병렬, 비동기식 전환 </li>
+    <li> 얼굴 감지 결과 타임스탬프 </li>
+    <li> React 게시판 구현 </li>
+    <li> Front-end 한글화 </li>
+    <li> 작업 완료 시 이메일 전송 및 S3 Bucket의 다운로드 URL 전송 </li>
+    <h4> Week3 (7/11 ~ 7/18) </h4>
+    <li> 각자 개발한 부분 dockerizing 후 하나의 dockerfile로 통합 </li>
+    <li> 예외처리 및 소스 정리 (coding convention) </li>
+    <li> 관리자 페이지 구현 </li>
+    <li> 배포 도메인 등록 </li>
+    <li> 2차 설계</li>
+    <li> <b>1차 배포</b> </li>
+    <h4> Week4 (7/19 ~ 7/25) </h4>
+    <li> 이용권 관련 페이지 및 api 구현 </li>
+    <li> React 및 Back-end 예외처리 </li>
+    <li> 작업 상태 세분화 </li>
+    <h4> Week5 (7/26 ~ 8/1) </h4>
+    <li> session storage 암호화 </li>
+    <li> 세부적인 오류 해결 </li>
+    <li> 실시간 기능 추가 </li>
+    <h4> Week6 (8/2 ~ 8/8) </h4>
+    <li> QA
+    <li> <b>2차 배포</b></li>
+    <li> 세부적인 오류 해결</li>
+    <li> 광고용 배너 제작</li>
+    <h4> Week7 (8/9 ~ 8/15) </h4>
+    <li> 서류 작업 및 세부사항 수정 </li>
+    <li> Footer 생성 및 Footer-banner 제작 </li>
+    <li> <b>최종 발표</b> </li>
+  </div>
+</details>
 
-#### Week1 (6/7 ~ 6/13)
-- 코드 리뷰 및 모델 선정
-
-#### Week2 (6/14 ~ 6/20)
-- 학습 데이터 선정
-- React 설계 및 구현
-- python-yolo 테스트
-
-#### Week3 (6/21 ~ 6/26)
-- 구글 로그인 구현
-- 기본 DB 세팅
-- React moderation 페이지 구현
-- yolon8 Streamlit으로 구현
-- React FastAPI 구현
-- **1차 중간발표**
-
-### 착수 발표
-
-#### Week1 (6/27 ~ 7/3)
-- 기능 정의서 작성
-- 로그인 및 메일 기능 구현
-- moderation 학습 테스트 & face 모델 테스트 후 모델 확정
-- 도메인 구매
-- 작업 DB 생성 및 관리
-- 발표 자료 제작
-- **2차 중간발표**
-
-#### Week2 (7/4 ~ 7/10)
-- 회원 관리 기능 설계 및 구현
-- React 작업별 상세 페이지 구현
-- 모듈화 및 로그 저장
-- 프로그램 병렬, 비동기식 전환
-- 얼굴 감지 결과 타임스탬프 
-- React 게시판 구현
-- Front-end 한글화
-- 작업 완료 시 이메일 전송 및 S3 Bucket의 다운로드 URL 전송
-
-#### Week3 (7/11 ~ 7/18)
-- 각자 개발한 부분 dockerizing 후 하나의 dockerfile로 통합
-- 예외처리 및 소스 정리 (coding convention)
-- 관리자 페이지 구현
-- 배포 도메인 등록
-- 2차 설계
-- **1차 배포**
-
-#### Week4 (7/19 ~ 7/25)
-- 이용권 관련 페이지 및 api 구현
-- React 및 Back-end 예외처리
-- 작업 상태 세분화
-
-#### Week5 (7/26 ~ 8/1)
-- session storage 암호화
-- 세부적인 오류 해결
-- 실시간 기능 추가
-
-#### Week6 (8/2 ~ 8/8)
-- QA
-- **2차 배포**
-- 세부적인 오류 해결
-- 광고용 배너 제작
-
-#### Week7 (8/9 ~ 8/15)
-- 서류 작업 및 세부사항 수정
-- Footer 생성 및 Footer-banner 제작
-- **최종 발표**
+<br>
 
 ## <span id="techonoloy-stack">4. ⛏️기술 스택</span>
 
