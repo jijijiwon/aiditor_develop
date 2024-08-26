@@ -168,7 +168,7 @@
 
 <br>
 
-## <span id="techonoloy-stack">4. ⛏️기술 스택</span>
+## <span id="technology-stack">4. ⛏️기술 스택</span>
 
 <table>
   <tr>
