@@ -89,7 +89,7 @@
 #### 안수연
 
 - 화면 디자인
-- Frond-end 로그인, 게시판, 내 정보 관리 및 관리자 페이지 설계
+- Front-end 로그인, 게시판, 내 정보 관리 및 관리자 페이지 설계
 - Back-end 기능 설계, user api 호출
 - user 및 board 관련 기능 설계
 - user 및 board 관련 테이블 생성 및 관리
